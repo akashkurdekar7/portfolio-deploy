@@ -7,7 +7,7 @@ export type Reel = {
   title: string;
   category: string;
   year: string;
-  video: string;
+  image: string;
   instagram: string;
 };
 
@@ -81,8 +81,13 @@ const ReelCard = ({ reel, isFinePointer, reducedMotion, className = "" }: ReelCa
         onMouseLeave={handleLeave}
         className="group relative block h-full w-full overflow-hidden bg-black"
       >
-        <video src={reel.video} autoPlay muted loop playsInline className="h-full w-full object-cover" />
-
+        <img
+          src={reel.image}
+          alt={reel.title}
+          title={reel.title}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
         {/* META */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/85 via-black/15 to-transparent px-4 pb-4 pt-12">
           <h3 className="font-instrument text-xl leading-none text-white">{reel.title}</h3>

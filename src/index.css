@@ -567,8 +567,3 @@
   will-change: transform, opacity;
 }
 
-.grid{
-  div{
-    border: 1px solid black;
-  }
-}
