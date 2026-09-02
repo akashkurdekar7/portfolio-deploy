@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import SmoothScroll from "./components/SmoothScroll";
 import Projects from "./components/Projects";
 import Article from "./components/Article";
+import Reels from "./components/Reels";
 // import About from "./components/About";
 // import Work from "./components/Work";
 
@@ -20,6 +21,7 @@ const App = () => {
         <Projects />
         <Article />
         {/* <Work /> */}
+        <Reels />
       </main>
 
       <Footer />
