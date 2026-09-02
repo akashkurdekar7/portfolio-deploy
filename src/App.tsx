@@ -4,8 +4,8 @@ import Footer from "./components/Footer";
 import SmoothScroll from "./components/SmoothScroll";
 import Projects from "./components/Projects";
 import Article from "./components/Article";
-import About from "./components/About";
-import Work from "./components/Work";
+// import About from "./components/About";
+// import Work from "./components/Work";
 
 const App = () => {
   return (
@@ -16,10 +16,10 @@ const App = () => {
 
       <main>
         <Hero />
-        <About />
+        {/* <About /> */}
         <Projects />
         <Article />
-        <Work />
+        {/* <Work /> */}
       </main>
 
       <Footer />
