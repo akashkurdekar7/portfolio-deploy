@@ -36,11 +36,11 @@ const Footer = () => {
       <div className="relative z-20 pt-8 md:pt-0">
         <span className="font-space-bold size12 uppercase tracking-[0.15em] text-white">thoughts • work • life</span>
 
-        <h2 className="mt-4 font-space size56 leading-16 tracking-tighter text-white ">
+        <h2 className="mt-4 font-chunko size90 capitalize text-white ">
           let's get to the
           <br />
           <span className="font-italic text-white/50  tracking-normal">awkward</span>
-          <span className="font-space"> part.</span>
+          <span className="font-chunko"> part.</span>
         </h2>
       </div>
 

@@ -22,8 +22,8 @@ const reels: Reel[] = [
   },
   {
     id: 3,
-    title: "Development",
-    category: "Frontend",
+    title: "hey.",
+    category: "MADE FOR THE FEED",
     year: "2026",
     image: welcome,
     instagram: "https://www.instagram.com/reel/DbYR1vJN9V8/",
@@ -93,6 +93,10 @@ const GRID_PLACEMENT = [
   "lg:col-start-5 lg:col-end-13 lg:row-start-2",
   "lg:col-start-1 lg:col-end-9 lg:row-start-3",
   "lg:col-start-9 lg:col-end-13 lg:row-start-3",
+  "lg:col-start-1 lg:col-end-5 lg:row-start-4",
+  "lg:col-start-5 lg:col-end-13 lg:row-start-4",
+  "lg:col-start-1 lg:col-end-9 lg:row-start-5",
+  "lg:col-start-9 lg:col-end-13 lg:row-start-5",
 ];
 
 const Reels = () => {
@@ -136,21 +140,18 @@ const Reels = () => {
 
       <div className="relative z-10">
         {/* HEADING */}
-        <div className="reel-reveal max-w-xl">
-          <span className="font-space size12 uppercase text-grey">03 / Reels</span>
-
+        <div className="">
           <h2 className="mt-4 font-instrument size64 leading-[0.9]">
             Things that
             <br />
             <span className="font-italic text-orange">move.</span>
           </h2>
 
-          <p className="mt-6 max-w-sm font-space size16 leading-6 text-grey">
+          <p className="mt-6 max-w-xl font-space size16 leading-6 text-grey">
             A collection of short-form videos, motion experiments, and visual ideas I've created outside of my development work.
           </p>
         </div>
 
-        {/* GRID — brick layout with connecting hairline borders */}
         <div className="reel-reveal mt-14 md:mt-16">
           <div className="grid grid-cols-1 gap-40 overflow-hidden  p-px lg:grid-cols-12 lg:auto-rows-[minmax(14rem,22vw)]">
             {reels.map((reel, index) => (

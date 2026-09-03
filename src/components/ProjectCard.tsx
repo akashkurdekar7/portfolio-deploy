@@ -48,8 +48,8 @@ const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) 
   const path = variant === "center" ? centerPath : defaultPath;
 
   return (
-    <div className="group mx-auto h-auto w-full cursor-pointer sm:w-112">
-      <div className="relative mx-auto h-67 w-full sm:h-87">
+    <div className="group mx-auto h-auto w-full lg:w-[420px] cursor-pointer ">
+      <div className="relative mx-auto aspect-[450/350] w-full">
         <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 450 350" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <clipPath id={clipId}>
@@ -92,7 +92,11 @@ const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) 
         </div>
         <p className="mt-1 font-space size12 uppercase text-grey">{project.type}</p>
 
-        {variant !== "center" && <p className="mt-1 font-space size16 leading-5 text-grey text-justify">{project.description}</p>}
+        {variant !== "center" ? (
+          <p className="mt-1 font-space size16 leading-5 text-grey text-justify">{project.description}</p>
+        ) : (
+          <p className="mt-1 font-space size16 leading-5 text-grey text-justify xl:hidden">{project.description}</p>
+        )}
       </div>
     </div>
   );

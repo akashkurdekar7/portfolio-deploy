@@ -1,5 +1,9 @@
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ipcs from "../assets/work/ipcs.webp";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
   const imageRef = useRef<HTMLDivElement>(null);
@@ -7,36 +11,35 @@ const Work = () => {
   const experience = [
     {
       number: "01",
-      type: "Internship",
-      company: "Company Name",
-      role: "Frontend Developer Intern",
-      period: "2023 — 2024",
+      type: "Full-time",
+      company: "IngeniousPix Creative Studios",
+      role: "Frontend Engineer",
+      period: "Feb 2025 — Present",
       description:
-        "Worked on frontend development and translated product requirements and designs into responsive, production-ready interfaces.",
-      image: "https://picsum.photos/seed/internship-one/500/650",
+        "Transitioned from an internship into a full-time engineering role, taking ownership of client projects across frontend development, backend integration, UI/UX, and production delivery.",
+      image: ipcs,
     },
     {
       number: "02",
       type: "Internship",
-      company: "Company Name",
-      role: "Software Engineer Intern",
-      period: "2024",
+      company: "Deshpande Startups Infinity Studio",
+      role: "Full Stack Developer Intern",
+      period: "Aug 2023 — Oct 2023",
       description:
-        "Contributed to real-world web projects, developing reusable interfaces and improving existing products across design and frontend implementation.",
-      image: "https://picsum.photos/seed/internship-two/500/650",
+        "Built marketplace features using React.js, Node.js, Express.js, and MongoDB, developing reusable components and REST APIs while working with vendors to translate business workflows into product features.",
+      image: "https://picsum.photos/seed/deshpande/500/650",
     },
     {
       number: "03",
-      type: "Full-time",
-      company: "Present Company",
-      role: "Software Engineer",
-      period: "2024 — Present",
+      type: "Internship",
+      company: "Varcons Technologies Pvt. Ltd",
+      role: "Full Stack Web Development Intern",
+      period: "May 2023 — Jul 2023",
       description:
-        "Building and shipping websites and web applications across client and internal products, working across frontend engineering, UI implementation, dashboards, and interactive experiences.",
-      image: "https://picsum.photos/seed/fulltime/500/650",
+        "Developed frontend features across 10+ client projects using React.js, Angular, TypeScript, HTML, and CSS, including reusable components, dashboards, landing pages, and responsive interfaces.",
+      image: "https://picsum.photos/seed/varcons/500/650",
     },
   ];
-
   const moveImage = (x: number, y: number) => {
     if (!imageRef.current) return;
 
@@ -75,15 +78,41 @@ const Work = () => {
       ease: "power2.out",
     });
   };
+  useLayoutEffect(() => {
+    const images = document.querySelectorAll(".mobile-parallax-image");
+
+    images.forEach((image) => {
+      gsap.fromTo(
+        image,
+        {
+          scale: 1.2,
+        },
+        {
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: image,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
 
   return (
     <section id="work" className="relative mx-5 min-h-screen py-24 md:mx-20">
-      {/* FLOATING IMAGE */}
+      {/* FLOATING IMAGE — DESKTOP */}
       <div
         ref={imageRef}
-        className="pointer-events-none fixed left-0 top-0 z-50 hidden w-48 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[14px] border-2 border-black opacity-0 md:block"
+        className="pointer-events-none fixed left-0 top-0 z-50 hidden w-150 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[14px] border-2 border-black opacity-0 md:block"
       >
-        <img src="" alt="" className="aspect-[4/5] h-auto w-full object-cover" />
+        <img src="" alt="" className="aspect-[16/9] h-auto w-full object-cover" />
       </div>
 
       {/* HEADER */}
@@ -128,6 +157,11 @@ const Work = () => {
                 <span className="h-2 w-2 rounded-full border border-black transition-colors duration-300 group-hover:border-orange group-hover:bg-[#ff5a1f]" />
 
                 <span className="font-space size12 uppercase text-grey">{item.type}</span>
+              </div>
+
+              {/* MOBILE IMAGE */}
+              <div className="my-6 overflow-hidden rounded-[14px] border-2 border-black md:hidden">
+                <img src={item.image} alt={item.company} className="mobile-parallax-image h-[calc(100%+40px)] w-full object-cover" />
               </div>
 
               <h3 className="mt-3 font-instrument size44 leading-none transition-transform duration-500 group-hover:translate-x-2">

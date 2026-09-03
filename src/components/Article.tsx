@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import Star1 from "../assets/Star1.svg";
-import Star2 from "../assets/Star2.svg";
-import Star3 from "../assets/Star3.svg";
+import Star1 from "../assets/article/Star1.svg";
+import Star2 from "../assets/article/Star2.svg";
+import Star3 from "../assets/article/Star3.svg";
 
 const Article = () => {
   const categories = [
@@ -100,9 +100,9 @@ const Article = () => {
           <div className="marquee flex w-max items-center gap-18">
             {marqueeItems.map((item, index) => (
               <React.Fragment key={`${item.name}-${index}`}>
-                <span className={`font-chunko tracking-[5px] size56 whitespace-nowrap ${item.color}`}>{item.name}</span>
+                <span className={`font-chunko tracking-[2px] lg:tracking-[5px] size56 whitespace-nowrap ${item.color}`}>{item.name}</span>
 
-                <img src={randomImages[index]} alt="" className="h-10 w-auto shrink-0 object-cover" />
+                <img src={randomImages[index]} alt="" className="h-5  lg:h-10 w-auto shrink-0 object-cover" />
               </React.Fragment>
             ))}
           </div>

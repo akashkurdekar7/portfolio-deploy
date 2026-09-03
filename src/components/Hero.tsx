@@ -1,15 +1,39 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoMailOutline } from "react-icons/io5";
 import hero from "../assets/hero.webp";
 import clouds from "../assets/clouds.png";
 import gsap from "gsap";
 const Hero = () => {
+  const links = [
+    {
+      name: "linkedin",
+      icon: <FaLinkedin />,
+      link: "https://www.linkedin.com/in/akashkurdekar/",
+    },
+    {
+      name: "Instagram",
+      icon: <FaInstagram />,
+      link: "https://www.instagram.com/unlikeakash_",
+    },
+    {
+      name: "G-mail",
+      icon: <IoMailOutline />,
+      link: "mailto:akashkurdekar39@gmail.com",
+    },
+    {
+      name: "Github",
+      icon: <FaGithub />,
+      link: "https://github.com/akashkurdekar7",
+    },
+  ];
   const cloudRefs = useRef<(HTMLDivElement | null)[]>([]);
   useEffect(() => {
     const strengths = [20, 12, 16, 10, 25];
 
     const handleMouseMove = (event: MouseEvent) => {
+      // Only enable parallax above 1200px
+      if (window.innerWidth <= 1200) return;
       const x = event.clientX / window.innerWidth - 0.5;
       const y = event.clientY / window.innerHeight - 0.5;
 
@@ -63,27 +87,24 @@ const Hero = () => {
       </div>
 
       {/* SOCIALS */}
-      <div className={`group absolute bottom-4 left-0 flex items-start gap-1 flex-col hero-side-content transition-all duration-700 `}>
+      <div className={`group absolute bottom-4 z-30 left-0 flex items-start gap-1 flex-col hero-side-content transition-all duration-700 `}>
         <h3 className="font-space font-space-bold size14 uppercase mb-0">let's connect</h3>
 
         <div className="h-px w-[22%] group-hover:w-full transition-all duration-1000 bg-orange" />
 
         <ul className="flex items-center gap-4 w-full justify-between">
-          <li className="cursor-pointer transition hover:-translate-y-[.5px]">
-            <FaInstagram size={18} />
-          </li>
-
-          <li className="cursor-pointer transition hover:-translate-y-[.5px]">
-            <FaLinkedin size={18} />
-          </li>
-
-          <li className="cursor-pointer transition hover:-translate-y-[.5px]">
-            <IoMailOutline size={18} />
-          </li>
-
-          <li className="cursor-pointer transition hover:-translate-y-[.5px]">
-            <FaGithub size={18} />
-          </li>
+          {links.map((item) => (
+            <li key={item.name} className="cursor-pointer transition hover:-translate-y-[.5px]">
+              <a
+                href={item.link}
+                target={item.link.startsWith("mailto:") ? undefined : "_blank"}
+                rel={item.link.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                aria-label={item.name}
+              >
+                {React.cloneElement(item.icon, { size: 18 })}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -101,9 +122,9 @@ const Hero = () => {
         ref={(el) => {
           cloudRefs.current[0] = el;
         }}
-        className="absolute -top-12 -right-8 z-20 cloud-parallax"
+        className="absolute top-0 lg:-top-12 -right-10 lg:-right-8 z-20 cloud-parallax"
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-full object-cover" loading="lazy" title="Cloud" />
+        <img src={clouds} alt="" aria-hidden="true" className=" h-20 lg:h-auto w-full object-cover" loading="lazy" title="Cloud" />
       </div>
 
       {/* MIDDLE LEFT */}
@@ -111,9 +132,9 @@ const Hero = () => {
         ref={(el) => {
           cloudRefs.current[1] = el;
         }}
-        className="absolute top-[60%] -left-[1%] z-20 -translate-x-1/2 cloud-parallax -translate-y-1/2"
+        className="absolute top-[88%] lg:top-[60%] left-[10%] z-20 -translate-x-1/2 cloud-parallax -translate-y-1/2 "
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-full object-cover" loading="lazy" title="Cloud" />
+        <img src={clouds} alt="" aria-hidden="true" className=" h-10 lg:h-auto w-full object-cover" loading="lazy" title="Cloud" />
       </div>
 
       {/* MIDDLE RIGHT */}
@@ -121,9 +142,9 @@ const Hero = () => {
         ref={(el) => {
           cloudRefs.current[2] = el;
         }}
-        className="absolute top-[60%] right-[30%] z-20 -translate-y-1/2 cloud-parallax"
+        className="absolute top-[65%] lg:top-[60%] right-0 lg:right-[30%] z-20 -translate-y-1/2 cloud-parallax"
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-30 object-cover" loading="lazy" title="Cloud" />
+        <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-20 lg:w-30 object-cover" loading="lazy" title="Cloud" />
       </div>
 
       {/* PROFILE */}
@@ -131,9 +152,9 @@ const Hero = () => {
         ref={(el) => {
           cloudRefs.current[3] = el;
         }}
-        className="absolute top-[20%] left-[15%] z-20 -translate-y-1/2 cloud-parallax"
+        className="absolute top-[15%] lg:top-[15%] -left-15 lg:left-[20%] z-20 -translate-y-1/2 cloud-parallax"
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-full object-cover" loading="lazy" title="Cloud" />
+        <img src={clouds} alt="" aria-hidden="true" className=" h-20 lg:h-auto w-full object-cover" loading="lazy" title="Cloud" />
       </div>
 
       {/* BOTTOM RIGHT */}
@@ -141,7 +162,7 @@ const Hero = () => {
         ref={(el) => {
           cloudRefs.current[4] = el;
         }}
-        className="absolute -right-20 -bottom-40 z-20 w-[25%] cloud-parallax "
+        className="absolute -right-5 lg:-right-20 -bottom-20 lg:-bottom-40 z-20 w-[50%] lg:w-[25%] cloud-parallax "
       >
         <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-full object-cover" loading="lazy" title="Cloud" />
 

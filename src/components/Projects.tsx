@@ -1,5 +1,11 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
+import saas from "../assets/projects/saas.webp";
+import ghostrentals from "../assets/projects/ghostrental.webp";
+import greenminds from "../assets/projects/greenminds.webp";
+import pixtar from "../assets/projects/pixtar.webp";
+import phdesignme from "../assets/projects/phdesignme.webp";
+import makemycard from "../assets/projects/makemycard.webp";
 
 const Projects = () => {
   const projects = [
@@ -7,7 +13,7 @@ const Projects = () => {
       title: "Wholesale Management System",
       type: "Web Application",
       year: "2026",
-      image: "/images/projects/wholesale.webp",
+      image: saas,
       description:
         "A wholesale management platform built to streamline product, order, and business operations through a centralized web application.",
       role: "Designed and developed the application with a focus on intuitive workflows and scalable frontend architecture.",
@@ -18,7 +24,7 @@ const Projects = () => {
       title: "Ghost Rental",
       type: "Website & Dashboard",
       year: "2026",
-      image: "/images/projects/ghost-rental.webp",
+      image: ghostrentals,
       description: "A rental platform combining a customer-facing website with a management dashboard for handling rental operations.",
       role: "Developed the website and dashboard, building reusable interfaces and interactive frontend experiences.",
     },
@@ -27,7 +33,7 @@ const Projects = () => {
       title: "Greenminds",
       type: "Single Page Website",
       year: "2026",
-      image: "/images/projects/greenminds.webp",
+      image: greenminds,
       description:
         "A focused single-page website designed to present the brand, its offerings, and key information through a clear visual experience.",
       role: "Designed and developed the frontend with an emphasis on responsive layouts, visual hierarchy, and smooth interactions.",
@@ -37,7 +43,7 @@ const Projects = () => {
       title: "Pixtar",
       type: "Company Website",
       year: "2026",
-      image: "/images/projects/pixtar.webp",
+      image: pixtar,
       description:
         "A complete transformation of the existing Pixtar website, rebuilding the experience from the ground up with a new visual direction and modern frontend architecture.",
       role: "Reworked the website from the previous version into the current experience, contributing across frontend development, UI implementation, interactions, and responsive design.",
@@ -47,7 +53,7 @@ const Projects = () => {
       title: "Make My Card",
       type: "Web Application & Dashboard",
       year: "2026",
-      image: "/images/projects/make-my-card.webp",
+      image: makemycard,
       description:
         "A product web application and management dashboard built to provide users with a streamlined experience for creating and managing digital products.",
       role: "Developed the product interface and dashboard, focusing on reusable components, responsive layouts, and a consistent user experience.",
@@ -57,7 +63,7 @@ const Projects = () => {
       title: "PhDesignMe",
       type: "Client Website",
       year: "2026",
-      image: "/images/projects/phdesignme.webp",
+      image: phdesignme,
       description:
         "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
       role: "Developed the frontend experience with attention to layout, typography, responsive behavior, and interactive details.",
@@ -68,7 +74,12 @@ const Projects = () => {
     <section className="relative mx-5 min-h-screen overflow-hidden py-24 md:mx-20">
       {/* Heading */}
       <div className="flex flex-col items-center gap-3">
-        <h2 className="size56 font-instrument leading-none capitalize">Projects</h2>
+        <h2 className="size56 font-instrument leading-none capitalize">
+          Projects
+          <sup className="size12 align-super  font-space ml-1 text-white bg-blue rounded-full border border-[#fff] px-1 ">
+            0{projects.length}
+          </sup>
+        </h2>
 
         <p className="max-w-xs text-center font-space size14 leading-4 text-grey">
           A collection of projects where design, code and purpose come together.
@@ -77,7 +88,7 @@ const Projects = () => {
 
       <div className="lg:pt-25 pt-8  ">
         {/* FIRST TWO */}
-        <div className="grid grid-cols-1 gap-x-8 gap-y-8 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16 xl:grid-cols-2 xl:gap-x-24 xl:gap-y-20">
           {projects.slice(0, 2).map((project, index) => (
             <ProjectCard key={project.title} project={project} index={index} />
           ))}
