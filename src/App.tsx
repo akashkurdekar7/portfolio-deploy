@@ -5,7 +5,6 @@ import SmoothScroll from "./components/SmoothScroll";
 import Projects from "./components/Projects";
 import Article from "./components/Article";
 import Reels from "./components/Reels";
-// import Demo from "./components/Demo";
 import About from "./components/About";
 import Work from "./components/Work";
 
@@ -40,7 +39,6 @@ const App = () => {
       </main>
 
       <Footer />
-      {/* <Demo /> */}
     </div>
   );
 };
