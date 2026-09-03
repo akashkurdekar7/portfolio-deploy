@@ -189,7 +189,6 @@
   @media (max-width: 480px) {
     font-size: 36px;
   }
-
 }
 
 .size44 {
@@ -310,11 +309,10 @@
   width: 50px;
   will-change: transform;
   @media screen and (max-width: 575px) {
-    height: 42px;
-    width: 42px;
+    height: 48px;
+    width: 48px;
   }
 }
-
 
 /* =================================
    HERO LOADER
@@ -563,7 +561,6 @@
   transform-origin: center;
   will-change: transform, opacity;
 }
-
 
 /* delte */
 .demo {

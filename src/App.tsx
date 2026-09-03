@@ -1,29 +1,31 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-import SmoothScroll from "./components/SmoothScroll";
-import Projects from "./components/Projects";
-import Article from "./components/Article";
-import Reels from "./components/Reels";
-import About from "./components/About";
-import Work from "./components/Work";
+import Header from './components/Header';
+import Hero from './components/Hero';
+import Footer from './components/Footer';
+import SmoothScroll from './components/SmoothScroll';
+import Projects from './components/Projects';
+import Article from './components/Article';
+// import Reels from './components/Reels';
+// import About from './components/About';
+import Work from './components/Work';
+import ReelsField from './components/ReelsField';
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-white text-black overflow-x-hidden">
+    <div className="relative min-h-screen overflow-x-hidden bg-white text-black">
       <SmoothScroll />
+      <ReelsField />
 
       <Header />
 
-      <main>
+      <main className="relative z-10">
         <Hero />
-        <About />
+        {/* <About /> */}
         <Projects />
         <Article />
         <Work />
-        <Reels />
+        {/* <Reels /> */}
 
-        <section className="px-6 py-32 md:py-50">
+        <section className="h-screen flex items-center justify-center">
           <div className="mx-auto flex items-center justify-center flex-col">
             <blockquote className="mt-0">
               <h3 className="size56 font-italic   text-black ">“Fear cuts deeper than swords.”</h3>

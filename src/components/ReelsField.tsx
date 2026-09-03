@@ -1,11 +1,6 @@
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
-/**
- * Ambient WebGL dot-field for the Reels section — a grid of points that
- * breathes with a slow wave and ripples outward from the cursor. Pauses
- * off-screen/tab-hidden and skips entirely for prefers-reduced-motion.
- */
 const ReelsField = () => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -13,7 +8,7 @@ const ReelsField = () => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -38,8 +33,8 @@ const ReelsField = () => {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
         uMouseActive: { value: 0 },
-        uColorBase: { value: new THREE.Color("#111111") },
-        uColorAccent: { value: new THREE.Color("#ff5a1f") },
+        uColorBase: { value: new THREE.Color('#111111') },
+        uColorAccent: { value: new THREE.Color('#ff5a1f') },
       },
       vertexShader: `
         uniform float uTime;
@@ -122,8 +117,8 @@ const ReelsField = () => {
       }
 
       geometry = new THREE.BufferGeometry();
-      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-      geometry.setAttribute("aRandom", new THREE.BufferAttribute(randoms, 1));
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
 
       points = new THREE.Points(geometry, material);
       scene.add(points);
@@ -150,7 +145,12 @@ const ReelsField = () => {
 
     const handlePointerMove = (event: PointerEvent) => {
       const rect = mount.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+      if (
+        event.clientX < rect.left ||
+        event.clientX > rect.right ||
+        event.clientY < rect.top ||
+        event.clientY > rect.bottom
+      ) {
         mouseActiveTarget = 0;
         return;
       }
@@ -188,24 +188,27 @@ const ReelsField = () => {
       renderer.render(scene, camera);
     };
 
-    const intersectionObserver = new IntersectionObserver(([entry]) => {
-      isVisible = entry.isIntersecting;
-    }, { threshold: 0.05 });
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 },
+    );
     intersectionObserver.observe(mount);
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(mount);
 
     resize();
-    window.addEventListener("pointermove", handlePointerMove);
-    mount.addEventListener("pointerleave", handlePointerLeave);
+    window.addEventListener('pointermove', handlePointerMove);
+    mount.addEventListener('pointerleave', handlePointerLeave);
     animate();
 
     return () => {
       cancelAnimationFrame(frameId);
       clearTimeout(idleTimeout);
-      window.removeEventListener("pointermove", handlePointerMove);
-      mount.removeEventListener("pointerleave", handlePointerLeave);
+      window.removeEventListener('pointermove', handlePointerMove);
+      mount.removeEventListener('pointerleave', handlePointerLeave);
       intersectionObserver.disconnect();
       resizeObserver.disconnect();
       geometry?.dispose();
@@ -216,8 +219,7 @@ const ReelsField = () => {
       }
     };
   }, []);
-
-  return <div ref={mountRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden="true" />;
+  return <div ref={mountRef} className="pointer-events-none fixed inset-0 z-0" aria-hidden="true" />;
 };
 
 export default ReelsField;

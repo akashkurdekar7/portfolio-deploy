@@ -1,42 +1,56 @@
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { IoMailOutline } from "react-icons/io5";
+import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { IoMailOutline } from 'react-icons/io5';
 
-import footerImage from "../assets/footer.webp";
-
+import Crowd from './Crowd';
 const Footer = () => {
   const links = [
     {
-      name: "linkedin",
+      name: 'linkedin',
       icon: <FaLinkedin />,
-      link: "https://www.linkedin.com/in/akashkurdekar/",
+      link: 'https://www.linkedin.com/in/akashkurdekar/',
     },
     {
-      name: "Instagram",
+      name: 'Instagram',
       icon: <FaInstagram />,
-      link: "https://www.instagram.com/unlikeakash_",
+      link: 'https://www.instagram.com/unlikeakash_',
     },
     {
-      name: "G-mail",
+      name: 'G-mail',
       icon: <IoMailOutline />,
-      link: "mailto:akashkurdekar39@gmail.com",
+      link: 'mailto:akashkurdekar39@gmail.com',
     },
     {
-      name: "Github",
+      name: 'Github',
       icon: <FaGithub />,
-      link: "https://github.com/akashkurdekar7",
+      link: 'https://github.com/akashkurdekar7',
     },
   ];
 
   return (
-    <footer className="relative z-60 h-dvh lg:min-h-screen px-6 md:px-20  pt-5 lg:pt-25">
-      {/* Background */}
-      <img src={footerImage} alt="" className="absolute inset-0 z-10 h-full w-full object-cover" />
-
+    <footer className="bg-black relative z-60 h-dvh lg:min-h-screen px-6 md:px-20  pt-5 lg:pt-25 ">
+      <svg className="absolute -top-[5%] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path
+          d="
+          M0,45
+          C130,75 220,5 360,42
+          C500,78 590,10 720,45
+          C850,80 950,5 1080,42
+          C1200,75 1320,15 1440,48
+          L1440,80
+          L0,80
+          Z
+        "
+          fill="#111111"
+        />
+      </svg>
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <Crowd src="/public/open-peeps-sheet.png" rows={15} cols={7} className="h-full w-full" />
+      </div>
       {/* Heading */}
       <div className="relative z-20 pt-8 md:pt-0">
         <span className="font-space-bold size12 uppercase tracking-[0.15em] text-white">thoughts • work • life</span>
 
-        <h2 className="mt-4 font-chunko size90 capitalize text-white ">
+        <h2 className="mt-4 font-chunko leading-9 lg:leading-18 size90 capitalize text-white  ">
           let's get to the
           <br />
           <span className="font-italic text-white/50  tracking-normal">awkward</span>
@@ -62,15 +76,15 @@ const Footer = () => {
             <li key={item.name}>
               <a
                 href={item.link}
-                target={item.name === "G-mail" ? undefined : "_blank"}
-                rel={item.name === "G-mail" ? undefined : "noreferrer"}
+                target={item.name === 'G-mail' ? undefined : '_blank'}
+                rel={item.name === 'G-mail' ? undefined : 'noreferrer'}
                 className="
     group/link
     relative isolate overflow-hidden
     flex items-center justify-between gap-3
     rounded-md
     px-5 py-4
-    
+
     text-white
     md:px-8 md:py-4 md:size28
   "
@@ -101,10 +115,9 @@ const Footer = () => {
       "
                   />
                 </span>
-
                 {/* CONTENT */}
-                <span className="relative z-10 text-3xl md:text-[50px]">{item.icon}</span>
 
+                <span className=" relative z-10 text-3xl md:text-[50px]">{item.icon}</span>
                 <span className="relative z-10 w-max font-space size16 uppercase">{item.name}</span>
               </a>
             </li>
@@ -124,36 +137,72 @@ const Footer = () => {
   "
       >
         {/* LOCATION */}
-        <div className="flex items-baseline gap-1 font-instrument size16 cursor-pointer group">
-          <span>Based in</span>
+        <div
+          className="
+      rounded-full
+      border border-white/15
+      bg-black/10
+      px-4 py-2
+      backdrop-blur-md
+      backdrop-saturate-150
+      shadow-[0_4px_20px_rgba(0,0,0,0.08)]
+    "
+        >
+          <div className="flex items-baseline gap-1 font-instrument size16 cursor-pointer group">
+            <span>Based in</span>
 
-          <div className="link-rollover  ">
-            <div className="link-rollover-inner">
-              <span className="link-rollover-text font-instrument">India</span>
+            <div className="link-rollover">
+              <div className="link-rollover-inner">
+                <span className="link-rollover-text font-instrument">India</span>
 
-              <span className="link-rollover-text font-italic">Karnataka</span>
+                <span className="link-rollover-text font-italic">Karnataka</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* NAME */}
-        <div className="group link-rollover font-instrument size16 capitalize cursor-pointer">
-          <div className="link-rollover-inner">
-            <span className="link-rollover-text text-center font-instrument">Akash Kurdekar</span>
+        <div
+          className="
+      rounded-full
+      border border-white/15
+      bg-black/10
+      px-5 py-2
+      backdrop-blur-md
+      backdrop-saturate-150
+      shadow-[0_4px_20px_rgba(0,0,0,0.08)]
+    "
+        >
+          <div className="group link-rollover font-instrument size16 capitalize cursor-pointer">
+            <div className="link-rollover-inner">
+              <span className="link-rollover-text text-center font-instrument">Akash Kurdekar</span>
 
-            <span className="link-rollover-text text-center font-italic">Let's talk</span>
+              <span className="link-rollover-text text-center font-italic">Let's talk</span>
+            </div>
           </div>
         </div>
 
         {/* OPPORTUNITIES */}
-        <div className="group flex items-baseline gap-1 font-instrument size16 cursor-pointer">
-          <span>Looking for</span>
+        <div
+          className="
+      rounded-full
+      border border-white/15
+      bg-black/10
+      px-4 py-2
+      backdrop-blur-md
+      backdrop-saturate-150
+      shadow-[0_4px_20px_rgba(0,0,0,0.08)]
+    "
+        >
+          <div className="flex items-baseline gap-1 font-instrument size16 cursor-pointer group">
+            <span>Looking for</span>
 
-          <div className="link-rollover ">
-            <div className="link-rollover-inner">
-              <span className="link-rollover-text font-instrument">Opportunities</span>
+            <div className="link-rollover">
+              <div className="link-rollover-inner">
+                <span className="link-rollover-text font-instrument">Opportunities</span>
 
-              <span className="link-rollover-text font-italic">Work</span>
+                <span className="link-rollover-text font-italic">Work</span>
+              </div>
             </div>
           </div>
         </div>

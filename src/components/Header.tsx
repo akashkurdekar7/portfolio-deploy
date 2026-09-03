@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
 import gsap from 'gsap';
 
@@ -32,22 +32,22 @@ const Header = () => {
   }, [menuOpen]);
 
   // GSAP mobile menu animation
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.set(menuRef.current, {
         yPercent: -100,
-        opacity: 0,
+        autoAlpha: 0,
         scale: 0.98,
       });
 
       gsap.set(menuLinksRef.current, {
         y: 80,
-        opacity: 0,
+        autoAlpha: 0,
       });
 
       gsap.set(availabilityRef.current, {
         y: 30,
-        opacity: 0,
+        autoAlpha: 0,
       });
 
       menuTimeline.current = gsap.timeline({
@@ -60,32 +60,30 @@ const Header = () => {
       menuTimeline.current
         .to(menuRef.current, {
           yPercent: 0,
-          opacity: 1,
+          autoAlpha: 1,
           scale: 1,
-          duration: 0.8,
+          duration: 0.7,
         })
         .to(
           menuLinksRef.current,
           {
             y: 0,
-            opacity: 1,
-            duration: 0.7,
-            stagger: 0.1,
-            ease: 'power4.out',
+            autoAlpha: 1,
+            duration: 0.6,
+            stagger: 0.08,
           },
-          '-=0.45',
+          '-=0.35',
         )
         .to(
           availabilityRef.current,
           {
             y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: 'power3.out',
+            autoAlpha: 1,
+            duration: 0.5,
           },
-          '-=0.35',
+          '-=0.25',
         );
-    });
+    }, menuRef);
 
     return () => ctx.revert();
   }, []);
@@ -189,7 +187,15 @@ const Header = () => {
       </header>
 
       {/* MOBILE FULLSCREEN MENU */}
-      <div ref={menuRef} className="fixed inset-0 z-40 flex items-center justify-center bg-white md:hidden">
+      <div
+        ref={menuRef}
+        className="
+    fixed inset-0 z-40
+    flex items-center justify-center
+    bg-white
+    md:hidden
+  "
+      >
         <nav>
           <ul className="flex flex-col items-center gap-6 font-instrument text-6xl">
             <li

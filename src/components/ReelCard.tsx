@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { FaPlay } from "react-icons/fa";
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { FaPlay } from 'react-icons/fa';
 
 export type Reel = {
   id: number;
@@ -18,59 +18,91 @@ type ReelCardProps = {
   className?: string;
 };
 
-const ReelCard = ({ reel, isFinePointer, reducedMotion, className = "" }: ReelCardProps) => {
+const ReelCard = ({ reel, isFinePointer, reducedMotion, className = '' }: ReelCardProps) => {
   const cardRef = useRef<HTMLAnchorElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const watchRef = useRef<HTMLDivElement>(null);
 
-  const rotateXTo = useRef<gsap.QuickToFunc | null>(null);
-  const rotateYTo = useRef<gsap.QuickToFunc | null>(null);
-  const scaleTo = useRef<gsap.QuickToFunc | null>(null);
-  const watchXTo = useRef<gsap.QuickToFunc | null>(null);
-  const watchYTo = useRef<gsap.QuickToFunc | null>(null);
-
   useEffect(() => {
-    if (!isFinePointer || reducedMotion || !cardRef.current) return;
+    if (!isFinePointer || reducedMotion || !watchRef.current) return;
 
-    rotateXTo.current = gsap.quickTo(cardRef.current, "rotationX", { duration: 0.6, ease: "power3.out" });
-    rotateYTo.current = gsap.quickTo(cardRef.current, "rotationY", { duration: 0.6, ease: "power3.out" });
-    scaleTo.current = gsap.quickTo(cardRef.current, "scale", { duration: 0.6, ease: "power3.out" });
+    gsap.set(watchRef.current, {
+      xPercent: -50,
+      yPercent: -50,
+      scale: 0.5,
+      opacity: 0,
+    });
 
-    if (watchRef.current) {
-      gsap.set(watchRef.current, { xPercent: -50, yPercent: -50 });
-      watchXTo.current = gsap.quickTo(watchRef.current, "x", { duration: 0.45, ease: "power3.out" });
-      watchYTo.current = gsap.quickTo(watchRef.current, "y", { duration: 0.45, ease: "power3.out" });
-    }
+    return () => {
+      gsap.killTweensOf(watchRef.current);
+    };
   }, [isFinePointer, reducedMotion]);
 
   const handleMove = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!isFinePointer || reducedMotion || !cardRef.current) return;
+    if (!isFinePointer || reducedMotion) return;
 
-    const bounds = cardRef.current.getBoundingClientRect();
-    const px = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const py = (event.clientY - bounds.top) / bounds.height - 0.5;
+    const card = cardRef.current;
+    const watch = watchRef.current;
 
-    rotateXTo.current?.(py * -10);
-    rotateYTo.current?.(px * 10);
-    scaleTo.current?.(1.04);
+    if (!card || !watch) return;
 
-    watchXTo.current?.(event.clientX - bounds.left);
-    watchYTo.current?.(event.clientY - bounds.top);
+    const bounds = card.getBoundingClientRect();
+
+    gsap.to(watch, {
+      x: event.clientX - bounds.left,
+      y: event.clientY - bounds.top,
+      duration: 0.35,
+      ease: 'power3.out',
+      overwrite: true,
+    });
   };
 
   const handleEnter = () => {
-    if (!isFinePointer || reducedMotion) return;
-    gsap.to(watchRef.current, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" });
+    if (reducedMotion) return;
+
+    if (imageRef.current) {
+      gsap.to(imageRef.current, {
+        scale: 1.04,
+        duration: 0.7,
+        ease: 'power3.out',
+        overwrite: true,
+      });
+    }
+
+    if (watchRef.current && isFinePointer) {
+      gsap.to(watchRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.3,
+        ease: 'power3.out',
+        overwrite: true,
+      });
+    }
   };
 
   const handleLeave = () => {
-    rotateXTo.current?.(0);
-    rotateYTo.current?.(0);
-    scaleTo.current?.(1);
-    gsap.to(watchRef.current, { opacity: 0, scale: 0.6, duration: 0.25, ease: "power2.out" });
+    if (imageRef.current) {
+      gsap.to(imageRef.current, {
+        scale: 1,
+        duration: 0.6,
+        ease: 'power3.out',
+        overwrite: true,
+      });
+    }
+
+    if (watchRef.current) {
+      gsap.to(watchRef.current, {
+        scale: 0.5,
+        opacity: 0,
+        duration: 0.25,
+        ease: 'power2.out',
+        overwrite: true,
+      });
+    }
   };
 
   return (
-    <div style={{ perspective: "800px" }} className={`h-full w-full ${className}`}>
+    <div className={`h-full w-full ${className}`}>
       <a
         ref={cardRef}
         href={reel.instagram}
@@ -82,28 +114,39 @@ const ReelCard = ({ reel, isFinePointer, reducedMotion, className = "" }: ReelCa
         className="group relative block h-full w-full overflow-hidden bg-black"
       >
         <img
+          ref={imageRef}
           src={reel.image}
           alt={reel.title}
           title={reel.title}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          decoding="async"
+          className="block h-full w-full object-cover will-change-transform"
         />
+
+        {/* IMAGE OVERLAY */}
+        <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/10" />
+
         {/* META */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/85 via-black/15 to-transparent px-4 pb-4 pt-12">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/85 via-black/15 to-transparent px-4 pb-4 pt-16">
           <h3 className="font-instrument text-xl leading-none text-white">{reel.title}</h3>
+
           <p className="mt-1.5 font-space size12 uppercase text-white/70">{reel.category}</p>
         </div>
 
         {/* NUMBER */}
-        <span className="absolute right-3 top-3 z-10 font-space size12 text-white">0{reel.id}</span>
+        <span className="pointer-events-none absolute right-3 top-3 z-10 font-space size12 text-white">
+          {String(reel.id).padStart(2, '0')}
+        </span>
 
-        {/* MAGNETIC WATCH CURSOR */}
-        <div
-          ref={watchRef}
-          className="pointer-events-none absolute left-0 top-0 z-20 hidden h-11 w-11 items-center justify-center rounded-full bg-orange opacity-0 md:flex"
-        >
-          <FaPlay className="ml-0.5 text-white" size={12} />
-        </div>
+        {/* WATCH CURSOR */}
+        {isFinePointer && (
+          <div
+            ref={watchRef}
+            className="pointer-events-none absolute left-0 top-0 z-20 hidden h-11 w-11 items-center justify-center rounded-full bg-orange md:flex"
+          >
+            <FaPlay className="ml-0.5 text-white" size={11} />
+          </div>
+        )}
       </a>
     </div>
   );

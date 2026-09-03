@@ -1,57 +1,105 @@
-import React, { useMemo } from "react";
-import Star1 from "../assets/article/Star1.svg";
-import Star2 from "../assets/article/Star2.svg";
-import Star3 from "../assets/article/Star3.svg";
+import React, { useMemo } from 'react';
+import Star1 from '../assets/article/Star1.svg';
+import Star2 from '../assets/article/Star2.svg';
+import Star3 from '../assets/article/Star3.svg';
 
 const Article = () => {
   const categories = [
     {
-      name: "SOFTWARE ENGINEER",
-      color: "text-white",
+      name: 'REACT.JS',
+      color: 'text-blue',
     },
     {
-      name: "FRONTEND DEVELOPER",
-      color: "text-blue",
+      name: 'ANGULAR',
+      color: 'text-orange',
     },
     {
-      name: "UI / UX DESIGNER",
-      color: "text-yellow-300",
+      name: 'TYPESCRIPT',
+      color: 'text-blue',
     },
     {
-      name: "PROJECT LEAD",
-      color: "text-orange",
+      name: 'JAVASCRIPT',
+      color: 'text-yellow-300',
     },
     {
-      name: "REACT DEVELOPER",
-      color: "text-violet-500",
+      name: 'HTML5',
+      color: 'text-orange',
     },
     {
-      name: "TYPESCRIPT",
-      color: "text-blue",
+      name: 'CSS3',
+      color: 'text-blue',
     },
     {
-      name: "CREATIVE DEVELOPER",
-      color: "text-orange",
+      name: 'TAILWIND CSS',
+      color: 'text-violet-500',
     },
     {
-      name: "INTERACTION DESIGN",
-      color: "text-yellow-300",
+      name: 'NODE.JS',
+      color: 'text-white',
     },
     {
-      name: "GSAP / MOTION",
-      color: "text-violet-500",
+      name: 'EXPRESS.JS',
+      color: 'text-yellow-300',
     },
     {
-      name: "WEB APPLICATIONS",
-      color: "text-white",
+      name: 'REST APIs',
+      color: 'text-orange',
     },
     {
-      name: "DESIGN → CODE",
-      color: "text-orange",
+      name: 'MONGODB',
+      color: 'text-violet-500',
     },
     {
-      name: "DIGITAL EXPERIENCES",
-      color: "text-blue",
+      name: 'SQL',
+      color: 'text-blue',
+    },
+    {
+      name: 'JEST',
+      color: 'text-orange',
+    },
+    {
+      name: 'PLAYWRIGHT',
+      color: 'text-yellow-300',
+    },
+    {
+      name: 'CYPRESS',
+      color: 'text-violet-500',
+    },
+    {
+      name: 'GIT',
+      color: 'text-orange',
+    },
+    {
+      name: 'GITHUB',
+      color: 'text-white',
+    },
+    {
+      name: 'POSTMAN',
+      color: 'text-orange',
+    },
+    {
+      name: 'DOCKER',
+      color: 'text-blue',
+    },
+    {
+      name: 'CI/CD',
+      color: 'text-violet-500',
+    },
+    {
+      name: 'DATA STRUCTURES',
+      color: 'text-yellow-300',
+    },
+    {
+      name: 'OOP',
+      color: 'text-white',
+    },
+    {
+      name: 'AGILE',
+      color: 'text-blue',
+    },
+    {
+      name: 'PERFORMANCE',
+      color: 'text-orange',
     },
   ];
 
@@ -79,7 +127,11 @@ const Article = () => {
     <section className="relative  py-12 lg:py-16">
       <div className="relative ">
         {/* TOP WAVE */}
-        <svg className="article-wave absolute -top-[1px] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <svg
+          className="article-wave absolute -top-[1px] left-0 z-10 h-10 w-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+        >
           <path
             d="
           M0,40
@@ -100,7 +152,9 @@ const Article = () => {
           <div className="marquee flex w-max items-center gap-18">
             {marqueeItems.map((item, index) => (
               <React.Fragment key={`${item.name}-${index}`}>
-                <span className={`font-chunko tracking-[2px] lg:tracking-[5px] size56 whitespace-nowrap ${item.color}`}>{item.name}</span>
+                <span className={`font-chunko tracking-[2px] lg:tracking-[5px] size56 whitespace-nowrap ${item.color}`}>
+                  {item.name}
+                </span>
 
                 <img src={randomImages[index]} alt="" className="h-5  lg:h-10 w-auto shrink-0 object-cover" />
               </React.Fragment>
@@ -109,7 +163,11 @@ const Article = () => {
         </div>
 
         {/* BOTTOM WAVE */}
-        <svg className="absolute -bottom-[1px] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <svg
+          className="absolute -bottom-[1px] left-0 z-10 h-10 w-full"
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+        >
           <path
             d="
           M0,45

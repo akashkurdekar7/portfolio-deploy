@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DEFAULT_EMOJI = "👋";
+const DEFAULT_EMOJI = '👋';
 
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -19,16 +19,16 @@ const About = () => {
 
   // MOUSE-TRAILING EMOJI
   useEffect(() => {
-    if (!emojiRef.current || window.matchMedia("(hover: none)").matches) return;
+    if (!emojiRef.current || window.matchMedia('(hover: none)').matches) return;
 
-    quickX.current = gsap.quickTo(emojiRef.current, "x", { duration: 0.5, ease: "power3.out" });
-    quickY.current = gsap.quickTo(emojiRef.current, "y", { duration: 0.5, ease: "power3.out" });
+    quickX.current = gsap.quickTo(emojiRef.current, 'x', { duration: 0.5, ease: 'power3.out' });
+    quickY.current = gsap.quickTo(emojiRef.current, 'y', { duration: 0.5, ease: 'power3.out' });
 
     const idleFloat = gsap.to(emojiInnerRef.current, {
       y: -12,
       rotate: 10,
       duration: 1.3,
-      ease: "sine.inOut",
+      ease: 'sine.inOut',
       yoyo: true,
       repeat: -1,
     });
@@ -48,7 +48,7 @@ const About = () => {
       gsap.to(emojiInnerRef.current, {
         rotate: gsap.utils.clamp(-30, 30, dx * 2),
         duration: 0.4,
-        ease: "power3.out",
+        ease: 'power3.out',
       });
 
       if (watermarkRef.current) {
@@ -59,7 +59,7 @@ const About = () => {
           x: x * 30,
           y: y * 30,
           duration: 1.4,
-          ease: "power3.out",
+          ease: 'power3.out',
           overwrite: true,
         });
       }
@@ -71,14 +71,14 @@ const About = () => {
       setActiveEmoji(DEFAULT_EMOJI);
     };
 
-    section.addEventListener("mousemove", handleMove);
-    section.addEventListener("mouseenter", handleEnter);
-    section.addEventListener("mouseleave", handleLeave);
+    section.addEventListener('mousemove', handleMove);
+    section.addEventListener('mouseenter', handleEnter);
+    section.addEventListener('mouseleave', handleLeave);
 
     return () => {
-      section.removeEventListener("mousemove", handleMove);
-      section.removeEventListener("mouseenter", handleEnter);
-      section.removeEventListener("mouseleave", handleLeave);
+      section.removeEventListener('mousemove', handleMove);
+      section.removeEventListener('mouseenter', handleEnter);
+      section.removeEventListener('mouseleave', handleLeave);
       idleFloat.kill();
     };
   }, []);
@@ -86,27 +86,27 @@ const About = () => {
   // SCROLL REVEAL
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(".about-line", {
+      gsap.from('.about-line', {
         yPercent: 110,
         opacity: 0,
         duration: 1.1,
-        ease: "power4.out",
+        ease: 'power4.out',
         stagger: 0.08,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 70%",
+          start: 'top 70%',
         },
       });
 
-      gsap.from(".about-fade", {
+      gsap.from('.about-fade', {
         opacity: 0,
         y: 24,
         duration: 0.9,
-        ease: "power3.out",
+        ease: 'power3.out',
         stagger: 0.1,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 55%",
+          start: 'top 55%',
         },
       });
     }, sectionRef);
@@ -129,7 +129,7 @@ const About = () => {
         ref={emojiRef}
         aria-hidden="true"
         className={`pointer-events-none fixed top-0 left-0 z-50 -translate-x-1/2 -translate-y-1/2 text-5xl transition-opacity duration-300 lg:text-6xl ${
-          isHovering ? "opacity-100" : "opacity-0"
+          isHovering ? 'opacity-100' : 'opacity-0'
         }`}
       >
         <span ref={emojiInnerRef} className="block">
@@ -162,19 +162,19 @@ const About = () => {
 
               <span className="overflow-hidden">
                 <span className="about-line inline-block">
-                  <span className="font-italic text-blue md:cursor-none" onMouseEnter={() => setActiveEmoji("💡")}>
+                  <span className="font-italic text-blue md:cursor-none" onMouseEnter={() => setActiveEmoji('💡')}>
                     ideas
-                  </span>{" "}
+                  </span>{' '}
                   into
                 </span>
               </span>
 
               <span className="overflow-hidden">
                 <span className="about-line inline-block">
-                  <span className="md:cursor-none" onMouseEnter={() => setActiveEmoji("💻")}>
+                  <span className="md:cursor-none" onMouseEnter={() => setActiveEmoji('💻')}>
                     digital
-                  </span>{" "}
-                  <span className="font-italic text-orange md:cursor-none" onMouseEnter={() => setActiveEmoji("✨")}>
+                  </span>{' '}
+                  <span className="font-italic text-orange md:cursor-none" onMouseEnter={() => setActiveEmoji('✨')}>
                     experiences.
                   </span>
                 </span>
@@ -183,20 +183,25 @@ const About = () => {
 
             <div className="about-fade mt-10 max-w-2xl">
               <p className="font-space size16 leading-6 text-grey">
-                I'm a software engineer who enjoys working where technology, design, and interaction meet. I build digital products with a
-                focus on thoughtful interfaces, clean implementation, and the details that make an experience feel intentional.
+                I'm a software engineer who enjoys working where technology, design, and interaction meet. I build
+                digital products with a focus on thoughtful interfaces, clean implementation, and the details that make
+                an experience feel intentional.
               </p>
 
               <p className="mt-6 font-space size16 leading-6 text-grey">
-                From websites and dashboards to larger web applications, I like taking an idea from its first visual direction all the way
-                to a polished, functional experience.
+                From websites and dashboards to larger web applications, I like taking an idea from its first visual
+                direction all the way to a polished, functional experience.
               </p>
             </div>
 
             {/* TAGS */}
             <div className="about-fade mt-10 flex flex-wrap gap-3">
-              <span className="rounded-full bg-orange px-4 py-1.5 font-space size12 uppercase text-black">Software Engineer</span>
-              <span className="rounded-full bg-blue px-4 py-1.5 font-space size12 uppercase text-white">Frontend / Full Stack</span>
+              <span className="rounded-full bg-orange px-4 py-1.5 font-space size12 uppercase text-black">
+                Software Engineer
+              </span>
+              <span className="rounded-full bg-blue px-4 py-1.5 font-space size12 uppercase text-white">
+                Frontend / Full Stack
+              </span>
               <span className="rounded-full border border-white px-4 py-1.5 font-space size12 uppercase text-white">
                 Design &amp; Development
               </span>

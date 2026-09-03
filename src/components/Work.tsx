@@ -1,183 +1,214 @@
-import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ipcs from "../assets/work/ipcs.webp";
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ipcs from '../assets/work/ipcs.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
-  const imageRef = useRef<HTMLDivElement>(null);
-
+  const parallaxImageRef = useRef<HTMLImageElement>(null);
+  const lineRefs = useRef<(SVGPathElement | null)[]>([]);
   const experience = [
     {
-      number: "01",
-      type: "Full-time",
-      company: "IngeniousPix Creative Studios",
-      role: "Frontend Engineer",
-      period: "Feb 2025 — Present",
+      number: '01',
+      type: 'Full-time',
+      company: 'IngeniousPix Creative Studios',
+      role: 'Frontend Engineer',
+      period: 'Feb 2025 — Present',
       description:
-        "Transitioned from an internship into a full-time engineering role, taking ownership of client projects across frontend development, backend integration, UI/UX, and production delivery.",
+        'Transitioned from an internship into a full-time engineering role, taking ownership of client projects across frontend development, backend integration, UI/UX, and production delivery.',
       image: ipcs,
     },
     {
-      number: "02",
-      type: "Internship",
-      company: "Deshpande Startups Infinity Studio",
-      role: "Full Stack Developer Intern",
-      period: "Aug 2023 — Oct 2023",
+      number: '02',
+      type: 'Internship',
+      company: 'Deshpande Startups Infinity Studio',
+      role: 'Full Stack Developer Intern',
+      period: 'Aug 2023 — Oct 2023',
       description:
-        "Built marketplace features using React.js, Node.js, Express.js, and MongoDB, developing reusable components and REST APIs while working with vendors to translate business workflows into product features.",
-      image: "https://picsum.photos/seed/deshpande/500/650",
+        'Built marketplace features using React.js, Node.js, Express.js, and MongoDB, developing reusable components and REST APIs while working with vendors to translate business workflows into product features.',
     },
     {
-      number: "03",
-      type: "Internship",
-      company: "Varcons Technologies Pvt. Ltd",
-      role: "Full Stack Web Development Intern",
-      period: "May 2023 — Jul 2023",
+      number: '03',
+      type: 'Internship',
+      company: 'Varcons Technologies Pvt. Ltd',
+      role: 'Full Stack Web Development Intern',
+      period: 'May 2023 — Jul 2023',
       description:
-        "Developed frontend features across 10+ client projects using React.js, Angular, TypeScript, HTML, and CSS, including reusable components, dashboards, landing pages, and responsive interfaces.",
-      image: "https://picsum.photos/seed/varcons/500/650",
+        'Developed frontend features across 10+ client projects using React.js, Angular, TypeScript, HTML, and CSS, including reusable components, dashboards, landing pages, and responsive interfaces.',
     },
   ];
-  const moveImage = (x: number, y: number) => {
-    if (!imageRef.current) return;
-
-    gsap.to(imageRef.current, {
-      x,
-      y,
-      duration: 0.6,
-      ease: "power3.out",
-    });
-  };
-
-  const showImage = (image: string) => {
-    if (!imageRef.current) return;
-
-    const img = imageRef.current.querySelector("img");
-
-    if (img) {
-      img.src = image;
-    }
-
-    gsap.to(imageRef.current, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.45,
-      ease: "power3.out",
-    });
-  };
-
-  const hideImage = () => {
-    if (!imageRef.current) return;
-
-    gsap.to(imageRef.current, {
-      opacity: 0,
-      scale: 0.85,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  };
   useLayoutEffect(() => {
-    const images = document.querySelectorAll(".mobile-parallax-image");
+    const ctx = gsap.context(() => {
+      if (!parallaxImageRef.current) return;
 
-    images.forEach((image) => {
       gsap.fromTo(
-        image,
-        {
-          scale: 1.2,
-        },
+        parallaxImageRef.current,
+        { scale: 1.15 },
         {
           scale: 1,
-          ease: "none",
+          ease: 'none',
           scrollTrigger: {
-            trigger: image,
-            start: "top bottom",
-            end: "bottom top",
+            trigger: parallaxImageRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
             scrub: true,
           },
         },
       );
     });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+    return () => ctx.revert();
   }, []);
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      lineRefs.current.forEach((line) => {
+        if (!line) return;
 
+        const length = line.getTotalLength();
+
+        gsap.set(line, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
+        });
+
+        const card = line.closest('.group');
+
+        if (!card) return;
+
+        const enter = () => {
+          gsap.to(line, {
+            strokeDashoffset: 0,
+            duration: 0.9,
+            ease: 'power3.out',
+          });
+        };
+
+        const leave = () => {
+          gsap.to(line, {
+            strokeDashoffset: length,
+            duration: 0.5,
+            ease: 'power2.in',
+          });
+        };
+
+        card.addEventListener('mouseenter', enter);
+        card.addEventListener('mouseleave', leave);
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
   return (
-    <section id="work" className="relative mx-5 min-h-screen py-24 md:mx-20">
-      {/* FLOATING IMAGE — DESKTOP */}
-      <div
-        ref={imageRef}
-        className="pointer-events-none fixed left-0 top-0 z-50 hidden w-150 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[14px] border-2 border-black opacity-0 md:block"
-      >
-        <img src="" alt="" className="aspect-[16/9] h-auto w-full object-cover" />
+    <section id="work" className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <h2 className="font-chunko size90 leading-[0.9]">
+          Where I've
+          <br />
+          <span className="font-italic text-blue">worked.</span>
+        </h2>
+
+        <p className="text-justify font-space size28 leading-10 text-grey">
+          A timeline of the places, teams, and products that have shaped the way I approach design and engineering.
+        </p>
       </div>
 
-      {/* HEADER */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-2">
-          <span className="font-space size12 uppercase text-grey">02 / Experience</span>
-        </div>
+      <div className="mt-15 lg:mt-24">
+        <article className="border-t border-black/15 pt-8">
+          <div className="grid grid-cols-1 gap-2 lg:grid-cols-12 lg:gap-8 items-center">
+            <div className="lg:col-span-2">
+              <span className="font-space size12 text-grey">{experience[0].number}</span>
+            </div>
+            <div className="col-6 lg:col-span-3">
+              <div className="flex items-center gap-3">
+                <span className="h-2 w-2 rounded-full border border-black" />
+                <span className="font-space size12 uppercase text-grey">{experience[0].type}</span>
+              </div>
+            </div>
+            <div className="lg:col-span-5">
+              <h4 className="font-space size14 uppercase">{experience[0].role}</h4>
+            </div>
+            <div className="col-6 lg:col-span-2 lg:text-right">
+              <span className="font-space size12 uppercase text-grey">{experience[0].period}</span>
+            </div>
+          </div>
 
-        <div className="lg:col-span-8 lg:col-start-4">
-          <h2 className="font-instrument size64 leading-[0.9]">
-            Where I've
-            <br />
-            <span className="font-italic text-blue">worked.</span>
-          </h2>
-
-          <p className="mt-8 max-w-xl font-space size16 leading-6 text-grey">
-            A timeline of the places, teams, and products that have shaped the way I approach design and engineering.
-          </p>
-        </div>
+          <div className="mt-5 lg:mt-10 grid grid-cols-1 gap-5 lg:grid-cols-12 lg:items-center lg:gap-12">
+            <div className="lg:col-span-7 overflow-hidden rounded-2xl border-4 shadow-md border-black">
+              <img
+                ref={parallaxImageRef}
+                src={experience[0].image}
+                alt={experience[0].company}
+                className=" block h-auto w-full object-cover"
+              />
+            </div>
+            <div className="lg:col-span-5">
+              <h3 className="font-instrument size56 leading-[0.9]">{experience[0].company}</h3>
+              <p className="mt-3 lg:mt-6 max-w-lg font-space size14 leading-6 text-grey">{experience[0].description}</p>
+            </div>
+          </div>
+        </article>
       </div>
-
-      {/* EXPERIENCE */}
-      <div className="mt-24 border-t border-black/15">
-        {experience.map((item) => (
+      <div className="mt-5 lg:mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:gap-20">
+        {experience.slice(1).map((item, index) => (
           <article
             key={item.number}
-            onMouseEnter={() => showImage(item.image)}
-            onMouseMove={(e) => {
-              moveImage(e.clientX, e.clientY);
-            }}
-            onMouseLeave={hideImage}
-            className="group grid cursor-none grid-cols-1 gap-6 border-b border-black/15 py-10 transition-all duration-500 lg:grid-cols-12 lg:gap-8"
+            className="group border-4 rounded-3xl px-4 py-6 lg:px-6 lg:py-6 shadow-[0_4px_10px_0_rgba(0,0,0,.3)] bg-[#fff]"
           >
-            {/* NUMBER */}
-            <div className="lg:col-span-1">
+            <div className="flex items-center justify-between">
               <span className="font-space size12 text-grey">{item.number}</span>
-            </div>
-
-            {/* COMPANY */}
-            <div className="lg:col-span-3">
-              <div className="flex items-center gap-3">
-                <span className="h-2 w-2 rounded-full border border-black transition-colors duration-300 group-hover:border-orange group-hover:bg-[#ff5a1f]" />
-
+              <div className="group/type flex items-center gap-3 border border-black rounded-md p-1 px-3 bg-white shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)] transition-all duration-200 ease-out [transform-style:preserve-3d] hover:translate-y-1 hover:[transform:translateY(0.25rem)_translateZ(-4px)] hover:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)] active:[transform:translateY(0.25rem)_translateZ(-6px)] active:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)]">
                 <span className="font-space size12 uppercase text-grey">{item.type}</span>
               </div>
-
-              {/* MOBILE IMAGE */}
-              <div className="my-6 overflow-hidden rounded-[14px] border-2 border-black md:hidden">
-                <img src={item.image} alt={item.company} className="mobile-parallax-image h-[calc(100%+40px)] w-full object-cover" />
-              </div>
-
-              <h3 className="mt-3 font-instrument size44 leading-none transition-transform duration-500 group-hover:translate-x-2">
-                {item.company}
-              </h3>
             </div>
 
-            {/* ROLE + DESCRIPTION */}
-            <div className="lg:col-span-5">
-              <h4 className="font-space size14 uppercase">{item.role}</h4>
+            <h3 className="mt-4 lg:mt-8 max-w-md font-instrument size44 leading-[1.2] h-[2.5em] transition-transform duration-500 group-hover:translate-x-2">
+              {item.company}
+            </h3>
 
-              <p className="mt-4 max-w-lg font-space size14 leading-5 text-grey">{item.description}</p>
+            <div className="mt-5 w-44">
+              <svg viewBox="0 0 200 35" fill="none" className="h-auto w-full overflow-visible">
+                {/* Main stroke */}
+                <path
+                  ref={(el) => {
+                    lineRefs.current[index] = el;
+                  }}
+                  className="work-line"
+                  d="
+        M3 19
+        C20 12 30 23 46 17
+        C63 11 72 23 91 16
+        C108 10 120 22 137 16
+        C154 10 169 20 197 12
+      "
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+
+                {/* Brush texture */}
+                <path
+                  className="work-line"
+                  d="
+        M6 22
+        C27 17 34 25 50 20
+        C68 15 78 25 94 19
+        C111 14 126 24 143 19
+        C162 14 177 23 194 16
+      "
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  opacity="0.45"
+                />
+              </svg>
             </div>
+            <h4 className={`mt-1 font-space size14 uppercase ${index === 0 ? 'text-orange' : 'text-blue'}`}>
+              {item.role}
+            </h4>
+            <p className="mt-4 max-w-lg font-space size14 leading-6 text-grey">{item.description}</p>
 
-            {/* DATE */}
-            <div className="lg:col-span-3 lg:text-right">
+            <div className="mt-4">
               <span className="font-space size12 uppercase text-grey">{item.period}</span>
             </div>
           </article>
