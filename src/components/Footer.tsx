@@ -1,6 +1,7 @@
 import { FaEnvelope, FaGithub, FaHandsHelping, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import Crowd from "./Crowd";
+import RollingText from "./RollingText";
 import sheet from "../assets/open-peeps-sheet.png";
 
 const TILE_THEMES = [
@@ -191,16 +192,10 @@ const Footer = () => {
       shadow-[0_4px_20px_rgba(0,0,0,0.08)]
     "
         >
-          <div className="flex items-baseline gap-1 font-instrument size16 cursor-pointer group">
+          <div className="group flex items-baseline gap-1 font-instrument size16 cursor-pointer">
             <span>Based in</span>
 
-            <div className="link-rollover">
-              <div className="link-rollover-inner">
-                <span className="link-rollover-text font-instrument">Karnataka</span>
-
-                <span className="link-rollover-text font-italic">India</span>
-              </div>
-            </div>
+            <RollingText primary="Karnataka" primaryClassName="font-instrument" secondary="India" secondaryClassName="font-italic" />
           </div>
         </div>
 
@@ -216,12 +211,13 @@ const Footer = () => {
       shadow-[0_4px_20px_rgba(0,0,0,0.08)]
     "
         >
-          <div className="group link-rollover font-instrument size16 capitalize cursor-pointer">
-            <div className="link-rollover-inner">
-              <span className="link-rollover-text text-center font-instrument">Akash Kurdekar</span>
-
-              <span className="link-rollover-text text-center font-italic">Let's talk</span>
-            </div>
+          <div className="group flex items-baseline gap-1 font-instrument size16 capitalize cursor-pointer">
+            <RollingText
+              primary="Akash Kurdekar"
+              primaryClassName="text-center font-instrument"
+              secondary="Let's talk"
+              secondaryClassName="text-center font-italic"
+            />
           </div>
         </div>
 
@@ -237,16 +233,10 @@ const Footer = () => {
       shadow-[0_4px_20px_rgba(0,0,0,0.08)]
     "
         >
-          <div className="flex items-baseline gap-1 font-instrument size16 cursor-pointer group">
+          <div className="group flex items-baseline gap-1 font-instrument size16 cursor-pointer">
             <span>Looking for</span>
 
-            <div className="link-rollover">
-              <div className="link-rollover-inner">
-                <span className="link-rollover-text font-instrument">Opportunities</span>
-
-                <span className="link-rollover-text font-italic">Work</span>
-              </div>
-            </div>
+            <RollingText primary="Opportunities" primaryClassName="font-instrument" secondary="Work" secondaryClassName="font-italic" />
           </div>
         </div>
       </div>

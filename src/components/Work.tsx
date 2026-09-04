@@ -40,6 +40,7 @@ const renderCompanyName = (company: string, highlightWord?: string, highlightCol
 };
 
 const Work = () => {
+  const sectionRef = useRef<HTMLElement>(null);
   const parallaxImageRef = useRef<HTMLImageElement>(null);
   const lineRefs = useRef<(SVGPathElement | null)[]>([]);
   const experience: Experience[] = [
@@ -99,6 +100,50 @@ const Work = () => {
 
     return () => ctx.revert();
   }, []);
+
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".work-reveal-featured",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".work-reveal-featured",
+            start: "top 80%",
+            once: true,
+          },
+        },
+      );
+
+      gsap.fromTo(
+        ".work-reveal-card",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: ".work-reveal-cards",
+            start: "top 80%",
+            once: true,
+          },
+        },
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
   useEffect(() => {
     const ctx = gsap.context(() => {
       lineRefs.current.forEach((line) => {
@@ -139,7 +184,7 @@ const Work = () => {
     return () => ctx.revert();
   }, []);
   return (
-    <section id="work" className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">
+    <section id="work" ref={sectionRef} className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <h2 className="font-chunko size90 leading-[0.9]">
           Where I've
@@ -153,7 +198,7 @@ const Work = () => {
       </div>
 
       <div className="mt-15 lg:mt-24">
-        <article className="border-t border-black/15 pt-8">
+        <article className="work-reveal-featured border-t border-black/15 pt-8">
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-12 lg:gap-8 items-center">
             <div className="lg:col-span-2">
               <span className="font-space size12 text-grey">{experience[0].number}</span>
@@ -191,11 +236,11 @@ const Work = () => {
           </div>
         </article>
       </div>
-      <div className="mt-5 lg:mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:gap-20">
+      <div className="work-reveal-cards mt-5 lg:mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:gap-20">
         {experience.slice(1).map((item, index) => (
           <article
             key={item.number}
-            className="group border-4 rounded-3xl px-4 py-6 lg:px-6 lg:py-6 shadow-[0_4px_10px_0_rgba(0,0,0,.3)] bg-[#fff]"
+            className="work-reveal-card group border-4 rounded-3xl px-4 py-6 lg:px-6 lg:py-6 shadow-[0_4px_10px_0_rgba(0,0,0,.3)] bg-[#fff]"
           >
             <div className="flex items-center justify-between">
               <span className="font-space size12 text-grey">{item.number}</span>
