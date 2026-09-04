@@ -1,34 +1,33 @@
-import { FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { IoMailOutline } from 'react-icons/io5';
+import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 
-import Crowd from './Crowd';
+import Crowd from "./Crowd";
 const Footer = () => {
   const links = [
     {
-      name: 'linkedin',
+      name: "linkedin",
       icon: <FaLinkedin />,
-      link: 'https://www.linkedin.com/in/akashkurdekar/',
+      link: "https://www.linkedin.com/in/akashkurdekar/",
     },
     {
-      name: 'Instagram',
+      name: "Instagram",
       icon: <FaInstagram />,
-      link: 'https://www.instagram.com/unlikeakash_',
+      link: "https://www.instagram.com/unlikeakash_",
     },
     {
-      name: 'G-mail',
-      icon: <IoMailOutline />,
-      link: 'mailto:akashkurdekar39@gmail.com',
+      name: "G-mail",
+      icon: <FaEnvelope />,
+      link: "mailto:akashkurdekar39@gmail.com",
     },
     {
-      name: 'Github',
+      name: "Github",
       icon: <FaGithub />,
-      link: 'https://github.com/akashkurdekar7',
+      link: "https://github.com/akashkurdekar7",
     },
   ];
 
   return (
     <footer className="bg-black relative z-60 h-dvh lg:min-h-screen px-6 md:px-20  pt-5 lg:pt-25 ">
-      <svg className="absolute -top-[5%] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <svg className="absolute -top-[4%] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
         <path
           d="
           M0,45
@@ -44,7 +43,7 @@ const Footer = () => {
         />
       </svg>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <Crowd src="/public/open-peeps-sheet.png" rows={15} cols={7} className="h-full w-full" />
+        <Crowd src="/open-peeps-sheet.png" rows={15} cols={7} className="h-full w-full" />
       </div>
       {/* Heading */}
       <div className="relative z-20 pt-8 md:pt-0">
@@ -69,15 +68,15 @@ const Footer = () => {
             backdrop-blur-[20px]
             backdrop-saturate-180
             shadow-[0_4px_8px_rgba(255,255,255,0.5)]
-            md:flex-row md:items-center
+            md:grid md:grid-cols-4 md:items-stretch
           "
         >
           {links.map((item) => (
             <li key={item.name}>
               <a
                 href={item.link}
-                target={item.name === 'G-mail' ? undefined : '_blank'}
-                rel={item.name === 'G-mail' ? undefined : 'noreferrer'}
+                target={item.name === "G-mail" ? undefined : "_blank"}
+                rel={item.name === "G-mail" ? undefined : "noreferrer"}
                 className="
     group/link
     relative isolate overflow-hidden
@@ -86,7 +85,7 @@ const Footer = () => {
     px-5 py-4
 
     text-white
-    md:px-8 md:py-4 md:size28
+    md:justify-center md:px-8 md:py-4 md:size28
   "
               >
                 {/* WATER */}
@@ -153,9 +152,9 @@ const Footer = () => {
 
             <div className="link-rollover">
               <div className="link-rollover-inner">
-                <span className="link-rollover-text font-instrument">India</span>
+                <span className="link-rollover-text font-instrument">Karnataka</span>
 
-                <span className="link-rollover-text font-italic">Karnataka</span>
+                <span className="link-rollover-text font-italic">India</span>
               </div>
             </div>
           </div>

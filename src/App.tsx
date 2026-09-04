@@ -1,13 +1,13 @@
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Footer from './components/Footer';
-import SmoothScroll from './components/SmoothScroll';
-import Projects from './components/Projects';
-import Article from './components/Article';
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import Footer from "./components/Footer";
+import SmoothScroll from "./components/SmoothScroll";
+import Projects from "./components/Projects";
+import Article from "./components/Article";
 // import Reels from './components/Reels';
 // import About from './components/About';
-import Work from './components/Work';
-import ReelsField from './components/ReelsField';
+import Work from "./components/Work";
+import ReelsField from "./components/ReelsField";
 
 const App = () => {
   return (
