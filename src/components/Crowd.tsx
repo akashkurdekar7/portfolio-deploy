@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 interface Stage {
@@ -143,6 +143,7 @@ interface CrowdProps {
 
 export default function Crowd({ src, rows = 15, cols = 7, className, style }: CrowdProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -152,6 +153,8 @@ export default function Crowd({ src, rows = 15, cols = 7, className, style }: Cr
     const ctx = canvas.getContext('2d');
 
     if (!ctx) return;
+
+    setLoaded(false);
 
     const stage: Stage = {
       width: 0,
@@ -298,6 +301,8 @@ export default function Crowd({ src, rows = 15, cols = 7, className, style }: Cr
       gsap.ticker.add(tickerFn);
 
       window.addEventListener('resize', resize);
+
+      setLoaded(true);
     };
 
     image.src = src;
@@ -318,15 +323,13 @@ export default function Crowd({ src, rows = 15, cols = 7, className, style }: Cr
   }, [src, rows, cols]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-      style={{
-        display: 'block',
-        width: '100%',
-        height: '100%',
-        ...style,
-      }}
-    />
+    <div className={`relative ${className ?? ''}`} style={style}>
+      {!loaded && <div className="absolute inset-0 skeleton-shimmer--dark" aria-hidden="true" />}
+
+      <canvas
+        ref={canvasRef}
+        className={`block h-full w-full transition-opacity duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'}`}
+      />
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import { IoMailOutline } from "react-icons/io5";
 import hero from "../assets/hero.webp";
 import clouds from "../assets/clouds.png";
 import gsap from "gsap";
+import ImageWithSkeleton from "./ImageWithSkeleton";
 const Hero = () => {
   const links = [
     {
@@ -60,9 +61,13 @@ const Hero = () => {
   return (
     <section className="relative flex h-dvh items-center justify-center lg:mx-20 mx-6">
       <div className="flex flex-col items-center gap-10 relative z-30">
-        <div className="hero-image overflow-hidden relative h-80 w-full md:w-170 rounded-[20px] border-6">
-          <img src={hero} alt="Akash Kurdekar" className="h-full w-full object-cover" loading="lazy" />
-        </div>
+        <ImageWithSkeleton
+          src={hero}
+          alt="Akash Kurdekar"
+          loading="lazy"
+          wrapperClassName="hero-image h-80 w-full md:w-170 rounded-[20px] border-6"
+          className="h-full w-full object-cover"
+        />
 
         {/* HERO CONTENT */}
         <div className="hero-content flex flex-col items-center justify-center transition-all duration-700">

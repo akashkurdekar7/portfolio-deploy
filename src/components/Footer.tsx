@@ -1,6 +1,7 @@
 import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import Crowd from "./Crowd";
+import sheet from "../../public/open-peeps-sheet.png";
 const Footer = () => {
   const links = [
     {
@@ -43,7 +44,7 @@ const Footer = () => {
         />
       </svg>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <Crowd src="/open-peeps-sheet.png" rows={15} cols={7} className="h-full w-full" />
+        <Crowd src={sheet} rows={15} cols={7} className="h-full w-full" />
       </div>
       {/* Heading */}
       <div className="relative z-20 pt-8 md:pt-0">

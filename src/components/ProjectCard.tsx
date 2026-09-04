@@ -1,4 +1,5 @@
 import { FaArrowRight } from 'react-icons/fa';
+import { useImageLoaded } from '../hooks/useImageLoaded';
 
 type Project = {
   image?: string;
@@ -23,6 +24,8 @@ const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) 
   const fallbackImage = `https://picsum.photos/900/700?random=${index + 1}`;
 
   const projectImage = project.image || fallbackImage;
+
+  const imageLoaded = useImageLoaded(projectImage);
 
   const defaultPath = `
     M 0 0
@@ -63,6 +66,18 @@ const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) 
             </clipPath>
           </defs>
 
+          {/* SKELETON */}
+          {!imageLoaded && (
+            <rect
+              width="450"
+              height="350"
+              fill="#e2e0da"
+              className="skeleton-pulse"
+              clipPath={`url(#${clipId})`}
+              aria-hidden="true"
+            />
+          )}
+
           {/* IMAGE */}
           <image
             href={projectImage}
@@ -70,6 +85,7 @@ const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) 
             height="350"
             preserveAspectRatio="xMidYMid slice"
             clipPath={`url(#${clipId})`}
+            className={`transition-opacity duration-500 ease-out ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
 
           {/* BORDER */}

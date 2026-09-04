@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { FaPlay } from 'react-icons/fa';
+import ImageWithSkeleton from './ImageWithSkeleton';
 
 export type Reel = {
   id: number;
@@ -113,14 +114,15 @@ const ReelCard = ({ reel, isFinePointer, reducedMotion, className = '' }: ReelCa
         onMouseLeave={handleLeave}
         className="group relative block h-full w-full overflow-hidden bg-black"
       >
-        <img
+        <ImageWithSkeleton
           ref={imageRef}
           src={reel.image}
           alt={reel.title}
           title={reel.title}
           loading="lazy"
           decoding="async"
-          className="block h-full w-full object-cover will-change-transform"
+          wrapperClassName="h-full w-full"
+          className="h-full w-full object-cover will-change-transform"
         />
 
         {/* IMAGE OVERLAY */}

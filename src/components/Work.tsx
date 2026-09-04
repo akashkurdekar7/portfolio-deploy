@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ipcs from "../assets/work/ipcs.webp";
+import ImageWithSkeleton from "./ImageWithSkeleton";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -134,15 +135,14 @@ const Work = () => {
           </div>
 
           <div className="mt-5 lg:mt-10 grid grid-cols-1 gap-5 lg:grid-cols-12 lg:items-center lg:gap-12">
-            <div className="lg:col-span-7 overflow-hidden rounded-2xl border-4 shadow-md border-black">
-              <img
-                ref={parallaxImageRef}
-                src={experience[0].image}
-                alt={experience[0].company}
-                className=" block h-auto w-full object-cover"
-                loading="lazy"
-              />
-            </div>
+            <ImageWithSkeleton
+              ref={parallaxImageRef}
+              src={experience[0].image}
+              alt={experience[0].company}
+              loading="lazy"
+              wrapperClassName="lg:col-span-7 rounded-2xl border-4 shadow-md border-black"
+              className="block h-auto w-full object-cover"
+            />
             <div className="lg:col-span-5">
               <h3 className="font-instrument size56 leading-[0.9]">{experience[0].company}</h3>
               <p className="mt-3 lg:mt-6 max-w-lg font-space size14 leading-6 text-grey">{experience[0].description}</p>

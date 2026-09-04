@@ -8,10 +8,12 @@ import Article from "./components/Article";
 // import About from './components/About';
 import Work from "./components/Work";
 import ReelsField from "./components/ReelsField";
+import StackLoader from "./components/StackLoader";
 
 const App = () => {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-white text-black">
+      <StackLoader />
       <SmoothScroll />
       <ReelsField />
 

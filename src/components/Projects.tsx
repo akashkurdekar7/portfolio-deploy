@@ -1,116 +1,115 @@
-import React from 'react';
-import ProjectCard from './ProjectCard';
-import saas from '../assets/projects/saas.webp';
-import ghostrentals from '../assets/projects/ghostrental.webp';
-import greenminds from '../assets/projects/greenminds.webp';
-import pixtar from '../assets/projects/pixtar.webp';
-import phdesignme from '../assets/projects/phdesignme.webp';
-import makemycard from '../assets/projects/makemycard.webp';
+import React from "react";
+import ProjectCard from "./ProjectCard";
+import saas from "../assets/projects/saas.webp";
+import ghostrentals from "../assets/projects/ghostrental.webp";
+import greenminds from "../assets/projects/greenminds.webp";
+import pixtar from "../assets/projects/pixtar.webp";
+import phdesignme from "../assets/projects/phdesignme.webp";
+import makemycard from "../assets/projects/makemycard.webp";
+import Arovan from "../assets/projects/arovan.webp";
 
 const Projects = () => {
   const projects = [
     {
-      title: 'Wholesale Management System',
-      type: 'Web Application',
-      year: '2025',
+      title: "Wholesale Management System",
+      type: "Web Application",
+      year: "2025",
       image: saas,
 
       description:
-        'A wholesale management platform built to streamline product, order, and business operations through a centralized web application.',
+        "A wholesale management platform built to streamline product, order, and business operations through a centralized web application.",
 
-      role: 'Designed and developed the application, focusing on intuitive workflows, reusable interfaces, and scalable frontend architecture.',
+      role: "Designed and developed the application, focusing on intuitive workflows, reusable interfaces, and scalable frontend architecture.",
 
-      company: 'Independent Project',
-      contribution: 'Frontend · UI/UX · Architecture',
+      company: "Independent Project",
+      contribution: "Frontend · UI/UX · Architecture",
     },
 
     {
-      title: 'Ghost Rental',
-      type: 'Website & Dashboard',
-      year: '2025',
+      title: "Ghost Rental",
+      type: "Website & Dashboard",
+      year: "2025",
       image: ghostrentals,
 
-      description:
-        'A rental platform combining a customer-facing website with a management dashboard for handling rental operations.',
+      description: "A rental platform combining a customer-facing website with a management dashboard for handling rental operations.",
 
-      role: 'Developed the website and dashboard, building reusable interfaces, responsive layouts, and interactive frontend experiences.',
+      role: "Developed the website and dashboard, building reusable interfaces, responsive layouts, and interactive frontend experiences.",
 
-      company: 'IngeniousPix Creative Studios',
-      contribution: 'Frontend · Dashboard · UI',
+      company: "IngeniousPix Creative Studios",
+      contribution: "Frontend · Dashboard · UI",
     },
 
     {
-      title: 'Greenminds',
-      type: 'Single Page Website',
-      year: '2025',
+      title: "Greenminds",
+      type: "Single Page Website",
+      year: "2025",
       image: greenminds,
 
       description:
-        'A focused single-page website designed to present the brand, its offerings, and key information through a clear visual experience.',
+        "A focused single-page website designed to present the brand, its offerings, and key information through a clear visual experience.",
 
-      role: 'Designed and developed the frontend with an emphasis on responsive layouts, visual hierarchy, and smooth interactions.',
+      role: "Designed and developed the frontend with an emphasis on responsive layouts, visual hierarchy, and smooth interactions.",
 
-      company: 'IngeniousPix Creative Studios',
-      contribution: 'Design · Frontend · Interaction',
+      company: "IngeniousPix Creative Studios",
+      contribution: "Design · Frontend · Interaction",
     },
 
     {
-      title: 'Pixtar',
-      type: 'Company Website',
-      year: '2026',
+      title: "Pixtar",
+      type: "Company Website",
+      year: "2026",
       image: pixtar,
 
       description:
-        'A complete transformation of the existing Pixtar website, rebuilding the experience from the ground up with a new visual direction and modern frontend architecture.',
+        "A complete transformation of the existing Pixtar website, rebuilding the experience from the ground up with a new visual direction and modern frontend architecture.",
 
-      role: 'Reworked the existing website into the current experience, contributing across frontend development, UI implementation, interactions, and responsive design.',
+      role: "Reworked the existing website into the current experience, contributing across frontend development, UI implementation, interactions, and responsive design.",
 
-      company: 'IngeniousPix Creative Studios',
-      contribution: 'Frontend · UI · Redesign',
+      company: "IngeniousPix Creative Studios",
+      contribution: "Frontend · UI · Redesign",
     },
 
     {
-      title: 'Make My Card',
-      type: 'Web Application & Dashboard',
-      year: '2026',
+      title: "Make My Card",
+      type: "Web Application & Dashboard",
+      year: "2026",
       image: makemycard,
 
       description:
-        'A product web application and management dashboard built to provide users with a streamlined experience for creating and managing digital products.',
+        "A product web application and management dashboard built to provide users with a streamlined experience for creating and managing digital products.",
 
-      role: 'Developed the product interface and dashboard, focusing on reusable components, responsive layouts, and a consistent user experience.',
+      role: "Developed the product interface and dashboard, focusing on reusable components, responsive layouts, and a consistent user experience.",
 
-      company: 'IngeniousPix Creative Studios',
-      contribution: 'Frontend · Dashboard · UI',
+      company: "IngeniousPix Creative Studios",
+      contribution: "Frontend · Dashboard · UI",
     },
 
     {
-      title: 'PhDesignMe',
-      type: 'Client Website',
-      year: '2026',
+      title: "PhDesignMe",
+      type: "Client Website",
+      year: "2026",
       image: phdesignme,
 
       description:
-        'A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.',
+        "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
 
-      role: 'Developed the frontend experience with attention to layout, typography, responsive behavior, and interactive details.',
+      role: "Developed the frontend experience with attention to layout, typography, responsive behavior, and interactive details.",
 
-      company: 'IngeniousPix Creative Studios',
-      contribution: 'Frontend · UI · Interaction',
+      company: "IngeniousPix Creative Studios",
+      contribution: "Frontend · UI · Interaction",
     },
     {
-      title: 'Arovan',
-      type: 'Client Website',
-      year: '2026',
-      image: phdesignme,
-
+      title: "Arovan",
+      type: "Client Website",
+      year: "2026",
+      image: Arovan,
       description:
-        'A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.',
+        "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
 
-      role: 'Developed the frontend experience with attention to layout, typography, responsive behavior, and interactive details.',
+      role: "Developed the frontend experience with attention to layout, typography, responsive behavior, and interactive details.",
 
-      company: 'IngeniousPix Creative Studios',
-      contribution: 'Frontend · UI · Interaction',
+      company: "IngeniousPix Creative Studios",
+      contribution: "Frontend · UI · Interaction",
     },
   ];
 
