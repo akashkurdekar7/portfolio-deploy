@@ -1,5 +1,6 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
+import ProjectsStack from "./ProjectsStack";
 import saas from "../assets/projects/saas.webp";
 import ghostrentals from "../assets/projects/ghostrental.webp";
 import greenminds from "../assets/projects/greenminds.webp";
@@ -129,7 +130,13 @@ const Projects = () => {
         </p>
       </div>
 
-      <div className="lg:pt-25 pt-8  ">
+      {/* MOBILE: stacked cards, one screen, scroll-driven */}
+      <div className="pt-8 md:hidden">
+        <ProjectsStack projects={projects} />
+      </div>
+
+      {/* TABLET / DESKTOP: existing layout */}
+      <div className="lg:pt-25 hidden pt-8 md:block">
         {/* FIRST TWO */}
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16 xl:grid-cols-2 xl:gap-x-24 xl:gap-y-20">
           {projects.slice(0, 2).map((project, index) => (

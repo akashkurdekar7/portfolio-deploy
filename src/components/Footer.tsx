@@ -1,7 +1,7 @@
 import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import Crowd from "./Crowd";
-import sheet from "../../public/open-peeps-sheet.png";
+import sheet from "../assets/open-peeps-sheet.png";
 const Footer = () => {
   const links = [
     {

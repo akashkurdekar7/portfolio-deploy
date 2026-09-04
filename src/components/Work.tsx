@@ -1,15 +1,48 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ipcs from "../assets/work/ipcs.webp";
-import ImageWithSkeleton from "./ImageWithSkeleton";
+import HighlightCircle from "./HighlightCircle";
 
 gsap.registerPlugin(ScrollTrigger);
+
+interface Experience {
+  number: string;
+  type: string;
+  company: string;
+  role: string;
+  period: string;
+  description: string;
+  image?: string;
+  // Word (or phrase) inside `company` to circle, e.g. "IngeniousPix". Leave undefined for no highlight.
+  highlightWord?: string;
+  // CSS color for that circle, e.g. "var(--orange)". Defaults to yellow when omitted.
+  highlightColor?: string;
+}
+
+const renderCompanyName = (company: string, highlightWord?: string, highlightColor?: string): ReactNode => {
+  if (!highlightWord) return company;
+
+  const start = company.toLowerCase().indexOf(highlightWord.toLowerCase());
+  if (start === -1) return company;
+
+  const before = company.slice(0, start);
+  const match = company.slice(start, start + highlightWord.length);
+  const after = company.slice(start + highlightWord.length);
+
+  return (
+    <>
+      {before}
+      <HighlightCircle color={highlightColor}>{match}</HighlightCircle>
+      {after}
+    </>
+  );
+};
 
 const Work = () => {
   const parallaxImageRef = useRef<HTMLImageElement>(null);
   const lineRefs = useRef<(SVGPathElement | null)[]>([]);
-  const experience = [
+  const experience: Experience[] = [
     {
       number: "01",
       type: "Full-time",
@@ -19,6 +52,7 @@ const Work = () => {
       description:
         "Transitioned from an internship into a full-time engineering role, taking ownership of client projects across frontend development, backend integration, UI/UX, and production delivery.",
       image: ipcs,
+      highlightWord: "IngeniousPix",
     },
     {
       number: "02",
@@ -28,6 +62,8 @@ const Work = () => {
       period: "Aug 2023 — Oct 2023",
       description:
         "Built marketplace features using React.js, Node.js, Express.js, and MongoDB, developing reusable components and REST APIs while working with vendors to translate business workflows into product features.",
+      highlightWord: "Deshpande",
+      highlightColor: "var(--orange)",
     },
     {
       number: "03",
@@ -37,6 +73,8 @@ const Work = () => {
       period: "May 2023 — Jul 2023",
       description:
         "Developed frontend features across 10+ client projects using React.js, Angular, TypeScript, HTML, and CSS, including reusable components, dashboards, landing pages, and responsive interfaces.",
+      highlightWord: "Varcons",
+      highlightColor: "var(--blue)",
     },
   ];
   useLayoutEffect(() => {
@@ -135,16 +173,19 @@ const Work = () => {
           </div>
 
           <div className="mt-5 lg:mt-10 grid grid-cols-1 gap-5 lg:grid-cols-12 lg:items-center lg:gap-12">
-            <ImageWithSkeleton
-              ref={parallaxImageRef}
-              src={experience[0].image}
-              alt={experience[0].company}
-              loading="lazy"
-              wrapperClassName="lg:col-span-7 rounded-2xl border-4 shadow-md border-black"
-              className="block h-auto w-full object-cover"
-            />
+            <div className="lg:col-span-7 overflow-hidden rounded-2xl border-4 shadow-md border-black">
+              <img
+                ref={parallaxImageRef}
+                src={experience[0].image}
+                alt={`${experience[0].company} — ${experience[0].role}`}
+                className=" block h-auto w-full object-cover"
+                loading="lazy"
+              />
+            </div>
             <div className="lg:col-span-5">
-              <h3 className="font-instrument size56 leading-[0.9]">{experience[0].company}</h3>
+              <h3 className="font-instrument size56 leading-[0.9]">
+                {renderCompanyName(experience[0].company, experience[0].highlightWord, experience[0].highlightColor)}
+              </h3>
               <p className="mt-3 lg:mt-6 max-w-lg font-space size14 leading-6 text-grey">{experience[0].description}</p>
             </div>
           </div>
@@ -164,46 +205,9 @@ const Work = () => {
             </div>
 
             <h3 className="mt-4 lg:mt-8 max-w-md font-instrument size44 leading-[1.2] h-[2.5em] transition-transform duration-500 group-hover:translate-x-2">
-              {item.company}
+              {renderCompanyName(item.company, item.highlightWord, item.highlightColor)}
             </h3>
 
-            <div className="mt-5 w-44">
-              <svg viewBox="0 0 200 35" fill="none" className="h-auto w-full overflow-visible">
-                {/* Main stroke */}
-                <path
-                  ref={(el) => {
-                    lineRefs.current[index] = el;
-                  }}
-                  className="work-line"
-                  d="
-        M3 19
-        C20 12 30 23 46 17
-        C63 11 72 23 91 16
-        C108 10 120 22 137 16
-        C154 10 169 20 197 12
-      "
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-
-                {/* Brush texture */}
-                <path
-                  className="work-line"
-                  d="
-        M6 22
-        C27 17 34 25 50 20
-        C68 15 78 25 94 19
-        C111 14 126 24 143 19
-        C162 14 177 23 194 16
-      "
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                  opacity="0.45"
-                />
-              </svg>
-            </div>
             <h4 className={`mt-1 font-space size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
             <p className="mt-4 max-w-lg font-space size14 leading-6 text-grey">{item.description}</p>
 

@@ -65,21 +65,13 @@ const Loader = ({ onComplete }: LoaderProps) => {
 
   return (
     <div className="hero-loader fixed inset-0 z-50 flex items-center justify-center bg-white">
-      {/* introPosition's translateY leaves a lingering transform (fill-mode
-          forwards) that would create a containing block for the image's
-          fixed positioning once it grows full screen — drop the class so
-          it doesn't hijack `inset-0` into being relative to this box. */}
       <div className={`flex flex-col items-center ${growing ? "" : "hero-loader-content"}`}>
-        {/* IMAGE */}
-
         <div
           ref={imageRef}
           className={`overflow-hidden ${growing ? "fixed inset-0 rounded-none border-0" : "hero-loader-image rounded-[20px] border-6"}`}
         >
           <img src={hero} alt="" className="h-full w-full object-cover" loading="lazy" />
         </div>
-
-        {/* WELCOME */}
 
         <div className="hero-loader-welcome flex flex-col items-center">
           <p className="mt-5 font-space size12 uppercase">welcome</p>

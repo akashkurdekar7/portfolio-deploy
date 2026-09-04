@@ -17,6 +17,7 @@
 
   --orange: #ff5a1f;
   --blue: #2457ff;
+  --yellow: #f5d949;
 
   /* Fonts */
   --font-chunko: 'Chunko', sans-serif;
@@ -627,47 +628,6 @@
   will-change: transform;
 }
 
-/* =================================
-   SKELETON LOADING
-================================= */
-
-.skeleton-shimmer {
-  background: linear-gradient(100deg, rgba(17, 17, 17, 0.06) 20%, rgba(17, 17, 17, 0.12) 40%, rgba(17, 17, 17, 0.06) 60%);
-  background-size: 200% 100%;
-  animation: skeletonShimmer 1.6s ease-in-out infinite;
-}
-
-.skeleton-shimmer--dark {
-  background: linear-gradient(100deg, rgba(255, 255, 255, 0.06) 20%, rgba(255, 255, 255, 0.14) 40%, rgba(255, 255, 255, 0.06) 60%);
-  background-size: 200% 100%;
-  animation: skeletonShimmer 1.6s ease-in-out infinite;
-}
-
-@keyframes skeletonShimmer {
-  0% {
-    background-position: 150% 0;
-  }
-
-  100% {
-    background-position: -50% 0;
-  }
-}
-
-.skeleton-pulse {
-  animation: skeletonPulse 1.6s ease-in-out infinite;
-}
-
-@keyframes skeletonPulse {
-  0%,
-  100% {
-    opacity: 0.5;
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
-
 .project-bg-square {
   width: 100%;
   height: 100%;
@@ -695,4 +655,41 @@
   object-fit: cover;
   display: block;
   will-change: transform;
+}
+
+/* =================================
+   HIGHLIGHT CIRCLE (marker scribble)
+================================= */
+
+.highlight-circle {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.highlight-circle-text {
+  position: relative;
+}
+
+.highlight-circle-svg {
+  position: absolute;
+  top: -24%;
+  left: -10%;
+  width: 120%;
+  height: 148%;
+  overflow: visible;
+  pointer-events: none;
+  transform: rotate(-1.5deg);
+}
+
+.highlight-circle-stroke {
+  stroke: var(--highlight-color, var(--yellow));
+  stroke-width: 6.5px;
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 767px) {
+  .highlight-circle-stroke {
+    stroke-width: 4px;
+  }
 }

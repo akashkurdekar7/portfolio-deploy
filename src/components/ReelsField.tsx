@@ -128,7 +128,7 @@ const ReelsField = () => {
       const { width, height } = mount.getBoundingClientRect();
       if (width === 0 || height === 0) return;
 
-      renderer.setSize(width, height, false);
+      renderer.setSize(width, height);
 
       camera.left = -width / 2;
       camera.right = width / 2;
