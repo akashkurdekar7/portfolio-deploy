@@ -76,7 +76,7 @@ const Loader = ({ onComplete }: LoaderProps) => {
           ref={imageRef}
           className={`overflow-hidden ${growing ? "fixed inset-0 rounded-none border-0" : "hero-loader-image rounded-[20px] border-6"}`}
         >
-          <img src={hero} alt="" className="h-full w-full object-cover" />
+          <img src={hero} alt="" className="h-full w-full object-cover" loading="lazy" />
         </div>
 
         {/* WELCOME */}

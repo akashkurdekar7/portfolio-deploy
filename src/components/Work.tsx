@@ -1,7 +1,7 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ipcs from '../assets/work/ipcs.webp';
+import { useEffect, useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ipcs from "../assets/work/ipcs.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,32 +10,32 @@ const Work = () => {
   const lineRefs = useRef<(SVGPathElement | null)[]>([]);
   const experience = [
     {
-      number: '01',
-      type: 'Full-time',
-      company: 'IngeniousPix Creative Studios',
-      role: 'Frontend Engineer',
-      period: 'Feb 2025 — Present',
+      number: "01",
+      type: "Full-time",
+      company: "IngeniousPix Creative Studios",
+      role: "Frontend Engineer",
+      period: "Feb 2025 — Present",
       description:
-        'Transitioned from an internship into a full-time engineering role, taking ownership of client projects across frontend development, backend integration, UI/UX, and production delivery.',
+        "Transitioned from an internship into a full-time engineering role, taking ownership of client projects across frontend development, backend integration, UI/UX, and production delivery.",
       image: ipcs,
     },
     {
-      number: '02',
-      type: 'Internship',
-      company: 'Deshpande Startups Infinity Studio',
-      role: 'Full Stack Developer Intern',
-      period: 'Aug 2023 — Oct 2023',
+      number: "02",
+      type: "Internship",
+      company: "Deshpande Startups Infinity Studio",
+      role: "Full Stack Developer Intern",
+      period: "Aug 2023 — Oct 2023",
       description:
-        'Built marketplace features using React.js, Node.js, Express.js, and MongoDB, developing reusable components and REST APIs while working with vendors to translate business workflows into product features.',
+        "Built marketplace features using React.js, Node.js, Express.js, and MongoDB, developing reusable components and REST APIs while working with vendors to translate business workflows into product features.",
     },
     {
-      number: '03',
-      type: 'Internship',
-      company: 'Varcons Technologies Pvt. Ltd',
-      role: 'Full Stack Web Development Intern',
-      period: 'May 2023 — Jul 2023',
+      number: "03",
+      type: "Internship",
+      company: "Varcons Technologies Pvt. Ltd",
+      role: "Full Stack Web Development Intern",
+      period: "May 2023 — Jul 2023",
       description:
-        'Developed frontend features across 10+ client projects using React.js, Angular, TypeScript, HTML, and CSS, including reusable components, dashboards, landing pages, and responsive interfaces.',
+        "Developed frontend features across 10+ client projects using React.js, Angular, TypeScript, HTML, and CSS, including reusable components, dashboards, landing pages, and responsive interfaces.",
     },
   ];
   useLayoutEffect(() => {
@@ -47,11 +47,11 @@ const Work = () => {
         { scale: 1.15 },
         {
           scale: 1,
-          ease: 'none',
+          ease: "none",
           scrollTrigger: {
             trigger: parallaxImageRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
+            start: "top bottom",
+            end: "bottom top",
             scrub: true,
           },
         },
@@ -72,7 +72,7 @@ const Work = () => {
           strokeDashoffset: length,
         });
 
-        const card = line.closest('.group');
+        const card = line.closest(".group");
 
         if (!card) return;
 
@@ -80,7 +80,7 @@ const Work = () => {
           gsap.to(line, {
             strokeDashoffset: 0,
             duration: 0.9,
-            ease: 'power3.out',
+            ease: "power3.out",
           });
         };
 
@@ -88,12 +88,12 @@ const Work = () => {
           gsap.to(line, {
             strokeDashoffset: length,
             duration: 0.5,
-            ease: 'power2.in',
+            ease: "power2.in",
           });
         };
 
-        card.addEventListener('mouseenter', enter);
-        card.addEventListener('mouseleave', leave);
+        card.addEventListener("mouseenter", enter);
+        card.addEventListener("mouseleave", leave);
       });
     });
 
@@ -140,6 +140,7 @@ const Work = () => {
                 src={experience[0].image}
                 alt={experience[0].company}
                 className=" block h-auto w-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="lg:col-span-5">
@@ -203,9 +204,7 @@ const Work = () => {
                 />
               </svg>
             </div>
-            <h4 className={`mt-1 font-space size14 uppercase ${index === 0 ? 'text-orange' : 'text-blue'}`}>
-              {item.role}
-            </h4>
+            <h4 className={`mt-1 font-space size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
             <p className="mt-4 max-w-lg font-space size14 leading-6 text-grey">{item.description}</p>
 
             <div className="mt-4">

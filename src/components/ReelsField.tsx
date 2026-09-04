@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 const ReelsField = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -8,7 +8,7 @@ const ReelsField = () => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -33,8 +33,8 @@ const ReelsField = () => {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
         uMouseActive: { value: 0 },
-        uColorBase: { value: new THREE.Color('#111111') },
-        uColorAccent: { value: new THREE.Color('#ff5a1f') },
+        uColorBase: { value: new THREE.Color("#111111") },
+        uColorAccent: { value: new THREE.Color("#ff5a1f") },
       },
       vertexShader: `
         uniform float uTime;
@@ -47,16 +47,16 @@ const ReelsField = () => {
           vec3 pos = position;
 
           float wave = sin(pos.x * 0.012 + uTime * 0.6) * cos(pos.y * 0.014 + uTime * 0.45);
-          pos.z += wave * 10.0;
+          pos.z += wave * 16.0;
 
           float dist = distance(pos.xy, uMouse);
-          float ripple = smoothstep(160.0, 0.0, dist) * uMouseActive;
-          pos.z += ripple * 46.0;
+          float ripple = smoothstep(220.0, 0.0, dist) * uMouseActive;
+          pos.z += ripple * 70.0;
 
-          vIntensity = clamp(wave * 0.5 + 0.5, 0.0, 1.0) * 0.5 + ripple;
+          vIntensity = clamp(wave * 0.5 + 0.5, 0.0, 1.0) * 0.8 + ripple;
 
           vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-          gl_PointSize = (1.4 + ripple * 3.6 + aRandom * 0.8) * (320.0 / -mvPosition.z);
+          gl_PointSize = (2.6 + ripple * 5.5 + aRandom * 1.4) * (320.0 / -mvPosition.z);
           gl_Position = projectionMatrix * mvPosition;
         }
       `,
@@ -73,13 +73,13 @@ const ReelsField = () => {
           float alpha = smoothstep(0.5, 0.0, d);
           vec3 color = mix(uColorBase, uColorAccent, clamp(vIntensity, 0.0, 1.0));
 
-          gl_FragColor = vec4(color, alpha * (0.12 + vIntensity * 0.55));
+          gl_FragColor = vec4(color, alpha * (0.32 + vIntensity * 0.68));
         }
       `,
     });
 
-    const CELL = 42;
-    const MAX_POINTS = 2600;
+    const CELL = 32;
+    const MAX_POINTS = 4800;
 
     let points: THREE.Points | null = null;
     let geometry: THREE.BufferGeometry | null = null;
@@ -117,8 +117,8 @@ const ReelsField = () => {
       }
 
       geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute("aRandom", new THREE.BufferAttribute(randoms, 1));
 
       points = new THREE.Points(geometry, material);
       scene.add(points);
@@ -145,12 +145,7 @@ const ReelsField = () => {
 
     const handlePointerMove = (event: PointerEvent) => {
       const rect = mount.getBoundingClientRect();
-      if (
-        event.clientX < rect.left ||
-        event.clientX > rect.right ||
-        event.clientY < rect.top ||
-        event.clientY > rect.bottom
-      ) {
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
         mouseActiveTarget = 0;
         return;
       }
@@ -200,15 +195,15 @@ const ReelsField = () => {
     resizeObserver.observe(mount);
 
     resize();
-    window.addEventListener('pointermove', handlePointerMove);
-    mount.addEventListener('pointerleave', handlePointerLeave);
+    window.addEventListener("pointermove", handlePointerMove);
+    mount.addEventListener("pointerleave", handlePointerLeave);
     animate();
 
     return () => {
       cancelAnimationFrame(frameId);
       clearTimeout(idleTimeout);
-      window.removeEventListener('pointermove', handlePointerMove);
-      mount.removeEventListener('pointerleave', handlePointerLeave);
+      window.removeEventListener("pointermove", handlePointerMove);
+      mount.removeEventListener("pointerleave", handlePointerLeave);
       intersectionObserver.disconnect();
       resizeObserver.disconnect();
       geometry?.dispose();

@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import gsap from 'gsap';
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
+import gsap from "gsap";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -17,17 +17,17 @@ const Header = () => {
       setScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Prevent background scrolling when menu is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    document.body.style.overflow = menuOpen ? "hidden" : "";
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [menuOpen]);
 
@@ -53,7 +53,7 @@ const Header = () => {
       menuTimeline.current = gsap.timeline({
         paused: true,
         defaults: {
-          ease: 'power4.out',
+          ease: "power4.out",
         },
       });
 
@@ -72,7 +72,7 @@ const Header = () => {
             duration: 0.6,
             stagger: 0.08,
           },
-          '-=0.35',
+          "-=0.35",
         )
         .to(
           availabilityRef.current,
@@ -81,7 +81,7 @@ const Header = () => {
             autoAlpha: 1,
             duration: 0.5,
           },
-          '-=0.25',
+          "-=0.25",
         );
     }, menuRef);
 
@@ -107,7 +107,7 @@ const Header = () => {
       {/* HEADER */}
       <header
         className={`fixed inset-x-0 top-0 z-50 px-6 md:px-20 py-3 transition-all duration-700 ease-out
-        ${scrolled ? ' backdrop-blur-sm shadow-md' : ' shadow-none'}`}
+        ${scrolled ? " backdrop-blur-sm shadow-md" : " shadow-none"}`}
       >
         <nav
           ref={navRef}
@@ -125,42 +125,42 @@ const Header = () => {
           {/* DESKTOP NAV */}
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 text-lg md:flex">
             <li className="flex items-center">
-              <a href="#work" className="link-rollover">
-                <span className="link-rollover-inner">
-                  <span className="font-italic link-rollover-text">Work</span>
+              <a href="#work" className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]">
+                <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
+                  <span className="h-[1.4em] whitespace-nowrap font-italic">Work</span>
 
-                  <span className="font-instrument link-rollover-text text-orange" aria-hidden="true">
+                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-orange" aria-hidden="true">
                     Work
                   </span>
                 </span>
 
-                <span className="link-rollover-line bg-orange" />
+                <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-orange transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
               </a>
             </li>
             <li className="flex items-center">
-              <a href="#projects" className="link-rollover">
-                <span className="link-rollover-inner">
-                  <span className="font-italic link-rollover-text">Projects</span>
+              <a href="#work" className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]">
+                <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
+                  <span className="h-[1.4em] whitespace-nowrap font-italic">projects</span>
 
-                  <span className="font-instrument link-rollover-text text-blue" aria-hidden="true">
-                    Projects
+                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-blue capitalize" aria-hidden="true">
+                    projects
                   </span>
                 </span>
 
-                <span className="link-rollover-line bg-blue" />
+                <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-orange transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
               </a>
             </li>
             <li className="flex items-center">
-              <a href="#projects" className="link-rollover">
-                <span className="link-rollover-inner">
-                  <span className="font-italic link-rollover-text">Resume</span>
+              <a href="#work" className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]">
+                <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
+                  <span className="h-[1.4em] whitespace-nowrap font-italic">Resume</span>
 
-                  <span className="font-instrument link-rollover-text text-orange" aria-hidden="true">
+                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-orange capitalize" aria-hidden="true">
                     Resume
                   </span>
                 </span>
 
-                <span className="link-rollover-line bg-orange" />
+                <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-orange transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
               </a>
             </li>
           </ul>
@@ -179,7 +179,7 @@ const Header = () => {
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
             className="relative z-[60] flex h-10 w-10 cursor-grab items-center justify-center rounded-full border border-black md:hidden"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
             {menuOpen ? <HiX size={21} /> : <HiMenuAlt3 size={21} />}
           </button>
