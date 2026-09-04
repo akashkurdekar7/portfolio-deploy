@@ -10,14 +10,42 @@ interface HighlightCircleProps {
   color?: string;
 }
 
+// The hand-drawn path lives in a 200x100 (2:1) viewBox. Deriving the overlay's
+// height from the wrapper's own box would tie the circle's shape to whatever
+// line-height the surrounding heading happens to use (e.g. "leading-[0.9]" on
+// the featured card vs "leading-[1.2]" on the grid cards), flattening it for
+// no visual reason. Font-size stays constant across those contexts, so the
+// height is derived from it instead; the multiplier is calibrated off the
+// existing (correct-looking) proportions of the shorter highlighted words.
+const CIRCLE_HEIGHT_PER_FONT_SIZE = 1.88;
+const CIRCLE_WIDTH_OVERSHOOT = 1.2;
+
 const HighlightCircle = ({ children, className = "", color }: HighlightCircleProps) => {
   const wrapRef = useRef<HTMLSpanElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
 
   useLayoutEffect(() => {
     const wrap = wrapRef.current;
+    const svg = svgRef.current;
     const path = pathRef.current;
-    if (!wrap || !path) return;
+    if (!wrap || !svg || !path) return;
+
+    const updateBox = () => {
+      const fontSize = parseFloat(getComputedStyle(wrap).fontSize);
+      const width = wrap.offsetWidth * CIRCLE_WIDTH_OVERSHOOT;
+      const height = fontSize * CIRCLE_HEIGHT_PER_FONT_SIZE;
+
+      svg.style.width = `${width}px`;
+      svg.style.height = `${height}px`;
+      svg.style.left = `${-(width - wrap.offsetWidth) / 2}px`;
+      svg.style.top = `${(wrap.offsetHeight - height) / 2}px`;
+    };
+
+    updateBox();
+
+    const resizeObserver = new ResizeObserver(updateBox);
+    resizeObserver.observe(wrap);
 
     const ctx = gsap.context(() => {
       const length = path.getTotalLength();
@@ -36,14 +64,17 @@ const HighlightCircle = ({ children, className = "", color }: HighlightCirclePro
       });
     }, wrap);
 
-    return () => ctx.revert();
+    return () => {
+      resizeObserver.disconnect();
+      ctx.revert();
+    };
   }, []);
 
   const style = color ? ({ "--highlight-color": color } as CSSProperties) : undefined;
 
   return (
     <span ref={wrapRef} className={`highlight-circle ${className}`} style={style}>
-      <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="highlight-circle-svg" aria-hidden="true">
+      <svg ref={svgRef} viewBox="0 0 200 100" preserveAspectRatio="none" className="highlight-circle-svg" aria-hidden="true">
         <path
           ref={pathRef}
           className="highlight-circle-stroke"

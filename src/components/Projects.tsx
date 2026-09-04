@@ -115,7 +115,7 @@ const Projects = () => {
   ];
 
   return (
-    <section className="relative mx-5 min-h-screen overflow-hidden py-5 lg:py-24 md:mx-20">
+    <section id="projects" className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
       {/* Heading */}
       <div className="flex flex-col items-center gap-3">
         <h2 className="size56 font-instrument leading-none capitalize">

@@ -1,7 +1,17 @@
-import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaGithub, FaHandsHelping, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import Crowd from "./Crowd";
 import sheet from "../assets/open-peeps-sheet.png";
+
+const TILE_THEMES = [
+  "bg-blue text-white",
+  "bg-orange text-black",
+  "bg-white text-black",
+  "bg-black text-[#f5d949] border border-[#f5d949]/30",
+];
+
+const ROTATIONS = ["-rotate-3", "rotate-3", "rotate-2", "-rotate-2"];
+
 const Footer = () => {
   const links = [
     {
@@ -59,9 +69,42 @@ const Footer = () => {
       </div>
 
       {/* Social Links */}
-      <div className="absolute left-1/2 top-105 lg:top-1/2 z-20 w-[calc(100%-3rem)] -translate-x-1/2 -translate-y-1/2 md:w-auto md:translate-y-17.5">
+      <div className="absolute left-1/2 top-100 lg:top-1/2 z-20 w-[calc(100%-3rem)] -translate-x-1/2 -translate-y-1/2 md:w-auto md:translate-y-17.5">
+        {/* Mobile: pinned sticker grid */}
+        <ul className="grid grid-cols-2 gap-3.5 md:hidden">
+          {links.map((item, i) => (
+            <li key={item.name} className={ROTATIONS[i % ROTATIONS.length]}>
+              <a
+                href={item.link}
+                target={item.name === "G-mail" ? undefined : "_blank"}
+                rel={item.name === "G-mail" ? undefined : "noreferrer"}
+                className={`
+                  group/tile relative flex aspect-[6/5] w-full flex-col justify-between
+                  overflow-hidden rounded-2xl p-4
+                  transition-[transform,box-shadow] duration-200 ease-out
+                  active:translate-y-1.5 active:rotate-0 active:scale-[0.97] active:shadow-[0_1px_0_rgba(0,0,0,0.35)]
+                  ${TILE_THEMES[i % TILE_THEMES.length]}
+                `}
+              >
+                <div className="flex items-start justify-between">
+                  <span className="font-space size12 opacity-50">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-space size56 leading-none opacity-70 transition-transform duration-200 group-active/tile:rotate-45">
+                    <FaHandsHelping />
+                  </span>
+                </div>
+
+                <div>
+                  <span className="block text-4xl leading-none">{item.icon}</span>
+                  <span className="mt-3 block font-space size16 uppercase tracking-wide">{item.name}</span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        {/* Tablet / Desktop: liquid glass row */}
         <ul
-          className=" flex flex-col items-stretch gap-1
+          className=" hidden
             rounded-lg
             border border-white/30
             bg-white/8
@@ -118,7 +161,7 @@ const Footer = () => {
                 {/* CONTENT */}
 
                 <span className=" relative z-10 text-3xl md:text-[50px]">{item.icon}</span>
-                <span className="relative z-10 w-max font-space size16 uppercase">{item.name}</span>
+                <span className="relative z-10 w-max font-space size16 uppercase w-max">{item.name}</span>
               </a>
             </li>
           ))}
@@ -142,7 +185,7 @@ const Footer = () => {
       rounded-full
       border border-white/15
       bg-black/10
-      px-4 py-2
+      px-4 lg:py-2 py-1
       backdrop-blur-md
       backdrop-saturate-150
       shadow-[0_4px_20px_rgba(0,0,0,0.08)]
@@ -167,7 +210,7 @@ const Footer = () => {
       rounded-full
       border border-white/15
       bg-black/10
-      px-5 py-2
+     px-4 lg:py-2 py-1
       backdrop-blur-md
       backdrop-saturate-150
       shadow-[0_4px_20px_rgba(0,0,0,0.08)]
@@ -188,7 +231,7 @@ const Footer = () => {
       rounded-full
       border border-white/15
       bg-black/10
-      px-4 py-2
+      px-4 lg:py-2 py-1
       backdrop-blur-md
       backdrop-saturate-150
       shadow-[0_4px_20px_rgba(0,0,0,0.08)]

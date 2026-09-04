@@ -90,14 +90,14 @@ const ProjectsStack = ({ projects }: ProjectsStackProps) => {
 
   return (
     <section ref={sectionRef} className="relative h-dvh overflow-hidden">
-      <div className="relative mx-auto h-full w-[86vw] max-w-[380px] [perspective:1200px]">
+      <div className="relative mx-auto h-full w-full [perspective:1200px]">
         {projects.map((project, index) => (
           <div
             key={project.title}
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
-            className="absolute inset-0 m-auto h-fit w-full origin-bottom rounded-[28px] border-2 border-black bg-[#ffffff] p-3 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.35)] will-change-transform"
+            className="absolute inset-0 m-auto h-fit w-full origin-bottom rounded-[28px] border-2 border-black bg-[#ffffff] px-3  py-4  will-change-transform"
             style={{ zIndex: index + 1 }}
           >
             <ProjectCard project={project} index={index} />

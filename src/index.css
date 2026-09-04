@@ -309,9 +309,9 @@
   height: 50px;
   width: 50px;
   will-change: transform;
-  @media screen and (max-width: 575px) {
-    height: 48px;
-    width: 48px;
+  @media screen and (max-width: 768px) {
+    height: 42px;
+    width: 42px;
   }
 }
 

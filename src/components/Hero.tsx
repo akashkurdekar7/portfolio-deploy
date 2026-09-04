@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoMailOutline } from "react-icons/io5";
 import hero from "../assets/hero.webp";
 import clouds from "../assets/clouds.png";
 import gsap from "gsap";
+import type Lenis from "lenis";
 const Hero = () => {
   const links = [
     {
@@ -28,32 +29,86 @@ const Hero = () => {
     },
   ];
   const cloudRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
-    const strengths = [20, 12, 16, 10, 25];
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
 
-    const handleMouseMove = (event: MouseEvent) => {
-      // Only enable parallax above 1200px
-      if (window.innerWidth <= 1200) return;
-      const x = event.clientX / window.innerWidth - 0.5;
-      const y = event.clientY / window.innerHeight - 0.5;
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const mouseStrengths = [40, 25, 30, 20, 50];
+    // How far (px, max ~10) each cloud drifts once the user has scrolled one
+    // full viewport height. Sign controls direction (left/right, up/down).
+    const scrollStrengthsX = [-10, 8, -9, 7, -10];
+    const scrollStrengthsY = [6, -7, 5, -6, 8];
+
+    const mouse = { x: 0, y: 0 };
+    let scrollProgress = 0;
+
+    const applyTransforms = () => {
       cloudRefs.current.forEach((cloud, index) => {
         if (!cloud) return;
 
         gsap.to(cloud, {
-          x: x * strengths[index],
-          y: y * strengths[index],
-          duration: 1.2,
+          x: mouse.x * mouseStrengths[index] + scrollStrengthsX[index] * scrollProgress,
+          y: mouse.y * mouseStrengths[index] + scrollStrengthsY[index] * scrollProgress,
+          duration: 0.9,
           ease: "power3.out",
           overwrite: true,
         });
       });
     };
 
+    // Only enable mouse parallax on devices that actually have a mouse
+    // (touch devices don't send meaningful mousemove events).
+    const hasMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!hasMouse) return;
+      mouse.x = event.clientX / window.innerWidth - 0.5;
+      mouse.y = event.clientY / window.innerHeight - 0.5;
+      applyTransforms();
+    };
+
+    // Drive the scroll side of the parallax off Lenis's own scroll value
+    // (set on window by SmoothScroll) so it stays perfectly in sync with the
+    // smoothed scroll instead of the raw, un-smoothed native scroll event.
+    const lenis = window.__lenis;
+
+    const handleLenisScroll = (instance: Lenis) => {
+      scrollProgress = Math.min(instance.scroll / window.innerHeight, 1);
+      applyTransforms();
+    };
+
+    const handleNativeScroll = () => {
+      scrollProgress = Math.min(window.scrollY / window.innerHeight, 1);
+      applyTransforms();
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
+
+    if (lenis) {
+      lenis.on("scroll", handleLenisScroll);
+    } else {
+      window.addEventListener("scroll", handleNativeScroll, { passive: true });
+    }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      if (lenis) {
+        lenis.off("scroll", handleLenisScroll);
+      } else {
+        window.removeEventListener("scroll", handleNativeScroll);
+      }
     };
   }, []);
 
@@ -96,7 +151,7 @@ const Hero = () => {
       <div className={`group absolute bottom-4 z-30 left-0 flex items-start gap-1 flex-col hero-side-content transition-all duration-700 `}>
         <h3 className="font-space font-space-bold size14 uppercase mb-0">let's connect</h3>
 
-        <div className="h-px w-[22%] group-hover:w-full transition-all duration-1000 bg-orange" />
+        <div className={`h-px ${isScrolled ? "w-full" : "w-[22%]"} group-hover:w-full transition-all duration-1000 bg-orange`} />
 
         <ul className="flex items-center gap-4 w-full justify-between">
           {links.map((item) => (
@@ -164,7 +219,7 @@ const Hero = () => {
         <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-full object-cover" loading="lazy" title="Cloud" />
 
         <div
-          className={`absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-space-bold size12 uppercase hero-side-content transition-opacity duration-700 `}
+          className={`absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-space-bold size12 uppercase hero-side-content transition-opacity duration-700  w-max`}
         >
           DOWN YOU GO
         </div>

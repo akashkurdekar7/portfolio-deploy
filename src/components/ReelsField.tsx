@@ -12,8 +12,9 @@ const ReelsField = () => {
 
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    } catch {
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, premultipliedAlpha: false });
+    } catch (error) {
+      console.warn("ReelsField: WebGL unavailable, skipping background effect.", error);
       return;
     }
 
