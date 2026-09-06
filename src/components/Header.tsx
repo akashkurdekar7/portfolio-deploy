@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { HiMenuAlt3, HiX } from "react-icons/hi";
-import gsap from "gsap";
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { HiMenuAlt3, HiX } from 'react-icons/hi';
+import gsap from 'gsap';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -17,17 +17,17 @@ const Header = () => {
       setScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Prevent background scrolling when menu is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, [menuOpen]);
 
@@ -53,7 +53,7 @@ const Header = () => {
       menuTimeline.current = gsap.timeline({
         paused: true,
         defaults: {
-          ease: "power4.out",
+          ease: 'power4.out',
         },
       });
 
@@ -72,7 +72,7 @@ const Header = () => {
             duration: 0.6,
             stagger: 0.08,
           },
-          "-=0.35",
+          '-=0.35',
         )
         .to(
           availabilityRef.current,
@@ -81,7 +81,7 @@ const Header = () => {
             autoAlpha: 1,
             duration: 0.5,
           },
-          "-=0.25",
+          '-=0.25',
         );
     }, menuRef);
 
@@ -107,7 +107,7 @@ const Header = () => {
       {/* HEADER */}
       <header
         className={`fixed inset-x-0 top-0 z-50 px-6 md:px-20 py-3 transition-all duration-700 ease-out
-        ${scrolled ? " backdrop-blur-sm shadow-md" : " shadow-none"}`}
+        ${scrolled ? ' backdrop-blur-sm shadow-md' : ' shadow-none'}`}
       >
         <nav
           ref={navRef}
@@ -140,7 +140,7 @@ const Header = () => {
             <li className="flex items-center">
               <a href="#work" className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]">
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
-                  <span className="h-[1.4em] whitespace-nowrap font-italic">projects</span>
+                  <span className="h-[1.4em] whitespace-nowrap font-italic">Projects</span>
 
                   <span className="h-[1.4em] whitespace-nowrap font-instrument text-blue capitalize" aria-hidden="true">
                     projects
@@ -155,7 +155,10 @@ const Header = () => {
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
                   <span className="h-[1.4em] whitespace-nowrap font-italic">Resume</span>
 
-                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-orange capitalize" aria-hidden="true">
+                  <span
+                    className="h-[1.4em] whitespace-nowrap font-instrument text-orange capitalize"
+                    aria-hidden="true"
+                  >
                     Resume
                   </span>
                 </span>
@@ -179,7 +182,7 @@ const Header = () => {
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
             className="relative z-[60] flex h-10 w-10 cursor-grab items-center justify-center rounded-full border border-black md:hidden"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           >
             {menuOpen ? <HiX size={21} /> : <HiMenuAlt3 size={21} />}
           </button>

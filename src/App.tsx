@@ -1,13 +1,13 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-import SmoothScroll from "./components/SmoothScroll";
-import Projects from "./components/Projects";
-import Article from "./components/Article";
+import Header from './components/Header';
+import Hero from './components/Hero';
+import Footer from './components/Footer';
+import SmoothScroll from './components/SmoothScroll';
+import Projects from './components/Projects';
+import Article from './components/Article';
 // import Reels from './components/Reels';
 // import About from './components/About';
-import Work from "./components/Work";
-import ReelsField from "./components/ReelsField";
+import Work from './components/Work';
+import ReelsField from './components/ReelsField';
 // import StackLoader from "./components/StackLoader";
 
 const App = () => {
@@ -32,11 +32,11 @@ const App = () => {
             <blockquote className="mt-0">
               <h3 className="size56 font-italic   text-black ">“Fear cuts deeper than swords.”</h3>
 
-              <footer className=" size12 font-space  text-black/50 text-end">
+              <div className=" size12 font-space  text-black/50 text-end tracking-tight">
                 — George R. R. Martin
                 <span className="mx-2 text-neutral-300">/</span>
-                <cite className="  not-italic">A Game of Thrones</cite>
-              </footer>
+                <cite className=" not-italic">A Game of Thrones</cite>
+              </div>
             </blockquote>
           </div>
         </section>

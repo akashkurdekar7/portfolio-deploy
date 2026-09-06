@@ -1,39 +1,39 @@
-import { FaEnvelope, FaGithub, FaHandsHelping, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaGithub, FaHandsHelping, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
-import Crowd from "./Crowd";
-import RollingText from "./RollingText";
-import sheet from "../assets/open-peeps-sheet.png";
+import Crowd from './Crowd';
+import RollingText from './RollingText';
+import sheet from '../assets/open-peeps-sheet.png';
 
 const TILE_THEMES = [
-  "bg-blue text-white",
-  "bg-orange text-black",
-  "bg-white text-black",
-  "bg-black text-[#f5d949] border border-[#f5d949]/30",
+  'bg-blue text-white',
+  'bg-orange text-black',
+  'bg-white text-black',
+  'bg-black text-[#f5d949] border border-[#f5d949]/30',
 ];
 
-const ROTATIONS = ["-rotate-3", "rotate-3", "rotate-2", "-rotate-2"];
+const ROTATIONS = ['-rotate-3', 'rotate-3', 'rotate-2', '-rotate-2'];
 
 const Footer = () => {
   const links = [
     {
-      name: "linkedin",
+      name: 'linkedin',
       icon: <FaLinkedin />,
-      link: "https://www.linkedin.com/in/akashkurdekar/",
+      link: 'https://www.linkedin.com/in/akashkurdekar/',
     },
     {
-      name: "Instagram",
+      name: 'Instagram',
       icon: <FaInstagram />,
-      link: "https://www.instagram.com/unlikeakash_",
+      link: 'https://www.instagram.com/unlikeakash_',
     },
     {
-      name: "G-mail",
+      name: 'G-mail',
       icon: <FaEnvelope />,
-      link: "mailto:akashkurdekar39@gmail.com",
+      link: 'mailto:akashkurdekar39@gmail.com',
     },
     {
-      name: "Github",
+      name: 'Github',
       icon: <FaGithub />,
-      link: "https://github.com/akashkurdekar7",
+      link: 'https://github.com/akashkurdekar7',
     },
   ];
 
@@ -67,45 +67,43 @@ const Footer = () => {
           <span className="font-italic text-white/50  tracking-normal">awkward</span>
           <span className="font-chunko"> part.</span>
         </h2>
-      </div>
-
-      {/* Social Links */}
-      <div className="absolute left-1/2 top-100 lg:top-1/2 z-20 w-[calc(100%-3rem)] -translate-x-1/2 -translate-y-1/2 md:w-auto md:translate-y-17.5">
-        {/* Mobile: pinned sticker grid */}
-        <ul className="grid grid-cols-2 gap-3.5 md:hidden">
-          {links.map((item, i) => (
-            <li key={item.name} className={ROTATIONS[i % ROTATIONS.length]}>
-              <a
-                href={item.link}
-                target={item.name === "G-mail" ? undefined : "_blank"}
-                rel={item.name === "G-mail" ? undefined : "noreferrer"}
-                className={`
+        {/* Social Links */}
+        <div className="">
+          {/* Mobile: pinned sticker grid */}
+          <ul className="grid grid-cols-2 gap-3.5 md:hidden">
+            {links.map((item, i) => (
+              <li key={item.name} className={ROTATIONS[i % ROTATIONS.length]}>
+                <a
+                  href={item.link}
+                  target={item.name === 'G-mail' ? undefined : '_blank'}
+                  rel={item.name === 'G-mail' ? undefined : 'noreferrer'}
+                  className={`
                   group/tile relative flex aspect-[6/5] w-full flex-col justify-between
                   overflow-hidden rounded-2xl p-4
                   transition-[transform,box-shadow] duration-200 ease-out
                   active:translate-y-1.5 active:rotate-0 active:scale-[0.97] active:shadow-[0_1px_0_rgba(0,0,0,0.35)]
                   ${TILE_THEMES[i % TILE_THEMES.length]}
                 `}
-              >
-                <div className="flex items-start justify-between">
-                  <span className="font-space size12 opacity-50">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="font-space size56 leading-none opacity-70 transition-transform duration-200 group-active/tile:rotate-45">
-                    <FaHandsHelping />
-                  </span>
-                </div>
+                >
+                  <div className="flex items-start justify-between">
+                    <span className="font-space size12 opacity-50">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="font-space size56 leading-none opacity-70 transition-transform duration-200 group-active/tile:rotate-45">
+                      <FaHandsHelping />
+                    </span>
+                  </div>
 
-                <div>
-                  <span className="block text-4xl leading-none">{item.icon}</span>
-                  <span className="mt-3 block font-space size16 uppercase tracking-wide">{item.name}</span>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
+                  <div>
+                    <span className="block text-4xl leading-none">{item.icon}</span>
+                    <span className="mt-3 block font-space size16 uppercase tracking-wide">{item.name}</span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        {/* Tablet / Desktop: liquid glass row */}
-        <ul
-          className=" hidden
+          {/* Tablet / Desktop: liquid glass row */}
+          <ul
+            className=" hidden
             rounded-lg
             border border-white/30
             bg-white/8
@@ -115,14 +113,14 @@ const Footer = () => {
             shadow-[0_4px_8px_rgba(255,255,255,0.5)]
             md:grid md:grid-cols-4 md:items-stretch
           "
-        >
-          {links.map((item) => (
-            <li key={item.name}>
-              <a
-                href={item.link}
-                target={item.name === "G-mail" ? undefined : "_blank"}
-                rel={item.name === "G-mail" ? undefined : "noreferrer"}
-                className="
+          >
+            {links.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.link}
+                  target={item.name === 'G-mail' ? undefined : '_blank'}
+                  rel={item.name === 'G-mail' ? undefined : 'noreferrer'}
+                  className="
     group/link
     relative isolate overflow-hidden
     flex items-center justify-between gap-3
@@ -132,10 +130,10 @@ const Footer = () => {
     text-white
     md:justify-center md:px-8 md:py-4 md:size28
   "
-              >
-                {/* WATER */}
-                <span
-                  className="
+                >
+                  {/* WATER */}
+                  <span
+                    className="
       pointer-events-none
       absolute inset-x-0 bottom-0 -z-10
       h-full
@@ -146,10 +144,10 @@ const Footer = () => {
       ease-[cubic-bezier(.22,1,.36,1)]
       group-hover/link:translate-y-0
     "
-                >
-                  {/* LIQUID SURFACE */}
-                  <span
-                    className="
+                  >
+                    {/* LIQUID SURFACE */}
+                    <span
+                      className="
         absolute -top-[8px] left-1/2
         h-4 w-[130%]
         -translate-x-1/2
@@ -157,16 +155,17 @@ const Footer = () => {
         bg-white/15
         blur-[1px]
       "
-                  />
-                </span>
-                {/* CONTENT */}
+                    />
+                  </span>
+                  {/* CONTENT */}
 
-                <span className=" relative z-10 text-3xl md:text-[50px]">{item.icon}</span>
-                <span className="relative z-10 w-max font-space size16 uppercase w-max">{item.name}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+                  <span className=" relative z-10 text-3xl md:text-[50px]">{item.icon}</span>
+                  <span className="relative z-10 w-max font-space size16 uppercase w-max">{item.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {/* Bottom Info */}
@@ -195,7 +194,12 @@ const Footer = () => {
           <div className="group flex items-baseline gap-1 font-instrument size16 cursor-pointer">
             <span>Based in</span>
 
-            <RollingText primary="Karnataka" primaryClassName="font-instrument" secondary="India" secondaryClassName="font-italic" />
+            <RollingText
+              primary="Karnataka"
+              primaryClassName="font-instrument"
+              secondary="India"
+              secondaryClassName="font-italic"
+            />
           </div>
         </div>
 
@@ -236,7 +240,12 @@ const Footer = () => {
           <div className="group flex items-baseline gap-1 font-instrument size16 cursor-pointer">
             <span>Looking for</span>
 
-            <RollingText primary="Opportunities" primaryClassName="font-instrument" secondary="Work" secondaryClassName="font-italic" />
+            <RollingText
+              primary="Opportunities"
+              primaryClassName="font-instrument"
+              secondary="Work"
+              secondaryClassName="font-italic"
+            />
           </div>
         </div>
       </div>
