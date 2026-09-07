@@ -1,6 +1,12 @@
 import React from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Lottie } from "lottie-react";
 import ProjectCard from "./ProjectCard";
 import ProjectsStack from "./ProjectsStack";
+import catLove from "../assets/gifs/Cat feeling love emotionsexpression. Emojisticker animation/animations/12345.json";
+import catPlaying from "../assets/gifs/Cat playing animation/animations/4c65d4b8-cda4-4975-8270-6e10c8c56173.json";
+
 import saas from "../assets/projects/saas.webp";
 import ghostrentals from "../assets/projects/ghostrental.webp";
 import greenminds from "../assets/projects/greenminds.webp";
@@ -9,7 +15,36 @@ import phdesignme from "../assets/projects/phdesignme.webp";
 import makemycard from "../assets/projects/makemycard.webp";
 import Arovan from "../assets/projects/arovan.webp";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Projects = () => {
+  // const catRef = useRef<HTMLElement>(null);
+
+  // useLayoutEffect(() => {
+  //   if (!catRef.current) return;
+
+  //   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  //   if (reducedMotion) return;
+
+  //   const ctx = gsap.context(() => {
+  //     const tl = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: catRef.current,
+  //         start: "top 85%",
+  //         once: true,
+  //       },
+  //     });
+
+  //     tl.fromTo(
+  //       catRef.current,
+  //       { scale: 0, rotate: -25, opacity: 0 },
+  //       { scale: 1, rotate: 0, opacity: 1, duration: 1, ease: "elastic.out(1, 0.55)" },
+  //     ).to(catRef.current, { y: -10, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut" }, ">-0.1");
+  //   });
+
+  //   return () => ctx.revert();
+  // }, []);
+
   const projects = [
     {
       title: "Wholesale Management System",
@@ -136,7 +171,10 @@ const Projects = () => {
       </div>
 
       {/* TABLET / DESKTOP: existing layout */}
-      <div className="lg:pt-25 hidden pt-8 md:block">
+      <div className="lg:pt-25 hidden pt-8 md:block relative">
+        <Lottie src={catLove} loop autoplay className="absolute top-[60%] left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-38 h-max" />
+        <Lottie src={catPlaying} loop autoplay className="absolute top-[85%] left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-38 h-max" />
+
         {/* FIRST TWO */}
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16 xl:grid-cols-2 xl:gap-x-24 xl:gap-y-20">
           {projects.slice(0, 2).map((project, index) => (
@@ -154,7 +192,6 @@ const Projects = () => {
                 <p className="max-w-xs font-space size12 text-grey text-start">{project.description}</p>
               </div>
 
-              {/* PROJECT */}
               <ProjectCard project={project} index={index + 2} variant="center" />
 
               {/* RIGHT */}

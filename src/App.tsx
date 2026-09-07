@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
@@ -8,30 +9,46 @@ import Article from './components/Article';
 // import About from './components/About';
 import Work from './components/Work';
 import ReelsField from './components/ReelsField';
+import Resume from './components/Resume';
 import Quote from './components/Quote';
+import Loader from './components/Loader';
+import WhatsAppButton from './components/WhatsAppButton';
 // import StackLoader from "./components/StackLoader";
 
 const App = () => {
+  const [siteBlurred, setSiteBlurred] = useState(false);
+
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-white text-black">
-      {/* <StackLoader /> */}
-      <SmoothScroll />
-      <ReelsField />
+      <Loader onStuck={() => setSiteBlurred(true)} onDismiss={() => setSiteBlurred(false)} />
 
-      <Header />
+      <div
+        className={`transition-[filter,scale] duration-700 ease-out ${
+          siteBlurred ? 'scale-[0.96] blur-md' : 'scale-100 blur-none'
+        }`}
+        aria-hidden={siteBlurred}
+      >
+        <SmoothScroll />
+        <ReelsField />
 
-      <main className="relative z-10">
-        <Hero />
-        {/* <About /> */}
-        <Projects />
-        <Article />
-        <Work />
-        {/* <Reels /> */}
+        <Header />
 
-        <Quote />
-      </main>
+        <main className="relative z-10">
+          <Hero />
+          {/* <About /> */}
+          <Projects />
+          <Article />
+          <Work />
+          {/* <Reels /> */}
+          <Resume />
 
-      <Footer />
+          <Quote />
+        </main>
+
+        <Footer />
+      </div>
+
+      <WhatsAppButton />
     </div>
   );
 };

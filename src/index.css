@@ -530,6 +530,88 @@
 }
 
 /* =================================
+   INTRO LOADER
+================================= */
+
+.loader-overlay {
+  background: var(--white);
+  will-change: transform;
+}
+
+.loader-heading {
+  font-size: clamp(28px, 5.5vw, 52px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--black);
+  white-space: nowrap;
+}
+
+.loader-letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.loader-track {
+  position: relative;
+  width: min(50vw, 220px);
+  height: 2px;
+  background: rgba(17, 17, 17, 0.12);
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.loader-fill {
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: var(--black);
+  animation: loaderSweep 1.3s ease-in-out infinite;
+}
+
+@keyframes loaderSweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  50% {
+    transform: translateX(60%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.loader-retry-btn {
+  padding: 0.7rem 1.4rem;
+  border-radius: 6px;
+  border: 1px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 4px 0 0 #fff,
+    0 4px 0 1px rgba(0, 0, 0, 1);
+  transition: all 0.2s ease-out;
+}
+
+.loader-retry-btn:hover {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 0 #fff,
+    0 1px 0 1px rgba(0, 0, 0, 1);
+}
+
+.loader-retry-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 0 #fff,
+    0 1px 0 1px rgba(0, 0, 0, 1);
+}
+
+/* =================================
    HERO REVEAL
 ================================= */
 
