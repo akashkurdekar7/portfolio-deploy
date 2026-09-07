@@ -1,5 +1,5 @@
-import { FaArrowRight } from 'react-icons/fa';
-
+import { FaArrowRight } from "react-icons/fa";
+import { useId } from "react";
 export type Project = {
   image?: string;
   title: string;
@@ -14,12 +14,12 @@ export type Project = {
 type ProjectCardProps = {
   project: Project;
   index: number;
-  variant?: 'default' | 'center';
+  variant?: "default" | "center";
 };
 
-const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) => {
-  const clipId = `imageClip-${variant}-${index}`;
-
+const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) => {
+  const uniqueId = useId();
+  const clipId = `imageClip-${uniqueId.replace(/:/g, "")}`;
   const fallbackImage = `https://picsum.photos/900/700?random=${index + 1}`;
 
   const projectImage = project.image || fallbackImage;
@@ -47,16 +47,12 @@ const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) 
     Z
   `;
 
-  const path = variant === 'center' ? centerPath : defaultPath;
+  const path = variant === "center" ? centerPath : defaultPath;
 
   return (
     <div className="group mx-auto h-auto w-full lg:w-[420px] cursor-pointer ">
-      <div className="relative mx-auto aspect-[450/350] w-full">
-        <svg
-          className="absolute inset-0 h-full w-full overflow-visible"
-          viewBox="0 0 450 350"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+      <div className="relative mx-auto aspect-[450/350] w-full [transform:translateZ(0)]">
+        <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 450 350" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <clipPath id={clipId}>
               <path d={path} />
@@ -72,9 +68,7 @@ const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) 
             clipPath={`url(#${clipId})`}
             role="img"
             aria-label={`${project.title} — ${project.type} project screenshot`}
-          >
-            <title>{`${project.title} — ${project.type}`}</title>
-          </image>
+          ></image>
 
           {/* BORDER */}
           <path d={path} stroke="black" strokeWidth="3" fill="none" />
@@ -83,7 +77,7 @@ const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) 
         {/* ARROW */}
         <div
           className={` absolute right-0 bottom-0 link-circle flex items-center justify-center  border-[3px] border-black   transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]  group-hover:scale-[0.88]
-    ${variant === 'center' ? 'rounded-none' : 'rounded-full'}
+    ${variant === "center" ? "rounded-none" : "rounded-full"}
   `}
         >
           <FaArrowRight
@@ -108,27 +102,19 @@ const ProjectCard = ({ project, index, variant = 'default' }: ProjectCardProps) 
         </div>
         <p className="mt-1 mb-2 font-space size12 uppercase text-grey">{project.type}</p>
 
-        {variant !== 'center' ? (
+        {variant !== "center" ? (
           <div className=" flex flex-wrap items-center gap-2">
             <p className=" font-space size12 leading-5 text-grey text-justify">{project.description}</p>
-            <span className="rounded-full border border-black/20 px-3 py-1 font-space size12 uppercase text-grey">
-              {project.company}
-            </span>
+            <span className="rounded-full border border-black/20 px-3 py-1 font-space size12 uppercase text-grey">{project.company}</span>
 
-            <span className="rounded-full bg-black px-3 py-1 font-space size12 uppercase text-white">
-              {project.contribution}
-            </span>
+            <span className="rounded-full bg-black px-3 py-1 font-space size12 uppercase text-white">{project.contribution}</span>
           </div>
         ) : (
           <div className="mt-0 flex flex-wrap items-center gap-2">
             <p className=" font-space size12 leading-5 text-grey text-justify xl:hidden">{project.description}</p>
-            <span className="rounded-full border border-black/20 px-3 py-1 font-space size12 uppercase text-grey">
-              {project.company}
-            </span>
+            <span className="rounded-full border border-black/20 px-3 py-1 font-space size12 uppercase text-grey">{project.company}</span>
 
-            <span className="rounded-full bg-black px-3 py-1 font-space size12 uppercase text-white">
-              {project.contribution}
-            </span>
+            <span className="rounded-full bg-black px-3 py-1 font-space size12 uppercase text-white">{project.contribution}</span>
           </div>
         )}
       </div>

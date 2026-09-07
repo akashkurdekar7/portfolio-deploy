@@ -8,6 +8,7 @@ import Article from './components/Article';
 // import About from './components/About';
 import Work from './components/Work';
 import ReelsField from './components/ReelsField';
+import Quote from './components/Quote';
 // import StackLoader from "./components/StackLoader";
 
 const App = () => {
@@ -27,19 +28,7 @@ const App = () => {
         <Work />
         {/* <Reels /> */}
 
-        <section className="h-screen flex items-center justify-center">
-          <div className="mx-auto flex items-center justify-center flex-col">
-            <blockquote className="mt-0">
-              <h3 className="size56 font-italic   text-black ">“Fear cuts deeper than swords.”</h3>
-
-              <div className=" size12 font-space  text-black/50 text-end tracking-tight">
-                — George R. R. Martin
-                <span className="mx-2 text-neutral-300">/</span>
-                <cite className=" not-italic">A Game of Thrones</cite>
-              </div>
-            </blockquote>
-          </div>
-        </section>
+        <Quote />
       </main>
 
       <Footer />
