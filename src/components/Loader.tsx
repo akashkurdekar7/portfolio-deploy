@@ -80,7 +80,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
 
       const stuckCall = gsap.delayedCall(STUCK_AT, () => {
         gsap.to(rootRef.current, {
-          y: "45vh",
+          y: "25vh",
           duration: reducedMotion ? 0.6 : 1.6,
           ease: reducedMotion ? "power2.out" : "back.out(1.4)",
           onComplete: () => {
@@ -154,7 +154,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
 
       <div
         ref={rootRef}
-        className="loader-overlay fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
+        className="loader-overlay fixed inset-0 z-[100] flex flex-col items-center justify-start overflow-hidden pt-[16vh]"
       >
         <div className="loader-stage flex flex-col items-center gap-7">
           <div ref={headingRef} className="loader-heading font-space" aria-hidden="true">
