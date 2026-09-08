@@ -1,36 +1,52 @@
-import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { useEffect, useRef, useState } from "react";
+import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
-import Crowd from './Crowd';
-import RollingText from './RollingText';
-import sheet from '../assets/open-peeps-sheet.png';
+import AnimeGreeter from "./AnimeGreeter";
+import Crowd from "./Crowd";
+import RollingText from "./RollingText";
+import sheet from "../assets/open-peeps-sheet.png";
+
+const DESKTOP_QUERY = "(min-width: 992px)";
 
 const Footer = () => {
+  const navRef = useRef<HTMLElement>(null);
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia(DESKTOP_QUERY).matches);
+
+  useEffect(() => {
+    const mql = window.matchMedia(DESKTOP_QUERY);
+    const handleChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+
+    mql.addEventListener("change", handleChange);
+
+    return () => mql.removeEventListener("change", handleChange);
+  }, []);
+
   const links = [
     {
-      name: 'linkedin',
+      name: "linkedin",
       icon: <FaLinkedin />,
-      link: 'https://www.linkedin.com/in/akashkurdekar/',
+      link: "https://www.linkedin.com/in/akashkurdekar/",
     },
     {
-      name: 'Instagram',
+      name: "Instagram",
       icon: <FaInstagram />,
-      link: 'https://www.instagram.com/unlikeakash_',
+      link: "https://www.instagram.com/unlikeakash_",
     },
     {
-      name: 'G-mail',
+      name: "G-mail",
       icon: <FaEnvelope />,
-      link: 'mailto:akashkurdekar39@gmail.com',
+      link: "mailto:akashkurdekar39@gmail.com",
     },
     {
-      name: 'Github',
+      name: "Github",
       icon: <FaGithub />,
-      link: 'https://github.com/akashkurdekar7',
+      link: "https://github.com/akashkurdekar7",
     },
   ];
 
   return (
-    <footer className="bg-black relative z-60 h-dvh lg:min-h-screen px-6 md:px-20  pt-5 lg:pt-25 ">
+    <footer className="bg-black relative z-60 min-h-dvh lg:min-h-screen px-6 md:px-20  pt-5 lg:pt-25 ">
       <svg className="absolute -top-[4%] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
         <path
           d="
@@ -47,7 +63,11 @@ const Footer = () => {
         />
       </svg>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <Crowd src={sheet} rows={15} cols={7} className="h-full w-full" />
+        {isDesktop ? (
+          <Crowd src={sheet} rows={15} cols={7} className="h-full w-full" />
+        ) : (
+          <AnimeGreeter className="h-full w-full" belowRef={navRef} />
+        )}
       </div>
       {/* Heading */}
       <div className="relative z-20 pt-8 md:pt-0">
@@ -60,18 +80,18 @@ const Footer = () => {
           <span className="font-chunko"> part.</span>
         </h2>
         {/* Social Links */}
-        <nav className="mt-8 md:mt-12">
+        <nav ref={navRef} className="mt-8 md:mt-12">
           <ul className="border-t border-white/15">
             {links.map((item, i) => (
               <li key={item.name} className="border-b border-white/15">
                 <a
                   href={item.link}
-                  target={item.name === 'G-mail' ? undefined : '_blank'}
-                  rel={item.name === 'G-mail' ? undefined : 'noreferrer'}
+                  target={item.name === "G-mail" ? undefined : "_blank"}
+                  rel={item.name === "G-mail" ? undefined : "noreferrer"}
                   className="group/link relative flex items-center justify-between gap-4 py-4 md:py-6"
                 >
                   <span className="flex items-center gap-4 md:gap-7">
-                    <span className="font-space size12 text-white/40">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="font-space size12 text-white/40">{String(i + 1).padStart(2, "0")}</span>
                     <span className="text-2xl text-white/50 transition-colors duration-300 group-hover/link:text-orange md:text-4xl">
                       {item.icon}
                     </span>
@@ -118,12 +138,7 @@ const Footer = () => {
           <div className="group flex items-baseline gap-1 font-instrument size16 cursor-pointer">
             <span>Based in</span>
 
-            <RollingText
-              primary="Karnataka"
-              primaryClassName="font-instrument"
-              secondary="India"
-              secondaryClassName="font-italic"
-            />
+            <RollingText primary="Karnataka" primaryClassName="font-instrument" secondary="India" secondaryClassName="font-italic" />
           </div>
         </div>
 
@@ -164,12 +179,7 @@ const Footer = () => {
           <div className="group flex items-baseline gap-1 font-instrument size16 cursor-pointer">
             <span>Looking for</span>
 
-            <RollingText
-              primary="Opportunities"
-              primaryClassName="font-instrument"
-              secondary="Work"
-              secondaryClassName="font-italic"
-            />
+            <RollingText primary="Opportunities" primaryClassName="font-instrument" secondary="Work" secondaryClassName="font-italic" />
           </div>
         </div>
       </div>

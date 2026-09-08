@@ -21,9 +21,10 @@ type ProjectCardProps = {
   project: Project;
   index: number;
   variant?: "default" | "center";
+  scrambleTitle?: boolean;
 };
 
-const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) => {
+const ProjectCard = ({ project, index, variant = "default", scrambleTitle = true }: ProjectCardProps) => {
   const uniqueId = useId();
   const clipId = `imageClip-${uniqueId.replace(/:/g, "")}`;
   const fallbackImage = `https://picsum.photos/900/700?random=${index + 1}`;
@@ -33,7 +34,7 @@ const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) 
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useLayoutEffect(() => {
-    if (!titleRef.current) return;
+    if (!titleRef.current || !scrambleTitle) return;
 
     const ctx = gsap.context(() => {
       gsap.to(titleRef.current, {
@@ -49,14 +50,13 @@ const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) 
         scrollTrigger: {
           trigger: titleRef.current,
           start: "center center",
-          markers: true,
           once: true,
         },
       });
     });
 
     return () => ctx.revert();
-  }, [project.title]);
+  }, [project.title, scrambleTitle]);
 
   const defaultPath = `
     M 0 0

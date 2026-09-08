@@ -16,6 +16,7 @@ const Resume = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const arrowPathRef = useRef<SVGPathElement>(null);
   const [pdfAvailable, setPdfAvailable] = useState<boolean | null>(null);
+  const [canPreviewInline, setCanPreviewInline] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
   // A missing public/resume.pdf falls through to the SPA's own index.html on
@@ -38,6 +39,29 @@ const Resume = () => {
       cancelled = true;
     };
   }, []);
+
+  // Android Chrome (and most mobile browsers) has no built-in PDF plugin for
+  // <object>/<embed> — it only renders a PDF when navigating to it directly.
+  // Embedding it anyway just shows a blank/broken plugin placeholder, so
+  // detect real inline-preview support and open the file directly instead.
+  useEffect(() => {
+    const nav = navigator as Navigator & { pdfViewerEnabled?: boolean };
+    if (typeof nav.pdfViewerEnabled === "boolean") {
+      setCanPreviewInline(nav.pdfViewerEnabled);
+      return;
+    }
+    setCanPreviewInline(!/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+  }, []);
+
+  const canShowInlinePreview = pdfAvailable === true && canPreviewInline;
+
+  const handleOpenPreview = () => {
+    if (canPreviewInline) {
+      setModalOpen(true);
+    } else {
+      window.open(RESUME_PATH, "_blank", "noopener,noreferrer");
+    }
+  };
 
   // Lock background scroll and allow Escape to close while the fullscreen preview is open
   useEffect(() => {
@@ -139,12 +163,12 @@ const Resume = () => {
         {/* PDF PREVIEW CARD */}
         <button
           type="button"
-          onClick={() => setModalOpen(true)}
+          onClick={handleOpenPreview}
           aria-label="Open full resume preview"
           className="group relative block w-full overflow-hidden rounded-2xl border-4 border-black bg-white text-left shadow-md lg:col-span-7"
         >
           <div className="aspect-[3/4] w-full overflow-hidden md:aspect-[16/10]">
-            {pdfAvailable ? (
+            {canShowInlinePreview ? (
               <object
                 data={`${RESUME_PATH}#toolbar=0&navpanes=0&view=FitH`}
                 type="application/pdf"
@@ -153,11 +177,11 @@ const Resume = () => {
             ) : (
               <div className="flex h-full items-center justify-center bg-white p-8 text-center font-space size14 leading-6 text-grey">
                 <p>
-                  {pdfAvailable === null ? (
-                    "Loading preview…"
-                  ) : (
-                    "Preview isn't available right now."
-                  )}
+                  {pdfAvailable === null
+                    ? "Loading preview…"
+                    : pdfAvailable
+                      ? "Tap to view the résumé."
+                      : "Preview isn't available right now."}
                 </p>
               </div>
             )}
@@ -193,7 +217,7 @@ const Resume = () => {
 
             <button
               type="button"
-              onClick={() => setModalOpen(true)}
+              onClick={handleOpenPreview}
               className="font-space size14 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
             >
               View full screen
@@ -205,68 +229,85 @@ const Resume = () => {
       {/* FULLSCREEN PREVIEW MODAL — portalled to <body> so it escapes the loader's
           blurred wrapper in App.tsx; a `filter` on that ancestor would otherwise
           become the containing block for this `fixed` overlay and break it. */}
-      {modalOpen && createPortal(
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Résumé preview"
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 md:p-10"
-          onClick={() => setModalOpen(false)}
-        >
+      {modalOpen &&
+        createPortal(
           <div
-            className="relative flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl border-4 border-black bg-white shadow-md"
-            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Résumé preview"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 md:p-10"
+            onClick={() => setModalOpen(false)}
           >
-            <div className="flex items-center justify-between border-b-2 border-black px-4 py-3 md:px-6">
-              <span className="font-space size14 uppercase text-grey">Akash Kurdekar — Résumé</span>
+            <div
+              className="relative flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl border-4 border-black bg-white shadow-md"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b-2 border-black px-4 py-3 md:px-6">
+                <span className="font-space size12 uppercase text-grey">Resume</span>
 
-              <div className="flex items-center gap-4">
-                <a
-                  href={RESUME_PATH}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 font-space size14 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
-                >
-                  <FaExternalLinkAlt size={12} />
-                  Open in new tab
-                </a>
+                <div className="flex items-center gap-4">
+                  <a
+                    href={RESUME_PATH}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 font-space size12 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
+                  >
+                    <FaExternalLinkAlt size={12} />
+                    Open in new tab
+                  </a>
 
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(false)}
-                  aria-label="Close résumé preview"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-black transition-colors duration-300 hover:bg-black hover:text-white"
-                >
-                  <HiX size={20} />
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    aria-label="Close résumé preview"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-black transition-colors duration-300 hover:bg-black hover:text-white"
+                  >
+                    <HiX size={20} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative flex-1 overflow-hidden bg-white">
+                {canShowInlinePreview ? (
+                  <object data={RESUME_PATH} type="application/pdf" className="h-full w-full">
+                    <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center font-space size14 leading-6 text-grey">
+                      <p>Your browser can't preview PDFs inline.</p>
+                      <a
+                        href={RESUME_PATH}
+                        download={RESUME_FILENAME}
+                        className="flex items-center gap-2 rounded-md border border-black bg-white px-5 py-3 text-black shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)]"
+                      >
+                        <FaDownload className="text-orange" />
+                        <span className="uppercase">Download PDF</span>
+                      </a>
+                    </div>
+                  </object>
+                ) : (
+                  <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center font-space size14 leading-6 text-grey">
+                    <p>
+                      {pdfAvailable === null
+                        ? "Loading preview…"
+                        : pdfAvailable
+                          ? "Your browser can't preview PDFs inline."
+                          : "Preview isn't available right now."}
+                    </p>
+                    {pdfAvailable && (
+                      <a
+                        href={RESUME_PATH}
+                        download={RESUME_FILENAME}
+                        className="flex items-center gap-2 rounded-md border border-black bg-white px-5 py-3 text-black shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)]"
+                      >
+                        <FaDownload className="text-orange" />
+                        <span className="uppercase">Download PDF</span>
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
-
-            <div className="relative flex-1 overflow-hidden bg-white">
-              {pdfAvailable ? (
-                <object data={RESUME_PATH} type="application/pdf" className="h-full w-full">
-                  <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center font-space size14 leading-6 text-grey">
-                    <p>Your browser can't preview PDFs inline.</p>
-                    <a
-                      href={RESUME_PATH}
-                      download={RESUME_FILENAME}
-                      className="flex items-center gap-2 rounded-md border border-black bg-white px-5 py-3 text-black shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)]"
-                    >
-                      <FaDownload className="text-orange" />
-                      <span className="uppercase">Download PDF</span>
-                    </a>
-                  </div>
-                </object>
-              ) : (
-                <div className="flex h-full items-center justify-center p-8 text-center font-space size14 leading-6 text-grey">
-                  <p>{pdfAvailable === null ? "Loading preview…" : "Preview isn't available right now."}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>,
-        document.body,
-      )}
+          </div>,
+          document.body,
+        )}
     </section>
   );
 };

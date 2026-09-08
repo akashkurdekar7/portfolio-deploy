@@ -12,7 +12,7 @@ const ReelsField = () => {
 
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, premultipliedAlpha: false });
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     } catch (error) {
       console.warn("ReelsField: WebGL unavailable, skipping background effect.", error);
       return;
@@ -71,10 +71,11 @@ const ReelsField = () => {
           float d = length(uv);
           if (d > 0.5) discard;
 
-          float alpha = smoothstep(0.5, 0.0, d);
+          float shape = smoothstep(0.5, 0.0, d);
+          float alpha = shape * (0.32 + vIntensity * 0.68);
           vec3 color = mix(uColorBase, uColorAccent, clamp(vIntensity, 0.0, 1.0));
 
-          gl_FragColor = vec4(color, alpha * (0.32 + vIntensity * 0.68));
+          gl_FragColor = vec4(color * alpha, alpha);
         }
       `,
     });
@@ -215,7 +216,7 @@ const ReelsField = () => {
       }
     };
   }, []);
-  return <div ref={mountRef} className="pointer-events-none fixed inset-0 z-0" aria-hidden="true" />;
+  return <div ref={mountRef} className="pointer-events-none fixed inset-0 z-0 transform-gpu" aria-hidden="true" />;
 };
 
 export default ReelsField;

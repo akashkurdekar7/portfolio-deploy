@@ -11,7 +11,7 @@ interface LoaderProps {
 }
 
 const HEADING = "portfolio";
-const STUCK_AT = 5;
+const STUCK_AT = 1;
 const GHOSTS = [-2, -1, 1, 2];
 
 const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
@@ -55,6 +55,9 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const ghosts = rootRef.current ? Array.from(rootRef.current.querySelectorAll<HTMLElement>(".loader-heading-ghost")) : [];
+    const mainHeadingEl = rootRef.current?.querySelector<HTMLElement>(".loader-heading-main");
+    const headingFontSize = mainHeadingEl ? parseFloat(window.getComputedStyle(mainHeadingEl).fontSize) : 100;
+    const ghostOffsetUnit = headingFontSize * 0.27;
 
     let stuckTween: gsap.core.Tween | undefined;
     let progressTween: gsap.core.Tween | undefined;
@@ -81,14 +84,24 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
       const stuckCall = gsap.delayedCall(STUCK_AT, () => {
         let blurTriggered = false;
 
-        if (!reducedMotion && ghosts.length) {
-          gsap.to(ghosts, {
-            y: (_i, target) => Number(target.dataset.dir) * 45,
-            opacity: (_i, target) => (Math.abs(Number(target.dataset.dir)) === 1 ? 0.35 : 0.15),
-            duration: 0.5,
-            ease: "power2.out",
-            stagger: 0.04,
-          });
+        if (ghosts.length) {
+          const ghostOpacity = (_i: number, target: HTMLElement) => (Math.abs(Number(target.dataset.dir)) === 1 ? 0.35 : 0.15);
+
+          if (reducedMotion) {
+            gsap.set(ghosts, {
+              y: (_i, target) => Number(target.dataset.dir) * ghostOffsetUnit,
+              opacity: ghostOpacity,
+            });
+          } else {
+            gsap.to(ghosts, {
+              y: (_i, target) => Number(target.dataset.dir) * ghostOffsetUnit,
+              opacity: ghostOpacity,
+              duration: 0.5,
+              ease: "power2.out",
+              stagger: 0.04,
+              force3D: true,
+            });
+          }
         }
 
         stuckTween = gsap.to(rootRef.current, {
@@ -145,6 +158,8 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
 
   const handleRetry = () => {
     onDismiss?.();
+
+    gsap.to(scribbleRefs.current, { opacity: 0, duration: 0.1, ease: "power1.out", overwrite: true });
 
     if (btnRef.current) {
       gsap.to(btnRef.current, { opacity: 0, y: -10, duration: 0.25, ease: "power2.in" });
@@ -213,7 +228,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
 
       <div
         ref={rootRef}
-        className="loader-overlay h-screen fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
+        className="loader-overlay min-h-dvh fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
       >
         <div className="loader-progress-track">
           <div ref={progressFillRef} className="loader-progress-fill" />
@@ -231,7 +246,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
             ))}
             <div className="loader-heading loader-heading-main font-chunko">
               {HEADING}
-              <span className="loader-subname font-italic">kurdekar</span>
+              <span className="loader-subname size18 font-italic">kurdekar</span>
             </div>
 
             {showRetry && (
@@ -243,7 +258,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                   className="loader-scribble loader-scribble-left"
                   aria-hidden="true"
                 >
-                  <span className="font-italic">loading... allegedly</span>
+                  <span className="font-italic">loading...</span>
                   <svg viewBox="0 0 90 60" className="loader-scribble-svg" aria-hidden="true">
                     <path
                       ref={(el) => {
@@ -258,30 +273,6 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                       vectorEffect="non-scaling-stroke"
                     />
                   </svg>
-                </div>
-
-                <div
-                  ref={(el) => {
-                    if (el) scribbleRefs.current[1] = el;
-                  }}
-                  className="loader-scribble loader-scribble-right"
-                  aria-hidden="true"
-                >
-                  <svg viewBox="0 0 90 60" className="loader-scribble-svg" aria-hidden="true">
-                    <path
-                      ref={(el) => {
-                        if (el) arrowPathRefs.current[1] = el;
-                      }}
-                      d="M76,10 C56,14 38,28 26,46 M26,46 L38,42 M26,46 L22,32"
-                      fill="none"
-                      stroke="var(--orange)"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  </svg>
-                  <span className="font-italic">hey, that's me</span>
                 </div>
               </>
             )}

@@ -163,6 +163,7 @@ export default function Crowd({ src, rows = 15, cols = 7, className, style }: Cr
     const crowd: Peep[] = [];
 
     let disposed = false;
+    let isVisible = true;
     let tickerFn: (() => void) | null = null;
 
     const createPeeps = (image: HTMLImageElement) => {
@@ -267,7 +268,7 @@ export default function Crowd({ src, rows = 15, cols = 7, className, style }: Cr
     };
 
     const render = () => {
-      if (disposed) return;
+      if (disposed || !isVisible || document.hidden) return;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -283,6 +284,14 @@ export default function Crowd({ src, rows = 15, cols = 7, className, style }: Cr
 
       ctx.restore();
     };
+
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.01 },
+    );
+    intersectionObserver.observe(canvas);
 
     const image = new Image();
 
@@ -305,6 +314,7 @@ export default function Crowd({ src, rows = 15, cols = 7, className, style }: Cr
     return () => {
       disposed = true;
 
+      intersectionObserver.disconnect();
       window.removeEventListener('resize', resize);
 
       if (tickerFn) {

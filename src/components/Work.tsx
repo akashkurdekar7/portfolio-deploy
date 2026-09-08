@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Lottie } from "lottie-react";
 import ipcs from "../assets/work/ipcs.webp";
-import rocketLaunch from "../assets/gifs/Rocket launch animation _Space exploration (2)/animations/12345.json";
+import rocketLaunch from "../assets/gifs/Rocket launch animation _Space exploration (2)/animations/12345.json?url";
 import HighlightCircle from "./HighlightCircle";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -177,6 +177,8 @@ const Work = () => {
     return () => ctx.revert();
   }, []);
   useEffect(() => {
+    const listenerCleanups: Array<() => void> = [];
+
     const ctx = gsap.context(() => {
       lineRefs.current.forEach((line) => {
         if (!line) return;
@@ -210,10 +212,17 @@ const Work = () => {
 
         card.addEventListener("mouseenter", enter);
         card.addEventListener("mouseleave", leave);
+        listenerCleanups.push(() => {
+          card.removeEventListener("mouseenter", enter);
+          card.removeEventListener("mouseleave", leave);
+        });
       });
     });
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      listenerCleanups.forEach((cleanup) => cleanup());
+    };
   }, []);
   return (
     <section id="work" ref={sectionRef} className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">

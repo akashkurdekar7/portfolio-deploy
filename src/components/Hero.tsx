@@ -113,7 +113,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative flex h-dvh items-center justify-center lg:mx-20 mx-6">
+    <section className="relative flex min-h-dvh items-center justify-center lg:mx-20 mx-6">
       <div className="flex flex-col items-center gap-10 relative z-30">
         <div className="hero-image overflow-hidden relative h-80 w-full md:w-170 rounded-[20px] border-6">
           <img
