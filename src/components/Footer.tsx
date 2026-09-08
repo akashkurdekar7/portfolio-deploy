@@ -1,17 +1,9 @@
-import { FaEnvelope, FaGithub, FaHandsHelping, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 
 import Crowd from './Crowd';
 import RollingText from './RollingText';
 import sheet from '../assets/open-peeps-sheet.png';
-
-const TILE_THEMES = [
-  'bg-blue text-white',
-  'bg-orange text-black',
-  'bg-white text-black',
-  'bg-black text-[#f5d949] border border-[#f5d949]/30',
-];
-
-const ROTATIONS = ['-rotate-3', 'rotate-3', 'rotate-2', '-rotate-2'];
 
 const Footer = () => {
   const links = [
@@ -68,104 +60,36 @@ const Footer = () => {
           <span className="font-chunko"> part.</span>
         </h2>
         {/* Social Links */}
-        <div className="">
-          {/* Mobile: pinned sticker grid */}
-          <ul className="grid grid-cols-2 gap-3.5 md:hidden">
+        <nav className="mt-8 md:mt-12">
+          <ul className="border-t border-white/15">
             {links.map((item, i) => (
-              <li key={item.name} className={ROTATIONS[i % ROTATIONS.length]}>
+              <li key={item.name} className="border-b border-white/15">
                 <a
                   href={item.link}
                   target={item.name === 'G-mail' ? undefined : '_blank'}
                   rel={item.name === 'G-mail' ? undefined : 'noreferrer'}
-                  className={`
-                  group/tile relative flex aspect-[6/5] w-full flex-col justify-between
-                  overflow-hidden rounded-2xl p-4
-                  transition-[transform,box-shadow] duration-200 ease-out
-                  active:translate-y-1.5 active:rotate-0 active:scale-[0.97] active:shadow-[0_1px_0_rgba(0,0,0,0.35)]
-                  ${TILE_THEMES[i % TILE_THEMES.length]}
-                `}
+                  className="group/link relative flex items-center justify-between gap-4 py-4 md:py-6"
                 >
-                  <div className="flex items-start justify-between">
-                    <span className="font-space size12 opacity-50">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="font-space size56 leading-none opacity-70 transition-transform duration-200 group-active/tile:rotate-45">
-                      <FaHandsHelping />
+                  <span className="flex items-center gap-4 md:gap-7">
+                    <span className="font-space size12 text-white/40">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="text-2xl text-white/50 transition-colors duration-300 group-hover/link:text-orange md:text-4xl">
+                      {item.icon}
                     </span>
-                  </div>
-
-                  <div>
-                    <span className="block text-4xl leading-none">{item.icon}</span>
-                    <span className="mt-3 block font-space size16 uppercase tracking-wide">{item.name}</span>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {/* Tablet / Desktop: liquid glass row */}
-          <ul
-            className=" hidden
-            rounded-lg
-            border border-white/30
-            bg-white/8
-            p-1
-            backdrop-blur-[20px]
-            backdrop-saturate-180
-            shadow-[0_4px_8px_rgba(255,255,255,0.5)]
-            md:grid md:grid-cols-4 md:items-stretch
-          "
-          >
-            {links.map((item) => (
-              <li key={item.name}>
-                <a
-                  href={item.link}
-                  target={item.name === 'G-mail' ? undefined : '_blank'}
-                  rel={item.name === 'G-mail' ? undefined : 'noreferrer'}
-                  className="
-    group/link
-    relative isolate overflow-hidden
-    flex items-center justify-between gap-3
-    rounded-md
-    px-5 py-4
-
-    text-white
-    md:justify-center md:px-8 md:py-4 md:size28
-  "
-                >
-                  {/* WATER */}
-                  <span
-                    className="
-      pointer-events-none
-      absolute inset-x-0 bottom-0 -z-10
-      h-full
-      translate-y-full
-      bg-white/15
-      transition-transform
-      duration-1000
-      ease-[cubic-bezier(.22,1,.36,1)]
-      group-hover/link:translate-y-0
-    "
-                  >
-                    {/* LIQUID SURFACE */}
-                    <span
-                      className="
-        absolute -top-[8px] left-1/2
-        h-4 w-[130%]
-        -translate-x-1/2
-        rounded-[50%]
-        bg-white/15
-        blur-[1px]
-      "
-                    />
+                    <span className="font-space size28 uppercase tracking-wide text-white transition-colors duration-300 group-hover/link:text-orange">
+                      {item.name}
+                    </span>
                   </span>
-                  {/* CONTENT */}
 
-                  <span className=" relative z-10 text-3xl md:text-[50px]">{item.icon}</span>
-                  <span className="relative z-10 w-max font-space size16 uppercase w-max">{item.name}</span>
+                  <span className="text-white/40 transition-all duration-500 ease-out group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-hover/link:text-orange">
+                    <FaArrowUpRightFromSquare className="text-xl md:text-3xl" />
+                  </span>
+
+                  <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-right scale-x-0 bg-orange transition-transform duration-500 ease-out group-hover/link:origin-left group-hover/link:scale-x-100" />
                 </a>
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
       </div>
 
       {/* Bottom Info */}

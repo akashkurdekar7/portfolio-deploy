@@ -16,7 +16,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 // import StackLoader from "./components/StackLoader";
 
 const App = () => {
-  const [siteBlurred, setSiteBlurred] = useState(false);
+  const [siteBlurred, setSiteBlurred] = useState(true);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-white text-black">

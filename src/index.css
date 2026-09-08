@@ -538,46 +538,123 @@
   will-change: transform;
 }
 
+.loader-heading-wrap {
+  position: relative;
+}
+
 .loader-heading {
-  font-size: clamp(28px, 5.5vw, 52px);
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-size: clamp(52px, 11vw, 168px);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: var(--black);
   white-space: nowrap;
 }
 
-.loader-letter {
-  display: inline-block;
-  will-change: transform, opacity;
-}
-
-.loader-track {
+.loader-heading-main {
   position: relative;
-  width: min(50vw, 220px);
-  height: 2px;
-  background: rgba(17, 17, 17, 0.12);
-  overflow: hidden;
-  will-change: transform, opacity;
+  z-index: 1;
 }
 
-.loader-fill {
+.loader-heading-ghost {
   position: absolute;
   inset: 0;
-  width: 40%;
-  background: var(--black);
-  animation: loaderSweep 1.3s ease-in-out infinite;
+  z-index: 0;
+  opacity: 0;
+  color: var(--black);
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
-@keyframes loaderSweep {
-  0% {
-    transform: translateX(-110%);
-  }
-  50% {
-    transform: translateX(60%);
-  }
-  100% {
-    transform: translateX(220%);
+.loader-subname {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  font-size: 0.24em;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--white);
+  background: var(--orange);
+  padding: 0.2em 0.65em;
+  border-radius: 4px;
+  box-shadow:
+    0 3px 0 0 var(--white),
+    0 3px 0 1px var(--black);
+}
+
+.loader-progress-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: rgba(17, 17, 17, 0.1);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.loader-progress-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: var(--black);
+  will-change: width;
+}
+
+.loader-progress-label {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--black);
+  z-index: 2;
+}
+
+.loader-scribble {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 16px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.loader-scribble-svg {
+  width: 72px;
+  height: 44px;
+  overflow: visible;
+}
+
+.loader-scribble-left {
+  top: -58px;
+  left: -6%;
+  color: var(--black);
+  transform: rotate(-4deg);
+}
+
+.loader-scribble-right {
+  top: -54px;
+  left: 56%;
+  color: var(--orange);
+  transform: rotate(5deg);
+}
+
+.loader-scribble-hint {
+  top: 4px;
+  left: calc(100% + 14px);
+  color: var(--blue);
+  transform: rotate(-6deg);
+}
+
+@media (max-width: 767px) {
+  .loader-scribble {
+    display: none;
   }
 }
 

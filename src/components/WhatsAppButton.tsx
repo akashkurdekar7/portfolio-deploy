@@ -13,7 +13,7 @@ const WhatsAppButton = () => {
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
       className="
-        group fixed bottom-6 right-6 z-10
+        group fixed bottom-6 right-6 z-70
         flex h-14 w-14 items-center justify-center
         rounded-full bg-black text-white
         shadow-[0_4px_20px_rgba(0,0,0,0.35)]
