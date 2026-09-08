@@ -1,5 +1,11 @@
 import { FaArrowRight } from "react-icons/fa";
-import { useId } from "react";
+import { useId, useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+
 export type Project = {
   image?: string;
   title: string;
@@ -23,6 +29,34 @@ const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) 
   const fallbackImage = `https://picsum.photos/900/700?random=${index + 1}`;
 
   const projectImage = project.image || fallbackImage;
+
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  useLayoutEffect(() => {
+    if (!titleRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(titleRef.current, {
+        duration: 1.2,
+        ease: "none",
+        scrambleText: {
+          text: project.title,
+          chars: "abcdefghijklmnopqrstuvwxyz0123456789",
+          revealDelay: 0.2,
+          speed: 0.35,
+          tweenLength: false,
+        },
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: "center center",
+          markers: true,
+          once: true,
+        },
+      });
+    });
+
+    return () => ctx.revert();
+  }, [project.title]);
 
   const defaultPath = `
     M 0 0
@@ -96,7 +130,9 @@ const ProjectCard = ({ project, index, variant = "default" }: ProjectCardProps) 
       {/* INFO */}
       <div className="mt-2 flex flex-col items-start  justify-between lg:mt-4">
         <div className="flex justify-between items-center w-full">
-          <h3 className="font-instrument size28 capitalize">{project.title}</h3>
+          <h3 ref={titleRef} className="font-instrument size28 capitalize">
+            {project.title}
+          </h3>
 
           <span className="rounded-full border bg-white px-3 py-1 font-space size12 text-grey">{project.year}</span>
         </div>
