@@ -272,7 +272,8 @@ const Work = () => {
                 ref={parallaxImageRef}
                 src={experience[0].image}
                 alt={`${experience[0].company} — ${experience[0].role}`}
-                className=" block h-auto w-full object-cover"
+                className=" block h-auto w-full object-cover will-change-transform"
+                style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
                 loading="lazy"
               />
             </div>

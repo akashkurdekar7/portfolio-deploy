@@ -85,7 +85,9 @@ const ProjectCard = ({ project, index, variant = "default", scrambleTitle = true
 
   return (
     <div className="group mx-auto h-auto w-full lg:w-[420px] cursor-pointer ">
-      <div className="relative mx-auto aspect-[450/350] w-full [transform:translateZ(0)]">
+      <div
+        className="relative mx-auto aspect-[450/350] w-full [transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
+      >
         <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 450 350" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <clipPath id={clipId}>
