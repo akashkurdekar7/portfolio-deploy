@@ -169,10 +169,23 @@ const ReelsField = () => {
     let frameId: number;
     let isVisible = true;
     let mouseActive = 0;
+    let contextLost = false;
+
+    // Low-memory Android/iOS devices can reclaim a WebGL context while the
+    // tab stays open (long background, other GPU-heavy tabs, low-power
+    // mode). Without this the renderer keeps getting asked to draw into a
+    // dead context every frame — harmless here since the canvas is purely
+    // decorative, but worth guarding explicitly rather than relying on it
+    // silently no-oping. Mirrors AnimeGreeter's handling of the same case.
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      contextLost = true;
+    };
+    renderer.domElement.addEventListener('webglcontextlost', handleContextLost);
 
     const animate = () => {
       frameId = requestAnimationFrame(animate);
-      if (!isVisible || document.hidden) return;
+      if (!isVisible || document.hidden || contextLost) return;
 
       const mouse = material.uniforms.uMouse.value as THREE.Vector2;
       mouse.x += (mouseTarget.x - mouse.x) * 0.08;
@@ -206,6 +219,7 @@ const ReelsField = () => {
       clearTimeout(idleTimeout);
       window.removeEventListener("pointermove", handlePointerMove);
       mount.removeEventListener("pointerleave", handlePointerLeave);
+      renderer.domElement.removeEventListener("webglcontextlost", handleContextLost);
       intersectionObserver.disconnect();
       resizeObserver.disconnect();
       geometry?.dispose();

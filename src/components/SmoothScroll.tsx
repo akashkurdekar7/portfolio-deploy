@@ -44,9 +44,19 @@ const SmoothScroll = () => {
     // section, Quote, and on connections/browsers where the image loads
     // later relative to scroll). "load" doesn't bubble, so this listens in
     // the capture phase.
+    //
+    // The Article marquee's ~240 repeated icon <img>s are excluded: they
+    // have a fixed height (Tailwind h-5/h-10) so loading them never shifts
+    // page layout, but the browser starts prefetching the near ones while
+    // the user is still scrolled well above Article — including mid-pin in
+    // the mobile Projects stack (see ProjectsStack.tsx). Refreshing
+    // ScrollTrigger while that pin is engaged momentarily re-measures/
+    // re-pins it, which read as the page freezing/stuttering right around
+    // Projects/Article/Work.
     let refreshTimeout: ReturnType<typeof setTimeout>;
     const onLazyLoad = (e: Event) => {
-      if ((e.target as HTMLElement)?.tagName !== 'IMG') return;
+      const target = e.target as HTMLElement;
+      if (target?.tagName !== 'IMG' || target.closest('.marquee')) return;
       clearTimeout(refreshTimeout);
       refreshTimeout = setTimeout(() => ScrollTrigger.refresh(), 100);
     };

@@ -143,17 +143,20 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) return;
 
-    scribbleRefs.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.fromTo(el, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.2 + i * 0.15, ease: "power2.out" });
+    gsap.set(scribbleRefs.current, { opacity: 1, y: 0 });
+
+    // Safari can report a stale/zero length if getTotalLength() runs in the
+    // same frame the <path> is mounted, so defer the measurement one frame.
+    const raf = requestAnimationFrame(() => {
+      arrowPathRefs.current.forEach((path, i) => {
+        if (!path) return;
+        const length = path.getTotalLength();
+        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+        gsap.to(path, { strokeDashoffset: 0, duration: 0.7, delay: 0.2 + i * 0.15, ease: "power2.out" });
+      });
     });
 
-    arrowPathRefs.current.forEach((path, i) => {
-      if (!path) return;
-      const length = path.getTotalLength();
-      gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-      gsap.to(path, { strokeDashoffset: 0, duration: 0.7, delay: 0.4 + i * 0.15, ease: "power2.out" });
-    });
+    return () => cancelAnimationFrame(raf);
   }, [showRetry]);
 
   const handleRetry = () => {
@@ -171,8 +174,11 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
       ease: "power2.out",
       onUpdate: () => setProgress(progressState.val),
       onComplete: () => {
+        gsap.set(rootRef.current, { transformOrigin: "50% 0%" });
         gsap.to(rootRef.current, {
           y: "160vh",
+          x: "-3vw",
+          rotate: -3.5,
           scaleX: 0.55,
           duration: 1.1,
           ease: "power2.in",
@@ -217,7 +223,6 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  vectorEffect="non-scaling-stroke"
                 />
               </svg>
               <span className="font-italic">did it get stuck?</span>
@@ -270,7 +275,6 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      vectorEffect="non-scaling-stroke"
                     />
                   </svg>
                 </div>

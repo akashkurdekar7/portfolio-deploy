@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
@@ -6,14 +6,12 @@ import SmoothScroll from "./components/SmoothScroll";
 import Projects from "./components/Projects";
 import Article from "./components/Article";
 import ReelsField from "./components/ReelsField";
+// import About from "./components/About";
 import Resume from "./components/Resume";
 import Quote from "./components/Quote";
 import Loader from "./components/Loader";
 import WhatsAppButton from "./components/WhatsAppButton";
-
-// Pulls in lottie-react/lottie-web (a heavy chunk) — split out of the main
-// bundle since Work sits below the fold.
-const Work = lazy(() => import("./components/Work"));
+import Work from "./components/Work";
 
 const App = () => {
   const [siteBlurred, setSiteBlurred] = useState(true);
@@ -40,9 +38,8 @@ const App = () => {
           <Hero />
           <Projects />
           <Article />
-          <Suspense fallback={null}>
-            <Work />
-          </Suspense>
+          <Work />
+          {/* <About /> */}
           <Resume />
 
           <Quote />

@@ -1,9 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Lottie } from "lottie-react";
 import ipcs from "../assets/work/ipcs.webp";
-import rocketLaunch from "../assets/gifs/Rocket launch animation _Space exploration (2)/animations/12345.json?url";
 import HighlightCircle from "./HighlightCircle";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -45,7 +43,6 @@ const Work = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const parallaxImageRef = useRef<HTMLImageElement>(null);
   const lineRefs = useRef<(SVGPathElement | null)[]>([]);
-  const rocketRef = useRef<HTMLElement>(null);
   const experience: Experience[] = [
     {
       number: "01",
@@ -98,35 +95,6 @@ const Work = () => {
             scrub: true,
           },
         },
-      );
-    });
-
-    return () => ctx.revert();
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!rocketRef.current) return;
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: rocketRef.current,
-          start: "top 90%",
-          once: true,
-        },
-      });
-
-      tl.fromTo(
-        rocketRef.current,
-        { y: 80, opacity: 0, rotate: 15, scale: 0.6 },
-        { y: 0, opacity: 1, rotate: 0, scale: 1, duration: 1.1, ease: "back.out(1.6)" },
-      ).to(
-        rocketRef.current,
-        { y: -12, rotate: 3, duration: 2.2, repeat: -1, yoyo: true, ease: "sine.inOut" },
-        ">-0.2",
       );
     });
 
@@ -227,14 +195,6 @@ const Work = () => {
   return (
     <section id="work" ref={sectionRef} className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">
       <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <Lottie
-          ref={rocketRef}
-          src={rocketLaunch}
-          loop
-          autoplay
-          className="pointer-events-none absolute -top-16 right-4 hidden w-20 aspect-square sm:block lg:-top-20 lg:right-10 lg:w-28"
-        />
-
         <h2 className="font-chunko size90 leading-[0.9]">
           Where I've
           <br />
@@ -275,6 +235,8 @@ const Work = () => {
                 className=" block h-auto w-full object-cover will-change-transform"
                 style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
                 loading="lazy"
+                width={1400}
+                height={1050}
               />
             </div>
             <div className="lg:col-span-5">

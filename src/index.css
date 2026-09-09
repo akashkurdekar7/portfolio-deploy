@@ -25,6 +25,43 @@
 }
 
 /* =========================
+   CROSS-BROWSER / CROSS-PLATFORM BASELINE
+========================= */
+
+html {
+  /* iOS Safari auto-boosts small text for readability, which throws off the
+     hand-tuned .size12/.size14 scale specifically on iOS vs every other
+     browser. Disabling it keeps the type scale identical everywhere. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /* The custom-scrolled page has no rubber-band/pull-to-refresh affordance
+     of its own — containing overscroll keeps Safari/Chrome's bounce from
+     fighting the Lenis-driven scroll feel on iOS and Android, and stops a
+     horizontal trackpad/Android swipe at the edge from triggering browser
+     back/forward navigation. */
+  overscroll-behavior: none;
+}
+
+body {
+  /* Consistent font rendering across Chrome/Brave/Safari (mostly visible on
+     macOS/iOS) for the custom display faces used throughout. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overscroll-behavior: none;
+}
+
+/* Removes the default grey/blue tap-flash on Android Chrome and older iOS
+   Safari — every interactive element here already ships its own hover/active
+   treatment via Tailwind, so the native highlight only ever looks broken. */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* =========================
    FONTS
 ========================= */
 

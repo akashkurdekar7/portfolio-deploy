@@ -127,85 +127,111 @@ const Resume = () => {
   }, []);
 
   return (
-    <section id="resume" ref={sectionRef} className="relative mx-5 min-h-screen py-16 lg:py-24 md:mx-20">
-      <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <h2 className="resume-reveal font-chunko size90 leading-[0.9]">
-          Grab my
-          <br />
-          <HighlightCircle color="var(--orange)">
-            <span className="font-italic text-orange">résumé.</span>
-          </HighlightCircle>
-        </h2>
+    <section
+      id="resume"
+      ref={sectionRef}
+      className="relative mx-5 min-h-screen py-16 lg:flex lg:min-h-screen lg:items-center lg:py-24 md:mx-20"
+    >
+      <div className="relative w-full grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
+        {/* LEFT — HEADER */}
+        <div className="resume-reveal lg:col-span-3">
+          <h2 className="font-chunko size64 leading-[0.95]">
+            Grab my
+            <br />
+            <HighlightCircle color="var(--orange)">
+              <span className="font-italic text-orange">résumé.</span>
+            </HighlightCircle>
+          </h2>
 
-        <p className="resume-reveal text-justify font-space size28 leading-10 text-grey">
-          Everything you've just read, on one page — roles, stack, and the shape of the work. Preview it on screen or take a copy with you.
-        </p>
-      </div>
-
-      <div className="resume-reveal relative mt-15 grid grid-cols-1 items-center gap-10 lg:mt-24 lg:grid-cols-12 lg:gap-16">
-        {/* SCRIBBLE NOTE */}
-        <div className="pointer-events-none absolute -top-14 left-0 z-20 hidden -rotate-3 lg:left-4 lg:block">
-          <span className="font-italic size28 text-blue">go on, click it</span>
-          <svg viewBox="0 0 120 70" className="mt-1 h-14 w-28 overflow-visible" aria-hidden="true">
+          {/* SCRIBBLE UNDERLINE */}
+          <svg viewBox="0 0 160 20" className="mt-4 h-4 w-32 overflow-visible" aria-hidden="true">
             <path
-              ref={arrowPathRef}
-              d="M8,10 C42,4 70,32 88,50 M88,50 L72,44 M88,50 L94,32"
+              d="M2,10 C30,2 50,16 78,8 C100,2 120,14 140,7"
               fill="none"
-              stroke="var(--blue)"
+              stroke="var(--orange)"
               strokeWidth="2.5"
               strokeLinecap="round"
-              strokeLinejoin="round"
               vectorEffect="non-scaling-stroke"
             />
           </svg>
+
+          <p className="mt-6 max-w-xs font-space size14 leading-6 text-grey lg:text-justify">
+            Everything you've just read, on one page — roles, stack, and the shape of the work.
+          </p>
         </div>
 
-        {/* PDF PREVIEW CARD */}
-        <button
-          type="button"
-          onClick={handleOpenPreview}
-          aria-label="Open full resume preview"
-          className="group relative block w-full overflow-hidden rounded-2xl border-4 border-black bg-white text-left shadow-md lg:col-span-7"
-        >
-          <div className="aspect-[3/4] w-full overflow-hidden md:aspect-[16/10]">
-            {canShowInlinePreview ? (
-              <object
-                data={`${RESUME_PATH}#toolbar=0&navpanes=0&view=FitH`}
-                type="application/pdf"
-                className="pointer-events-none h-full w-full"
+        {/* CENTER — PDF PREVIEW CARD */}
+        <div className="resume-reveal relative flex justify-center lg:col-span-6">
+          {/* SCRIBBLE NOTE */}
+          <div className="pointer-events-none absolute -top-12 right-2 z-20 hidden -rotate-3 lg:block">
+            <span className="font-italic size18 text-blue">go on, click it</span>
+            <svg viewBox="0 0 120 70" className="mt-1 h-12 w-24 overflow-visible" aria-hidden="true">
+              <path
+                ref={arrowPathRef}
+                d="M8,10 C42,4 70,32 88,50 M88,50 L72,44 M88,50 L94,32"
+                fill="none"
+                stroke="var(--blue)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
               />
-            ) : (
-              <div className="flex h-full items-center justify-center bg-white p-8 text-center font-space size14 leading-6 text-grey">
-                <p>
-                  {pdfAvailable === null
-                    ? "Loading preview…"
-                    : pdfAvailable
-                      ? "Tap to view the résumé."
-                      : "Preview isn't available right now."}
-                </p>
-              </div>
-            )}
+            </svg>
           </div>
 
-          <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-500 group-hover:bg-black/40">
-            <span className="link-circle flex scale-90 items-center justify-center rounded-full border-[3px] border-black bg-white opacity-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-100 group-hover:opacity-100">
-              <FaArrowRight
-                size={20}
-                className="-rotate-45 text-orange transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-0"
-              />
-            </span>
-          </div>
-        </button>
+          <button
+            type="button"
+            onClick={handleOpenPreview}
+            aria-label="Open full resume preview"
+            className="group relative block w-full overflow-hidden rounded-2xl border-4 border-black bg-white text-left shadow-md lg:w-auto lg:h-[72vh] lg:aspect-[3/4]"
+          >
+            <div className="aspect-[3/4] w-full overflow-hidden md:aspect-[16/10] lg:h-full lg:w-full lg:aspect-auto">
+              {canShowInlinePreview ? (
+                <object
+                  data={`${RESUME_PATH}#toolbar=0&navpanes=0&view=FitH`}
+                  type="application/pdf"
+                  className="pointer-events-none h-full w-full"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center bg-white p-8 text-center font-space size14 leading-6 text-grey">
+                  <p>
+                    {pdfAvailable === null
+                      ? "Loading preview…"
+                      : pdfAvailable
+                        ? "Tap to view the résumé."
+                        : "Preview isn't available right now."}
+                  </p>
+                </div>
+              )}
+            </div>
 
-        {/* INFO + DOWNLOAD */}
-        <div className="lg:col-span-5">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-500 group-hover:bg-black/40">
+              <span className="link-circle flex scale-90 items-center justify-center rounded-full border-[3px] border-black bg-white opacity-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-100 group-hover:opacity-100">
+                <FaArrowRight
+                  size={20}
+                  className="-rotate-45 text-orange transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-0"
+                />
+              </span>
+            </div>
+          </button>
+        </div>
+
+        {/* RIGHT — INFO + DOWNLOAD */}
+        <div className="resume-reveal lg:col-span-3">
           <h3 className="font-instrument size44 leading-[1.2]">Akash Kurdekar</h3>
           <h4 className="mt-1 font-space size14 uppercase text-orange">Computer Science Engineer</h4>
-          <p className="mt-4 max-w-lg font-space size14 leading-6 text-grey">
+          <p className="mt-4 max-w-xs font-space size14 leading-6 text-grey">
             React, TypeScript, and the occasional over-engineered scroll animation — the full breakdown lives in the PDF.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-5">
+          {/* SCRIBBLE DOTS */}
+          <svg viewBox="0 0 60 14" className="mt-4 h-3 w-14 overflow-visible" aria-hidden="true">
+            <circle cx="4" cy="7" r="3" fill="var(--blue)" />
+            <circle cx="20" cy="7" r="3" fill="var(--orange)" />
+            <circle cx="36" cy="7" r="3" fill="var(--blue)" />
+          </svg>
+
+          <div className="mt-6 flex flex-wrap items-center gap-5">
             <a
               href={RESUME_PATH}
               download={RESUME_FILENAME}

@@ -105,6 +105,29 @@ const Header = () => {
     setMenuOpen(false);
   };
 
+  // Bare `href="#id"` anchors fall through to the browser's native, instant
+  // jump-to-fragment — jarring next to Lenis's smoothed scroll everywhere
+  // else on the page, and it ignores the fixed header's height so the
+  // target section lands partly underneath it. Routing the same links
+  // through Lenis keeps the scroll consistent across Chrome/Brave/Safari on
+  // both desktop and mobile, and Lenis.scrollTo already collapses to an
+  // instant jump under prefers-reduced-motion.
+  const scrollToSection = (event: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+    event.preventDefault();
+    closeMenu();
+
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    const headerOffset = navRef.current?.closest("header")?.getBoundingClientRect().height ?? 0;
+
+    if (window.__lenis) {
+      window.__lenis.scrollTo(hash, { offset: -(headerOffset + 16) });
+    } else {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <>
       {/* HEADER */}
@@ -128,7 +151,11 @@ const Header = () => {
           {/* DESKTOP NAV */}
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 text-lg md:flex">
             <li className="flex items-center">
-              <a href="#work" className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]">
+              <a
+                href="#work"
+                onClick={(e) => scrollToSection(e, "#work")}
+                className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
+              >
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
                   <span className="h-[1.4em] whitespace-nowrap font-italic">Work</span>
 
@@ -141,7 +168,11 @@ const Header = () => {
               </a>
             </li>
             <li className="flex items-center">
-              <a href="#projects" className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]">
+              <a
+                href="#projects"
+                onClick={(e) => scrollToSection(e, "#projects")}
+                className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
+              >
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
                   <span className="h-[1.4em] whitespace-nowrap font-italic">Projects</span>
 
@@ -154,7 +185,11 @@ const Header = () => {
               </a>
             </li>
             <li className="flex items-center">
-              <a href="#resume" className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]">
+              <a
+                href="#resume"
+                onClick={(e) => scrollToSection(e, "#resume")}
+                className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
+              >
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
                   <span className="h-[1.4em] whitespace-nowrap font-italic">Resume</span>
 
@@ -206,7 +241,7 @@ const Header = () => {
                 menuLinksRef.current[0] = el;
               }}
             >
-              <a href="#work" onClick={closeMenu} className="transition-colors duration-300 hover:text-orange">
+              <a href="#work" onClick={(e) => scrollToSection(e, "#work")} className="transition-colors duration-300 hover:text-orange">
                 Work
               </a>
             </li>
@@ -216,7 +251,11 @@ const Header = () => {
                 menuLinksRef.current[1] = el;
               }}
             >
-              <a href="#projects" onClick={closeMenu} className="transition-colors duration-300 hover:text-orange">
+              <a
+                href="#projects"
+                onClick={(e) => scrollToSection(e, "#projects")}
+                className="transition-colors duration-300 hover:text-orange"
+              >
                 Projects
               </a>
             </li>
@@ -228,7 +267,7 @@ const Header = () => {
             >
               <a
                 href="#resume"
-                onClick={closeMenu}
+                onClick={(e) => scrollToSection(e, "#resume")}
                 className="transition-colors duration-300 hover:text-orange"
               >
                 Resume
