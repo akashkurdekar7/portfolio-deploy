@@ -219,7 +219,11 @@ const Work = () => {
               </div>
             </div>
             <div className="lg:col-span-5">
-              <h4 className="font-space size14 uppercase">{experience[0].role}</h4>
+              {/* Not a heading: it visually reads like a label, but a real <h4>
+                  here would land before this card's <h3> (the company name,
+                  below) in document order — skipping a level and reading out
+                  of sequence for screen-reader users navigating by heading. */}
+              <p className="font-space size14 uppercase">{experience[0].role}</p>
             </div>
             <div className="col-6 lg:col-span-2 lg:text-right">
               <span className="font-space size12 uppercase text-grey">{experience[0].period}</span>

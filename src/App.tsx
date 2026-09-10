@@ -15,15 +15,35 @@ import Work from "./components/Work";
 
 const App = () => {
   const [siteBlurred, setSiteBlurred] = useState(true);
+  const [projectsDark, setProjectsDark] = useState(false);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-white text-black">
+    <div
+      className={`relative min-h-screen overflow-x-hidden text-black transition-colors duration-700 ease-out ${
+        projectsDark ? "bg-black" : "bg-white"
+      }`}
+    >
       <Loader onStuck={() => setSiteBlurred(true)} onDismiss={() => setSiteBlurred(false)} />
+
+      {/* Placed after Loader, not before: when its "click me" button (the
+          loader's only focusable content) is clicked and removed from the
+          DOM, Chromium resumes the *next* Tab press from that former DOM
+          position rather than resetting to document start — a skip link
+          positioned earlier gets silently skipped for every user who just
+          dismissed the loader, which is effectively everyone. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-md focus:bg-black focus:px-4 focus:py-2 focus:font-space focus:text-sm focus:text-white"
+      >
+        Skip to content
+      </a>
+
       <ReelsField />
 
       <div
         className={`transition-opacity duration-700 ease-out ${siteBlurred ? "pointer-events-none opacity-0" : "opacity-100"}`}
         aria-hidden={siteBlurred}
+        inert={siteBlurred}
       >
         <Header />
       </div>
@@ -31,13 +51,14 @@ const App = () => {
       <div
         className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? "scale-[0.96] blur-md" : ""}`}
         aria-hidden={siteBlurred}
+        inert={siteBlurred}
       >
         <SmoothScroll />
 
-        <main className="relative z-10">
+        <main id="main-content" tabIndex={-1} className="relative z-10 outline-none">
           <Hero />
-          <Projects />
-          <Article />
+          <Projects onInViewChange={setProjectsDark} />
+          <Article dark={projectsDark} />
           <Work />
           {/* <About /> */}
           <Resume />

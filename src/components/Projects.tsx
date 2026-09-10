@@ -1,9 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectsStack from "./ProjectsStack";
 
-// Pulls in lottie-react/lottie-web (a heavy chunk) — split out of the main bundle.
 const ProjectsDesktop = lazy(() => import("./ProjectsDesktop"));
 
 import saas from "../assets/projects/saas.webp";
@@ -16,15 +15,12 @@ import Arovan from "../assets/projects/arovan.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Hoisted to module scope so the array keeps one stable reference across
-// re-renders — ProjectsStack's pin ScrollTrigger depends on it by identity
-// and tearing down/rebuilding a live pin mid-scroll corrupts it.
 const projects = [
   {
     title: "Wholesale Management System",
     type: "Web Application",
     year: "2025",
-    image: saas,
+    images: [saas],
 
     description:
       "A wholesale management platform built to streamline product, order, and business operations through a centralized web application.",
@@ -39,7 +35,7 @@ const projects = [
     title: "Ghost Rental",
     type: "Website & Dashboard",
     year: "2025",
-    image: ghostrentals,
+    images: [ghostrentals],
 
     description: "A rental platform combining a customer-facing website with a management dashboard for handling rental operations.",
 
@@ -53,7 +49,7 @@ const projects = [
     title: "Greenminds",
     type: "Single Page Website",
     year: "2025",
-    image: greenminds,
+    images: [greenminds],
 
     description:
       "A focused single-page website designed to present the brand, its offerings, and key information through a clear visual experience.",
@@ -68,7 +64,7 @@ const projects = [
     title: "Pixtar",
     type: "Company Website",
     year: "2026",
-    image: pixtar,
+    images: [pixtar],
 
     description:
       "A complete transformation of the existing Pixtar website, rebuilding the experience from the ground up with a new visual direction and modern frontend architecture.",
@@ -83,7 +79,7 @@ const projects = [
     title: "Make My Card",
     type: "Web Application & Dashboard",
     year: "2026",
-    image: makemycard,
+    images: [makemycard],
 
     description:
       "A product web application and management dashboard built to provide users with a streamlined experience for creating and managing digital products.",
@@ -98,7 +94,7 @@ const projects = [
     title: "PhDesignMe",
     type: "Client Website",
     year: "2026",
-    image: phdesignme,
+    images: [phdesignme],
 
     description:
       "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
@@ -112,7 +108,7 @@ const projects = [
     title: "Arovan",
     type: "Client Website",
     year: "2026",
-    image: Arovan,
+    images: [Arovan],
     description:
       "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
 
@@ -123,39 +119,53 @@ const projects = [
   },
 ];
 
-const Projects = () => {
-  // const catRef = useRef<HTMLElement>(null);
+interface ProjectsProps {
+  // Fires as the section scrolls into/out of view so the page shell (App.tsx)
+  // can flip the whole body background black/white to match — not just this
+  // section's own background.
+  onInViewChange?: (inView: boolean) => void;
+}
 
-  // useLayoutEffect(() => {
-  //   if (!catRef.current) return;
+const Projects = ({ onInViewChange }: ProjectsProps) => {
+  // Drives the desktop card text/border colors below (dark grid needs light
+  // text). Tracked for the full section, mobile included, so the callback
+  // above fires consistently regardless of viewport width.
+  const [sectionInView, setSectionInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  //   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  //   if (reducedMotion) return;
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
 
-  //   const ctx = gsap.context(() => {
-  //     const tl = gsap.timeline({
-  //       scrollTrigger: {
-  //         trigger: catRef.current,
-  //         start: "top 85%",
-  //         once: true,
-  //       },
-  //     });
+    const trigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 75%",
+      end: "bottom 25%",
+      onEnter: () => {
+        setSectionInView(true);
+        onInViewChange?.(true);
+      },
+      onEnterBack: () => {
+        setSectionInView(true);
+        onInViewChange?.(true);
+      },
+      onLeave: () => {
+        setSectionInView(false);
+        onInViewChange?.(false);
+      },
+      onLeaveBack: () => {
+        setSectionInView(false);
+        onInViewChange?.(false);
+      },
+    });
 
-  //     tl.fromTo(
-  //       catRef.current,
-  //       { scale: 0, rotate: -25, opacity: 0 },
-  //       { scale: 1, rotate: 0, opacity: 1, duration: 1, ease: "elastic.out(1, 0.55)" },
-  //     ).to(catRef.current, { y: -10, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut" }, ">-0.1");
-  //   });
-
-  //   return () => ctx.revert();
-  // }, []);
+    return () => trigger.kill();
+  }, [onInViewChange]);
 
   return (
-    <section id="projects" className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
+    <section id="projects" ref={sectionRef} className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
       {/* Heading */}
       <div className="flex flex-col items-center gap-3">
-        <h2 className="size56 font-instrument leading-none capitalize">
+        <h2 className="size56 font-instrument leading-none capitalize mix-blend-difference text-white">
           Projects
           <sup className="size12 align-super  font-space ml-1 text-white bg-blue rounded-full border border-[#fff] px-1 ">
             0{projects.length}
@@ -173,9 +183,9 @@ const Projects = () => {
       </div>
 
       {/* TABLET / DESKTOP: static grid layout */}
-      <div className="hidden md:block">
+      <div className="relative hidden md:block">
         <Suspense fallback={null}>
-          <ProjectsDesktop projects={projects} />
+          <ProjectsDesktop projects={projects} dark={sectionInView} />
         </Suspense>
       </div>
     </section>

@@ -13,6 +13,52 @@ interface LoaderProps {
 const HEADING = "portfolio";
 const STUCK_AT = 1;
 const GHOSTS = [-2, -1, 1, 2];
+const DUST_COLS = 16;
+const DUST_ROWS = 10;
+
+/** Shatters `root` into a burst of fading motes in place of a plain fade/slide, then calls onDone. */
+const disintegrate = (root: HTMLElement, onDone: () => void) => {
+  const rect = root.getBoundingClientRect();
+  const cellW = rect.width / DUST_COLS;
+  const cellH = rect.height / DUST_ROWS;
+
+  const container = document.createElement("div");
+  container.className = "loader-dust";
+  document.body.appendChild(container);
+
+  const motes: HTMLSpanElement[] = [];
+  for (let r = 0; r < DUST_ROWS; r++) {
+    for (let c = 0; c < DUST_COLS; c++) {
+      const mote = document.createElement("span");
+      mote.className = "loader-dust-mote";
+      const size = gsap.utils.random(4, 10);
+      mote.style.width = `${size}px`;
+      mote.style.height = `${size}px`;
+      mote.style.left = `${rect.left + c * cellW + gsap.utils.random(-4, cellW - 4)}px`;
+      mote.style.top = `${rect.top + r * cellH + gsap.utils.random(-4, cellH - 4)}px`;
+      mote.style.background = Math.random() < 0.12 ? "var(--black)" : "var(--white)";
+      container.appendChild(mote);
+      motes.push(mote);
+    }
+  }
+
+  gsap.set(root, { opacity: 0 });
+
+  gsap.to(motes, {
+    x: () => gsap.utils.random(-55, 55),
+    y: () => gsap.utils.random(-150, -10),
+    rotate: () => gsap.utils.random(-45, 45),
+    scale: () => gsap.utils.random(0.4, 1.4),
+    opacity: 0,
+    duration: () => gsap.utils.random(0.7, 1.25),
+    ease: "power1.out",
+    stagger: { from: "random", amount: 0.45 },
+    onComplete: () => {
+      container.remove();
+      onDone();
+    },
+  });
+};
 
 const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
   const [hidden, setHidden] = useState(false);
@@ -104,8 +150,11 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
           }
         }
 
+        gsap.set(rootRef.current, { transformOrigin: "50% 50%" });
+
         stuckTween = gsap.to(rootRef.current, {
           y: "25vh",
+          rotate: reducedMotion ? 0 : -2.4,
           duration: reducedMotion ? 0.6 : 1.6,
           ease: reducedMotion ? "power2.out" : "back.out(1.4)",
           onUpdate: function () {
@@ -174,22 +223,23 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
       ease: "power2.out",
       onUpdate: () => setProgress(progressState.val),
       onComplete: () => {
-        gsap.set(rootRef.current, { transformOrigin: "50% 0%" });
-        gsap.to(rootRef.current, {
-          y: "160vh",
-          x: "-3vw",
-          rotate: -3.5,
-          scaleX: 0.55,
-          duration: 1.1,
-          ease: "power2.in",
-          onComplete: () => {
-            document.documentElement.style.overflow = "";
-            document.body.style.overflow = "";
-            window.__lenis?.start();
-            setHidden(true);
-            onComplete?.();
-          },
-        });
+        const finish = () => {
+          document.documentElement.style.overflow = "";
+          document.body.style.overflow = "";
+          window.__lenis?.start();
+          setHidden(true);
+          onComplete?.();
+        };
+
+        const root = rootRef.current;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (!root || reducedMotion) {
+          gsap.to(root, { opacity: 0, duration: 0.4, ease: "power1.out", onComplete: finish });
+          return;
+        }
+
+        disintegrate(root, finish);
       },
     });
   };

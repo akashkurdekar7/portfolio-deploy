@@ -34,6 +34,19 @@ const Header = () => {
     };
   }, [menuOpen]);
 
+  // Let keyboard users dismiss the fullscreen mobile menu with Escape,
+  // matching the pattern used by the résumé preview modal.
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
   // GSAP mobile menu animation
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -137,6 +150,7 @@ const Header = () => {
       >
         <nav
           ref={navRef}
+          aria-label="Primary"
           className="
     relative mx-auto flex items-center justify-between
   "
@@ -218,6 +232,8 @@ const Header = () => {
             onClick={() => setMenuOpen(!menuOpen)}
             className="relative z-[60] flex h-10 w-10 cursor-grab items-center justify-center rounded-full border border-black md:hidden"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             {menuOpen ? <HiX size={21} /> : <HiMenuAlt3 size={21} />}
           </button>
@@ -226,6 +242,7 @@ const Header = () => {
 
       {/* MOBILE FULLSCREEN MENU */}
       <div
+        id="mobile-menu"
         ref={menuRef}
         className="
     fixed inset-0 z-40
@@ -234,7 +251,7 @@ const Header = () => {
     md:hidden
   "
       >
-        <nav>
+        <nav aria-label="Mobile">
           <ul className="flex flex-col items-center gap-6 font-instrument text-6xl">
             <li
               ref={(el) => {

@@ -3,7 +3,15 @@ import Star1 from "../assets/article/Star1.svg";
 import Star2 from "../assets/article/Star2.svg";
 import Star3 from "../assets/article/Star3.svg";
 
-const Article = () => {
+interface ArticleProps {
+  // True while the page background is black (see Projects.tsx/App.tsx) —
+  // the top/bottom waves are painted to match the *ambient* page background
+  // so they blend into the marquee's permanent black band, not stand out
+  // against it.
+  dark?: boolean;
+}
+
+const Article = ({ dark = false }: ArticleProps) => {
   const categories = [
     {
       name: "REACT.JS",
@@ -123,6 +131,9 @@ const Article = () => {
     });
   }, [marqueeItems.length]);
 
+  const waveFill = dark ? "var(--black)" : "var(--white)";
+  const waveStyle = { fill: waveFill, transition: "fill 700ms ease-out" };
+
   return (
     <section className="relative  py-12 lg:py-16">
       <div className="relative ">
@@ -139,13 +150,15 @@ const Article = () => {
           L0,0
           Z
         "
-            fill="#f7f6f2"
+            style={waveStyle}
           />
         </svg>
 
         {/* MARQUEE */}
         <div className="overflow-hidden bg-black py-8 lg:py-10">
-          <div className="marquee flex w-max items-center gap-18">
+          <span className="sr-only">Skills and technologies: {categories.map((item) => item.name).join(", ")}.</span>
+
+          <div className="marquee flex w-max items-center gap-18" aria-hidden="true">
             {marqueeItems.map((item, index) => (
               <React.Fragment key={`${item.name}-${index}`}>
                 <span className={`font-chunko tracking-[2px] lg:tracking-[5px] size56 whitespace-nowrap ${item.color}`}>{item.name}</span>
@@ -169,7 +182,7 @@ const Article = () => {
           L0,80
           Z
         "
-            fill="#f7f6f2"
+            style={waveStyle}
           />
         </svg>
       </div>

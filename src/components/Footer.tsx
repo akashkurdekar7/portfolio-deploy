@@ -80,7 +80,7 @@ const Footer = () => {
           <span className="font-chunko"> part.</span>
         </h2>
         {/* Social Links */}
-        <nav ref={navRef} className="mt-8 md:mt-12">
+        <nav ref={navRef} aria-label="Social links" className="mt-8 md:mt-12">
           <ul className="border-t border-white/15">
             {links.map((item, i) => (
               <li key={item.name} className="border-b border-white/15">

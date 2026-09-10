@@ -346,15 +346,111 @@ button {
 
 .link-circle {
   right: 0;
-  background: #fff;
   bottom: 0;
-  height: 50px;
-  width: 50px;
+  width: 130px;
+  height: 130px;
+  background: #fff;
   will-change: transform;
 
-  @media screen and (max-width: 768px) {
-    height: 42px;
+  @media screen and (max-width: 2048px) {
+    width: 110px;
+    height: 110px;
+  }
+
+  @media screen and (max-width: 1920px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media screen and (max-width: 1680px) {
+    width: 90px;
+    height: 90px;
+  }
+
+  @media screen and (max-width: 1440px) {
+    width: 70px;
+    height: 70px;
+  }
+
+  @media screen and (max-width: 1280px) {
+    width: 60px;
+    height: 60px;
+  }
+  @media screen and (max-width: 1200px) {
+    width: 50px;
+    height: 50px;
+  }
+  @media screen and (min-width: 992px) and (max-width: 1024px) {
+    width: 100px;
+    height: 100px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 991px) {
     width: 42px;
+    height: 42px;
+  }
+  @media screen and (max-width: 767px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.project-link-square {
+  width: 130px;
+  height: 130px;
+  background: #fff;
+  will-change: transform;
+  animation: projectSquareFloat 3.2s ease-in-out infinite;
+
+  @media screen and (max-width: 2048px) {
+    width: 110px;
+    height: 110px;
+  }
+
+  @media screen and (max-width: 1920px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media screen and (max-width: 1680px) {
+    width: 90px;
+    height: 90px;
+  }
+
+  @media screen and (max-width: 1440px) {
+    width: 70px;
+    height: 70px;
+  }
+
+  @media screen and (max-width: 1280px) {
+    width: 60px;
+    height: 60px;
+  }
+  @media screen and (max-width: 1200px) {
+    width: 50px;
+    height: 50px;
+  }
+  @media screen and (min-width: 992px) and (max-width: 1024px) {
+    width: 100px;
+    height: 100px;
+  }
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    width: 42px;
+    height: 42px;
+  }
+  @media screen and (max-width: 767px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@keyframes projectSquareFloat {
+  0%,
+  100% {
+    transform: translateY(-20px);
+  }
+
+  50% {
+    transform: translateY(20px);
   }
 }
 
@@ -708,6 +804,19 @@ button {
   box-shadow:
     0 1px 0 0 #fff,
     0 1px 0 1px rgba(0, 0, 0, 1);
+}
+
+.loader-dust {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: none;
+}
+
+.loader-dust-mote {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
 }
 
 .loader-retry-btn:active {

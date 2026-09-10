@@ -18,6 +18,8 @@ const Resume = () => {
   const [pdfAvailable, setPdfAvailable] = useState<boolean | null>(null);
   const [canPreviewInline, setCanPreviewInline] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
 
   // A missing public/resume.pdf falls through to the SPA's own index.html on
   // most dev servers/hosts, which an <object type="application/pdf"> happily
@@ -57,17 +59,22 @@ const Resume = () => {
 
   const handleOpenPreview = () => {
     if (canPreviewInline) {
+      lastFocusedRef.current = document.activeElement as HTMLElement;
       setModalOpen(true);
     } else {
       window.open(RESUME_PATH, "_blank", "noopener,noreferrer");
     }
   };
 
-  // Lock background scroll and allow Escape to close while the fullscreen preview is open
+  // Lock background scroll, move focus into the dialog, allow Escape to
+  // close, and return focus to whichever button opened it — without this a
+  // keyboard/screen-reader user's focus is left behind on a now-hidden
+  // trigger instead of following the dialog that just took over the screen.
   useEffect(() => {
     if (!modalOpen) return;
 
     document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setModalOpen(false);
@@ -77,6 +84,7 @@ const Resume = () => {
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
+      lastFocusedRef.current?.focus();
     };
   }, [modalOpen]);
 
@@ -283,6 +291,7 @@ const Resume = () => {
                   </a>
 
                   <button
+                    ref={closeButtonRef}
                     type="button"
                     onClick={() => setModalOpen(false)}
                     aria-label="Close résumé preview"

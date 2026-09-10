@@ -1,54 +1,82 @@
-import React from "react";
-import { Lottie } from "lottie-react";
+import { useLayoutEffect, useState } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectCard, { type Project } from "./ProjectCard";
-import catLove from "../assets/gifs/Cat feeling love emotionsexpression. Emojisticker animation/animations/12345.json?url";
-import catPlaying from "../assets/gifs/Cat playing animation/animations/4c65d4b8-cda4-4975-8270-6e10c8c56173.json?url";
+import ProjectCursorLabel from "./ProjectCursorLabel";
 
 interface ProjectsDesktopProps {
   projects: Project[];
+  // True while the section is scrolled into view — the page background goes
+  // black then, so cards need to flip their text/borders to stay legible.
+  dark?: boolean;
 }
 
-const ProjectsDesktop = ({ projects }: ProjectsDesktopProps) => {
+// Pinterest-style masonry: projects alternate into 2 hand-built columns
+// (rather than CSS `columns-2`, whose auto-balancing can empty one column
+// early and leave a lopsided gap beside the other) and sized to fill each
+// column instead of the old fixed 420px card width. The right column starts
+// lower for the classic staggered brick look.
+const ProjectsDesktop = ({ projects, dark = false }: ProjectsDesktopProps) => {
+  const leftColumn = projects.filter((_, index) => index % 2 === 0);
+  const rightColumn = projects.filter((_, index) => index % 2 === 1);
+
+  const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false, label: "Live" });
+
+  const handleEnter = (project: Project) => {
+    setCursor((c) => ({ ...c, visible: true, label: project.linkType === "github" ? "GitHub" : "Live" }));
+  };
+
+  const handleLeave = () => {
+    setCursor((c) => ({ ...c, visible: false }));
+  };
+
+  const handleMove = (event: React.MouseEvent) => {
+    setCursor((c) => ({ ...c, x: event.clientX, y: event.clientY }));
+  };
+
+  // This grid mounts behind a lazy() + Suspense boundary, after Projects.tsx's
+  // own ScrollTrigger (the whole-body dark toggle) has already measured the
+  // section at its pre-grid, heading-only height. Refresh once real content
+  // lands so that trigger's start/end reflect the grid's actual height.
+  useLayoutEffect(() => {
+    ScrollTrigger.refresh();
+  }, []);
+
+  const renderCard = (project: Project) => {
+    const index = projects.indexOf(project);
+    // A real <a> (rather than a div with an onClick) so the card is reachable
+    // and operable by keyboard, and announced by screen readers as a link to
+    // its actual destination instead of silent, unlabeled content. An anchor
+    // with no href (project.url unset) is inert — same as the old no-op click.
+    return (
+      <a
+        key={project.title}
+        href={project.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${project.title} — view ${project.linkType === "github" ? "GitHub repository" : "live site"} (opens in a new tab)`}
+        className="mb-12 block lg:mb-16 xl:mb-20"
+      >
+        <ProjectCard
+          project={project}
+          index={index}
+          className="mx-auto h-auto w-full"
+          dark={dark}
+          onImageMouseEnter={() => handleEnter(project)}
+          onImageMouseLeave={handleLeave}
+          onImageMouseMove={handleMove}
+        />
+      </a>
+    );
+  };
+
   return (
     <div className="lg:pt-25 relative pt-8">
-      <Lottie src={catLove} loop autoplay className="absolute top-[60%] left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-38 h-max" />
-      <Lottie src={catPlaying} loop autoplay className="absolute top-[85%] left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-38 h-max" />
-
-      {/* FIRST TWO */}
-      <div className="grid grid-cols-1 gap-x-8 gap-y-12 lg:gap-x-16 lg:gap-y-16 xl:grid-cols-2 xl:gap-x-24 xl:gap-y-20">
-        {projects.slice(0, 2).map((project, index) => (
-          <ProjectCard key={project.title} project={project} index={index} />
-        ))}
+      <div className="flex flex-col lg:flex-row gap-x-8 lg:gap-x-16 xl:gap-x-24">
+        <div className="flex flex-1 flex-col">{leftColumn.map(renderCard)}</div>
+        <div className="flex flex-1 flex-col lg:mt-24 xl:mt-32">{rightColumn.map(renderCard)}</div>
       </div>
 
-      {/* CENTER PROJECT */}
-      <div className="grid grid-cols-1 items-center xl:grid-cols-3 md:py-25 py-8">
-        {projects.slice(2, 3).map((project, index) => (
-          <React.Fragment key={project.title}>
-            {/* LEFT */}
-            <div className="hidden xl:flex flex-col items-end justify-end mr-8 gap-1">
-              <span className="size18 font-space-bold capitalize">action</span>
-              <p className="max-w-xs font-space size12 text-grey text-start">{project.description}</p>
-            </div>
-
-            <ProjectCard project={project} index={index + 2} variant="center" />
-
-            {/* RIGHT */}
-            <div className="hidden xl:flex flex-col items-start justify-start ms-8 gap-1">
-              <span className="size18 font-space-bold capitalize">result</span>
-
-              <p className="max-w-xs font-space size12 text-grey text-end">{project.role}</p>
-            </div>
-          </React.Fragment>
-        ))}
-      </div>
-
-      {/* LAST PROJECT */}
-      <div className="grid grid-cols-1 gap-x-8 gap-y-20 xl:grid-cols-2">
-        {projects.slice(3).map((project, index) => (
-          <ProjectCard key={project.title} project={project} index={index + 3} />
-        ))}
-      </div>
+      <ProjectCursorLabel visible={cursor.visible} x={cursor.x} y={cursor.y} label={cursor.label} />
     </div>
   );
 };

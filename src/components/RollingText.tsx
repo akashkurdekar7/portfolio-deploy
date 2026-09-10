@@ -39,7 +39,7 @@ const RollingText = ({ primary, secondary, primaryClassName = "", secondaryClass
         <span ref={primaryRef} className={`link-rollover-text ${primaryClassName}`}>
           {primary}
         </span>
-        <span ref={secondaryRef} className={`link-rollover-text ${secondaryClassName}`}>
+        <span ref={secondaryRef} aria-hidden="true" className={`link-rollover-text ${secondaryClassName}`}>
           {secondary}
         </span>
       </div>
