@@ -145,8 +145,12 @@ const Header = () => {
     <>
       {/* HEADER */}
       <header
-        className={`fixed inset-x-0 top-0 z-50 px-6 md:px-20 py-3 transition-all duration-700 ease-out
-        ${scrolled ? " backdrop-blur-sm shadow-md" : " shadow-none"}`}
+        className={`fixed inset-x-0 top-0 z-50 px-6 md:px-20 py-3 border-b transition-all duration-700 ease-out
+        ${
+          scrolled
+            ? " border-white/40 bg-white/60 shadow-md backdrop-blur-xl backdrop-saturate-150"
+            : " border-transparent bg-transparent shadow-none"
+        }`}
       >
         <nav
           ref={navRef}

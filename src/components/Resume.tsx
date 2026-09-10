@@ -143,7 +143,7 @@ const Resume = () => {
       <div className="relative w-full grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
         {/* LEFT — HEADER */}
         <div className="resume-reveal lg:col-span-3">
-          <h2 className="font-chunko size64 leading-[0.95]">
+          <h2 className="mt-4 lg:mt-8 max-w-md font-chunko size64 leading-[0.95]">
             Grab my
             <br />
             <HighlightCircle color="var(--orange)">
@@ -171,8 +171,8 @@ const Resume = () => {
         {/* CENTER — PDF PREVIEW CARD */}
         <div className="resume-reveal relative flex justify-center lg:col-span-6">
           {/* SCRIBBLE NOTE */}
-          <div className="pointer-events-none absolute -top-12 right-2 z-20 hidden -rotate-3 lg:block">
-            <span className="font-italic size18 text-blue">go on, click it</span>
+          <div className="pointer-events-none absolute -top-12 left-12 z-20 hidden -rotate-3 lg:block">
+            <span className="font-scribble size18 text-blue">have a look!!</span>
             <svg viewBox="0 0 120 70" className="mt-1 h-12 w-24 overflow-visible" aria-hidden="true">
               <path
                 ref={arrowPathRef}

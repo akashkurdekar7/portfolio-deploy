@@ -269,6 +269,21 @@ const Work = () => {
               {renderCompanyName(item.company, item.highlightWord, item.highlightColor)}
             </h3>
 
+            <svg viewBox="0 0 150 32" className="mt-2 h-6 w-28 overflow-visible" aria-hidden="true">
+              <path
+                ref={(el) => {
+                  lineRefs.current[index] = el;
+                }}
+                d="M4,26 C34,10 66,32 100,18 C118,10 130,14 142,19 M142,19 L128,12 M142,19 L130,27"
+                fill="none"
+                stroke={item.highlightColor ?? "var(--blue)"}
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+
             <h4 className={`mt-1 font-space size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
             <p className="mt-4 max-w-lg font-space size14 leading-6 text-grey">{item.description}</p>
 

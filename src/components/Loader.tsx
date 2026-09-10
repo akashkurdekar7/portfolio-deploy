@@ -275,7 +275,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="font-italic">did it get stuck?</span>
+              <span className="font-scribble">did it get stuck?</span>
             </div>
           </div>
         </div>
@@ -301,7 +301,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
             ))}
             <div className="loader-heading loader-heading-main font-chunko">
               {HEADING}
-              <span className="loader-subname size18 font-italic">kurdekar</span>
+              <span className="loader-subname size56  font-scribble">Kurdekar</span>
             </div>
 
             {showRetry && (
@@ -313,7 +313,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                   className="loader-scribble loader-scribble-left"
                   aria-hidden="true"
                 >
-                  <span className="font-italic">loading...</span>
+                  <span className="font-scribble">loading...</span>
                   <svg viewBox="0 0 90 60" className="loader-scribble-svg" aria-hidden="true">
                     <path
                       ref={(el) => {

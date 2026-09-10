@@ -8,6 +8,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'BrittanySignature';
+  src: url('/src/assets/fonts/BrittanySignature.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Colors */
   --black: #111111;
@@ -22,6 +30,7 @@
   --font-chunko: 'Chunko', sans-serif;
   --font-instrument: 'Instrument Serif', serif;
   --font-space: 'Space Mono', monospace;
+  --font-scribble: 'BrittanySignature', cursive;
 }
 
 /* =========================
@@ -77,6 +86,9 @@ button {
 .font-italic {
   font-family: var(--font-instrument);
   font-style: italic;
+}
+.font-scribble {
+  font-family: var(--font-scribble);
 }
 
 .font-space {
