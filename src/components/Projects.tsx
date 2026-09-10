@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect, useRef, useState } from "react";
+import { lazy, Suspense } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectsStack from "./ProjectsStack";
@@ -119,50 +119,9 @@ const projects = [
   },
 ];
 
-interface ProjectsProps {
-  // Fires as the section scrolls into/out of view so the page shell (App.tsx)
-  // can flip the whole body background black/white to match — not just this
-  // section's own background.
-  onInViewChange?: (inView: boolean) => void;
-}
-
-const Projects = ({ onInViewChange }: ProjectsProps) => {
-  // Drives the desktop card text/border colors below (dark grid needs light
-  // text). Tracked for the full section, mobile included, so the callback
-  // above fires consistently regardless of viewport width.
-  const [sectionInView, setSectionInView] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
-
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "top 75%",
-      end: "bottom 25%",
-      onEnter: () => {
-        setSectionInView(true);
-        onInViewChange?.(true);
-      },
-      onEnterBack: () => {
-        setSectionInView(true);
-        onInViewChange?.(true);
-      },
-      onLeave: () => {
-        setSectionInView(false);
-        onInViewChange?.(false);
-      },
-      onLeaveBack: () => {
-        setSectionInView(false);
-        onInViewChange?.(false);
-      },
-    });
-
-    return () => trigger.kill();
-  }, [onInViewChange]);
-
+const Projects = () => {
   return (
-    <section id="projects" ref={sectionRef} className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
+    <section id="projects" className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
       {/* Heading */}
       <div className="flex flex-col items-center gap-3">
         <h2 className="size56 font-instrument leading-none capitalize mix-blend-difference text-white">
@@ -185,7 +144,7 @@ const Projects = ({ onInViewChange }: ProjectsProps) => {
       {/* TABLET / DESKTOP: static grid layout */}
       <div className="relative hidden md:block">
         <Suspense fallback={null}>
-          <ProjectsDesktop projects={projects} dark={sectionInView} />
+          <ProjectsDesktop projects={projects} />
         </Suspense>
       </div>
     </section>

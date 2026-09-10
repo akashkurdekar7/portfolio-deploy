@@ -15,14 +15,9 @@ import Work from "./components/Work";
 
 const App = () => {
   const [siteBlurred, setSiteBlurred] = useState(true);
-  const [projectsDark, setProjectsDark] = useState(false);
 
   return (
-    <div
-      className={`relative min-h-screen overflow-x-hidden text-black transition-colors duration-700 ease-out ${
-        projectsDark ? "bg-black" : "bg-white"
-      }`}
-    >
+    <div className="relative min-h-screen overflow-x-hidden bg-white text-black">
       <Loader onStuck={() => setSiteBlurred(true)} onDismiss={() => setSiteBlurred(false)} />
 
       {/* Placed after Loader, not before: when its "click me" button (the
@@ -57,8 +52,8 @@ const App = () => {
 
         <main id="main-content" tabIndex={-1} className="relative z-10 outline-none">
           <Hero />
-          <Projects onInViewChange={setProjectsDark} />
-          <Article dark={projectsDark} />
+          <Projects />
+          <Article />
           <Work />
           {/* <About /> */}
           <Resume />

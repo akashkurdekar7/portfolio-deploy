@@ -3,15 +3,7 @@ import Star1 from "../assets/article/Star1.svg";
 import Star2 from "../assets/article/Star2.svg";
 import Star3 from "../assets/article/Star3.svg";
 
-interface ArticleProps {
-  // True while the page background is black (see Projects.tsx/App.tsx) —
-  // the top/bottom waves are painted to match the *ambient* page background
-  // so they blend into the marquee's permanent black band, not stand out
-  // against it.
-  dark?: boolean;
-}
-
-const Article = ({ dark = false }: ArticleProps) => {
+const Article = () => {
   const categories = [
     {
       name: "REACT.JS",
@@ -131,8 +123,7 @@ const Article = ({ dark = false }: ArticleProps) => {
     });
   }, [marqueeItems.length]);
 
-  const waveFill = dark ? "var(--black)" : "var(--white)";
-  const waveStyle = { fill: waveFill, transition: "fill 700ms ease-out" };
+  const waveStyle = { fill: "var(--white)" };
 
   return (
     <section className="relative  py-12 lg:py-16">

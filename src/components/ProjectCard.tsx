@@ -31,9 +31,6 @@ type ProjectCardProps = {
   variant?: "default" | "center";
   scrambleTitle?: boolean;
   className?: string;
-  // True when the page background behind this card is black (see Projects.tsx)
-  // — flips text/borders to stay legible against it.
-  dark?: boolean;
   // Scopes the desktop cursor-follow label (see ProjectsDesktop) to just the
   // image, rather than the whole card including the text block below it.
   onImageMouseEnter?: () => void;
@@ -47,7 +44,6 @@ const ProjectCard = ({
   variant = "default",
   scrambleTitle = true,
   className,
-  dark = false,
   onImageMouseEnter,
   onImageMouseLeave,
   onImageMouseMove,
@@ -96,11 +92,6 @@ const ProjectCard = ({
     return () => ctx.revert();
   }, [project.title, scrambleTitle]);
 
-  const companyBorderClass = dark ? "border-white/25 text-white/70" : "border-black/20 text-grey";
-  const contributionClass = dark ? "bg-white text-black" : "bg-black text-white";
-  const typeTextClass = dark ? "text-white/60" : "text-grey";
-  const descriptionTextClass = dark ? "text-white/70" : "text-grey";
-
   return (
     <div className={`group cursor-pointer ${className ?? "mx-auto h-auto w-full lg:w-[420px]"}`}>
       <div
@@ -126,27 +117,27 @@ const ProjectCard = ({
       {/* INFO */}
       <div className="mt-2 flex flex-col items-start  justify-between lg:mt-4">
         <div className="flex justify-between items-center w-full">
-          <h3 ref={titleRef} className={`font-instrument size28 capitalize ${dark ? "text-white" : ""}`}>
+          <h3 ref={titleRef} className="font-instrument size28 capitalize">
             {project.title}
           </h3>
 
           <span className="rounded-full border bg-white px-3 py-1 font-space size12 text-grey">{project.year}</span>
         </div>
-        <p className={`mt-1 mb-2 font-space size12 uppercase ${typeTextClass}`}>{project.type}</p>
+        <p className="mt-1 mb-2 font-space size12 uppercase text-grey">{project.type}</p>
 
         {variant !== "center" ? (
           <div className=" flex flex-wrap items-center gap-2">
-            <p className={` font-space size12 leading-5 text-justify ${descriptionTextClass}`}>{project.description}</p>
-            <span className={`rounded-full border px-3 py-1 font-space size12 uppercase ${companyBorderClass}`}>{project.company}</span>
+            <p className=" font-space size12 leading-5 text-justify text-grey">{project.description}</p>
+            <span className="rounded-full border px-3 py-1 font-space size12 uppercase border-black/20 text-grey">{project.company}</span>
 
-            <span className={`rounded-full px-3 py-1 font-space size12 uppercase ${contributionClass}`}>{project.contribution}</span>
+            <span className="rounded-full px-3 py-1 font-space size12 uppercase bg-black text-white">{project.contribution}</span>
           </div>
         ) : (
           <div className="mt-0 flex flex-wrap items-center gap-2">
-            <p className={` font-space size12 leading-5 text-justify xl:hidden ${descriptionTextClass}`}>{project.description}</p>
-            <span className={`rounded-full border px-3 py-1 font-space size12 uppercase ${companyBorderClass}`}>{project.company}</span>
+            <p className=" font-space size12 leading-5 text-justify xl:hidden text-grey">{project.description}</p>
+            <span className="rounded-full border px-3 py-1 font-space size12 uppercase border-black/20 text-grey">{project.company}</span>
 
-            <span className={`rounded-full px-3 py-1 font-space size12 uppercase ${contributionClass}`}>{project.contribution}</span>
+            <span className="rounded-full px-3 py-1 font-space size12 uppercase bg-black text-white">{project.contribution}</span>
           </div>
         )}
       </div>

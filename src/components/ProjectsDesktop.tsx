@@ -5,9 +5,6 @@ import ProjectCursorLabel from "./ProjectCursorLabel";
 
 interface ProjectsDesktopProps {
   projects: Project[];
-  // True while the section is scrolled into view — the page background goes
-  // black then, so cards need to flip their text/borders to stay legible.
-  dark?: boolean;
 }
 
 // Pinterest-style masonry: projects alternate into 2 hand-built columns
@@ -15,7 +12,7 @@ interface ProjectsDesktopProps {
 // early and leave a lopsided gap beside the other) and sized to fill each
 // column instead of the old fixed 420px card width. The right column starts
 // lower for the classic staggered brick look.
-const ProjectsDesktop = ({ projects, dark = false }: ProjectsDesktopProps) => {
+const ProjectsDesktop = ({ projects }: ProjectsDesktopProps) => {
   const leftColumn = projects.filter((_, index) => index % 2 === 0);
   const rightColumn = projects.filter((_, index) => index % 2 === 1);
 
@@ -33,10 +30,10 @@ const ProjectsDesktop = ({ projects, dark = false }: ProjectsDesktopProps) => {
     setCursor((c) => ({ ...c, x: event.clientX, y: event.clientY }));
   };
 
-  // This grid mounts behind a lazy() + Suspense boundary, after Projects.tsx's
-  // own ScrollTrigger (the whole-body dark toggle) has already measured the
-  // section at its pre-grid, heading-only height. Refresh once real content
-  // lands so that trigger's start/end reflect the grid's actual height.
+  // This grid mounts behind a lazy() + Suspense boundary, so other sections'
+  // ScrollTriggers may have already measured the page at its pre-grid,
+  // heading-only height. Refresh once real content lands so those triggers'
+  // start/end reflect the grid's actual height.
   useLayoutEffect(() => {
     ScrollTrigger.refresh();
   }, []);
@@ -60,7 +57,6 @@ const ProjectsDesktop = ({ projects, dark = false }: ProjectsDesktopProps) => {
           project={project}
           index={index}
           className="mx-auto h-auto w-full"
-          dark={dark}
           onImageMouseEnter={() => handleEnter(project)}
           onImageMouseLeave={handleLeave}
           onImageMouseMove={handleMove}
