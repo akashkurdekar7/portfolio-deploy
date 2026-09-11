@@ -70,15 +70,16 @@ const Footer = () => {
         )}
       </div>
       {/* Heading */}
-      <div className="relative z-20 pt-8 md:pt-0">
-        <span className="font-bricolage-semibold size16 uppercase tracking-[0.15em] text-white">thoughts • work • life</span>
-
-        <h2 className=" font-bricolage-semibold leading-9 lg:leading-18 size90 capitalize text-white  ">
-          let's get to the
-          <br />
-          <span className="font-italic text-white/50  tracking-normal">awkward</span>
-          <span className="font-bricolage-semibold"> part.</span>
-        </h2>
+      <div className="relative z-20 pt-8 md:pt-0 md:flex  w-full items-start justify-between">
+        <div className="">
+          <span className="font-bricolage size16 uppercase tracking-[0.15em] text-white">thoughts • work • life</span>
+          <h2 className=" font-bricolage-semibold leading-9 lg:leading-18 size90 capitalize text-white  ">
+            let's get to the
+            <br />
+            <span className="font-italic text-white/50  tracking-normal">awkward</span>
+            <span className="font-bricolage-semibold"> part.</span>
+          </h2>
+        </div>
         {/* Social Links */}
         <nav ref={navRef} aria-label="Social links" className="mt-8 md:mt-12">
           <ul className="border-t border-white/15">
@@ -88,11 +89,11 @@ const Footer = () => {
                   href={item.link}
                   target={item.name === "G-mail" ? undefined : "_blank"}
                   rel={item.name === "G-mail" ? undefined : "noreferrer"}
-                  className="group/link relative flex items-center justify-between gap-4 py-4 md:py-6"
+                  className="group/link relative flex items-center justify-between gap-30 py-2 "
                 >
                   <span className="flex items-center gap-4 md:gap-7">
-                    <span className="font-bricolage size12 text-white/40">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="text-2xl text-white/50 transition-colors duration-300 group-hover/link:text-orange md:text-4xl">
+                    <span className="flex w-8 shrink-0 font-bricolage-semibold size56 text-white/40">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="flex w-8 shrink-0 items-center justify-center text-2xl text-white/50 transition-colors duration-300 group-hover/link:text-orange md:w-12 md:text-4xl">
                       {item.icon}
                     </span>
                     <span className="link-cube-wrap relative inline-block [perspective:300px]">

@@ -41,36 +41,28 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
   {
     title: "Wholesale Management System",
-    type: "B2B Web Application",
+    type: "B2B Full-Stack Web Application",
     year: "2025",
     images: [saas, saas2, saas3, saas4],
-
     description:
-      "A full-stack B2B wholesale platform built to manage products, inventory, customers, orders, payments, and business operations through a centralized system.",
-
-    role: "Designed and developed the frontend architecture and user experience, while integrating REST APIs and independently organized backend services.",
-
+      "A full-stack B2B wholesale management platform with product and inventory management, customer accounts, order processing, payment tracking, and role-based business operations.",
+    role: "Built the application end to end, from UI/UX and React architecture to Node.js/Express APIs, MongoDB data models, JWT authentication, RBAC, protected routes, and core business workflows.",
     company: "Independent Project",
-    contribution: "Full Stack · UI/UX · Architecture",
-    tools: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+    contribution: "Full Stack · UI/UX · Architecture · API Development",
+    tools: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS", "JWT", "REST API", "RBAC"],
   },
-
   {
     title: "Ghost Rental",
-    type: "Website & Management Dashboard",
+    type: "Client Project · Rental Platform & Management Dashboard",
     year: "2025",
     images: [ghostrentals, ghostrentals2, ghostrentals3, ghostrentals4, ghostrentals5],
-
     description:
-      "A rental platform combining a customer-facing website with a management dashboard for handling products, rental operations, and day-to-day business workflows.",
-
-    role: "Developed the website and dashboard, building reusable interfaces, connecting application workflows, and creating responsive experiences across customer and administrative views.",
-
-    company: "IngeniousPix Creative Studios",
-    contribution: "Frontend · Dashboard · UI",
-    tools: ["React", "TypeScript", "Tailwind CSS", "Node.js"],
+      "A client rental platform combining a customer-facing website with a management dashboard for managing products, rental operations, customer activity, and day-to-day business workflows.",
+    role: "Onboarded to the client project as the frontend engineer and handled frontend development alongside project coordination, including client meetings, requirement discussions, task tracking, follow-ups, and cross-functional delivery.",
+    company: "IngeniousPix Creative Studios · Client Project",
+    contribution: "Frontend · Project Coordination · Dashboard · UI/UX",
+    tools: ["Angular", "TypeScript", "Tailwind CSS", "Node.js", "REST APIs", "Git", "googlemeets", "documentation", "trello", "Slack"],
   },
-
   {
     title: "Greenminds",
     type: "Single Page Website",
@@ -78,63 +70,56 @@ const projects = [
     images: [greenminds, greenminds2, greenminds3, greenminds4],
 
     description:
-      "A single-page brand website created to communicate Greenminds' offerings through a focused visual direction, structured content, and an engaging browsing experience.",
+      "A single-page brand website built to present Greenminds' offerings through a focused visual direction, structured content, and an engaging browsing experience.",
 
-    role: "Designed and developed the frontend, translating the visual direction into responsive layouts, interactive sections, and motion-driven experiences.",
+    role: "Developed the frontend as a single-page website, translating designs into responsive layouts, interactive sections, smooth animations, and reusable React components.",
 
     company: "IngeniousPix Creative Studios",
-    contribution: "Design · Frontend · Interaction",
+    contribution: "Frontend · UI · Interaction",
+
     tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
   },
-
   {
     title: "Pixtar",
-    type: "Company Website",
+    type: "Company Website · Full Redesign & Rebuild",
     year: "2026",
     images: [pixtar, pixtar2],
 
     description:
-      "A complete redesign and rebuild of the Pixtar website, replacing the existing experience with a modern visual direction and a more refined frontend architecture.",
+      "A complete redesign and rebuild of the Pixtar company website, transforming the existing Angular experience into a modern, responsive platform focused on performance, accessibility, technical SEO, and user experience.",
 
-    role: "Reworked the website from the ground up across UI implementation, frontend development, responsive behavior, animations, and interactive experiences.",
+    role: "Built the original Angular website and later rebuilt it with a complete visual and frontend overhaul, implementing responsive UI, animations, accessibility improvements, performance optimizations, and technical SEO. Improved Lighthouse scores to 90+ across key areas and contributed to a 30% increase in website users.",
+    company: "IngeniousPix Creative Studios · Pixtar",
+    contribution: "Frontend · Redesign · Performance · SEO",
 
-    company: "IngeniousPix Creative Studios",
-    contribution: "Frontend · UI · Redesign",
-    tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
+    tools: ["Angular", "TypeScript", "Tailwind CSS", "GSAP", "Google Lighthouse", "Google Search Console", "Google Analytics"],
   },
-
   {
     title: "Make My Card",
-    type: "Web Application & Dashboard",
+    type: "Web Application & Management Dashboard",
     year: "2026",
     images: [makemycard, makemycard2, makemycard3],
 
     description:
-      "A product-focused web application and management dashboard designed to simplify the creation, organization, and management of digital products.",
+      "A web application and management dashboard for creating, organizing, and managing digital card products, with dashboard-managed data powering the customer-facing website and Stripe integrated for payments.",
 
-    role: "Developed the product interface and dashboard, creating reusable components, structured workflows, and consistent experiences across the application.",
-
+    role: "Developed the customer-facing website and management dashboard used to create and manage the data displayed on the website. Implemented reusable components, responsive interfaces, API integrations, and Stripe payment workflows while collaborating with senior engineers throughout development.",
     company: "IngeniousPix Creative Studios",
-    contribution: "Frontend · Dashboard · UI",
-    tools: ["React", "TypeScript", "Tailwind CSS", "Node.js"],
+    contribution: "Frontend · Dashboard · Product UI",
+    tools: ["Angular", "TypeScript", "Node.js", "Express", "Tailwind CSS", "REST APIs", "Stripe", "Git", "GitHub", "Playwright", "Postman"],
   },
-
   {
     title: "PhDesignMe",
-    type: "Client Website",
+    type: "Client Website & Management Dashboard",
     year: "2026",
     images: [phdesignme, phdesignme2, phdesignme3, phdesignme4, phdesignme5],
-
     description:
-      "A visually driven client website built around a strong creative identity, combining editorial-style layouts with interactive elements and a polished digital experience.",
-
-    role: "Developed the frontend experience, translating the visual direction into responsive layouts, typography systems, animations, and interactive details.",
-
-    company: "IngeniousPix Creative Studios",
-    contribution: "Frontend · UI · Interaction",
-    tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
+      "A client website and management dashboard combining a strong creative identity with responsive interfaces, custom animations, interactive experiences, and structured dashboard workflows.",
+    role: "Developed the website frontend and contributed to the dashboard from UI/UX through implementation. Built responsive layouts, reusable interfaces, interactive sections, and custom GSAP animations while working across both customer-facing and administrative experiences.",
+    company: "IngeniousPix Creative Studios · Client Project",
+    contribution: "Frontend · UI/UX · Dashboard · Animation · Interaction",
+    tools: ["Angular", "TypeScript", "Tailwind CSS", "GSAP"],
   },
-
   {
     title: "Arovan",
     type: "Client Website",
@@ -142,13 +127,15 @@ const projects = [
     images: [Arovan, Arovan2, Arovan3, Arovan4, Arovan5],
 
     description:
-      "A modern client website focused on presenting the brand through a clean visual system, structured content, and an engaging interactive experience.",
+      "A modern client website built to present the brand through a clean visual system, structured content, and an engaging interactive experience.",
 
-    role: "Developed the frontend with a focus on visual hierarchy, responsive layouts, reusable components, and polished interactions.",
+    role: "Contributed to the frontend development by building selected sections and reusable components, implementing responsive layouts, interactions, and UI details within the existing website architecture.",
 
-    company: "IngeniousPix Creative Studios",
-    contribution: "Frontend · UI · Interaction",
-    tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
+    company: "IngeniousPix Creative Studios · Client Project",
+
+    contribution: "Frontend · UI · Components",
+
+    tools: ["Angular", "TypeScript", "Tailwind CSS", "AOS"],
   },
 ];
 

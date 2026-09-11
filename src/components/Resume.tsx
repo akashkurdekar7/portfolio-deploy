@@ -196,7 +196,7 @@ const Resume = () => {
           </h2>
 
           <p className="mt-6 max-w-xs font-bricolage size14 leading-6 text-grey lg:text-justify">
-            Everything you've just read, on one page — roles, stack, and the shape of the work.
+            A quick look at my experience, the products I've worked on, and the skills I've built across software development.
           </p>
         </div>
 
@@ -256,15 +256,15 @@ const Resume = () => {
           </button>
         </div>
 
-        {/* RIGHT — INFO + DOWNLOAD */}
         <div className="resume-reveal lg:col-span-3">
           <h3 className="font-instrument size44 leading-[1.2]">Akash Kurdekar</h3>
-          <h4 className="mt-1 font-bricolage size14 uppercase text-orange">Computer Science Engineer</h4>
+          <h4 className="mt-1 font-bricolage-semibold size18  tracking-wide lg:tracking-widest uppercase text-orange">
+            Computer Science Engineer
+          </h4>
           <p className="mt-4 max-w-xs font-bricolage size14 leading-6 text-grey">
-            React, TypeScript, and the occasional over-engineered scroll animation — the full breakdown lives in the PDF.
+            Software engineer working across frontend, backend, APIs, databases, and product experiences, with a focus on building practical
+            solutions and adapting to whatever the project requires.
           </p>
-
-          {/* SCRIBBLE DOTS */}
           <svg viewBox="0 0 60 14" className="mt-4 h-3 w-14 overflow-visible" aria-hidden="true">
             <circle cx="4" cy="7" r="3" fill="var(--blue)" />
             <circle cx="20" cy="7" r="3" fill="var(--orange)" />

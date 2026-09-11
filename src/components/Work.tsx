@@ -51,7 +51,7 @@ const Work = () => {
       role: "Frontend Engineer",
       period: "Feb 2025 — Present",
       description:
-        "Transitioned from an internship into a full-time engineering role, taking ownership of client projects across frontend development, backend integration, UI/UX, and production delivery.",
+        "Transitioned from an internship into a full-time Frontend Engineer role, taking on increasing responsibility across production client projects. Adapted to new technologies and project requirements as needed, including learning Angular after joining the team and applying it to live client work. Took ownership of frontend development, UI/UX implementation, integrations, performance, accessibility, SEO, and testing while also working directly with clients, coordinating tasks across teams, and helping drive projects from requirements through production delivery.",
       image: ipcs,
       highlightWord: "IngeniousPix",
     },
@@ -62,7 +62,8 @@ const Work = () => {
       role: "Full Stack Developer Intern",
       period: "Aug 2023 — Oct 2023",
       description:
-        "Built marketplace features using React.js, Node.js, Express.js, and MongoDB, developing reusable components and REST APIs while working with vendors to translate business workflows into product features.",
+        "Worked as a Full Stack Developer Intern on a marketplace platform using React.js, Node.js, Express.js, and MongoDB. Developed reusable frontend components, integrated REST APIs, and contributed to product listing, inventory, and order-management workflows. Worked with local vendors to understand their business processes and translate requirements into practical product features while collaborating with the development team.",
+
       highlightWord: "Deshpande",
       highlightColor: "var(--orange)",
     },
@@ -72,8 +73,10 @@ const Work = () => {
       company: "Varcons Technologies Pvt. Ltd",
       role: "Full Stack Web Development Intern",
       period: "May 2023 — Jul 2023",
+
       description:
-        "Developed frontend features across 10+ client projects using React.js, Angular, TypeScript, HTML, and CSS, including reusable components, dashboards, landing pages, and responsive interfaces.",
+        "Developed and delivered a wildlife-focused website during the internship, building the frontend experience with responsive layouts, reusable components, structured content, and interactive sections. Worked on the website from implementation through completion and handed over the finished project to the team.",
+
       highlightWord: "Varcons",
       highlightColor: "var(--blue)",
     },
