@@ -127,6 +127,38 @@ const Article = () => {
 
   return (
     <section className="relative  py-12 lg:py-16">
+      {/* SCRIBBLE — TOP LEFT */}
+      <div className="pointer-events-none absolute left-4 top-2 z-20   -rotate-3   lg:left-16" aria-hidden="true">
+        <span className="font-scribble size28 text-blue">My Stack</span>
+        <svg viewBox="0 0 120 70" className="mt-1 h-12 w-24 overflow-visible">
+          <path
+            d="M8,10 C42,4 70,32 88,50 M88,50 L72,44 M88,50 L94,32"
+            fill="none"
+            stroke="var(--blue)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+      </div>
+
+      {/* SCRIBBLE — BOTTOM RIGHT */}
+      <div className="pointer-events-none absolute bottom-2 right-4 z-20   rotate-3   lg:right-16" aria-hidden="true">
+        <svg viewBox="0 0 120 70" className="h-12 w-24 overflow-visible">
+          <path
+            d="M8,60 C42,66 70,38 88,20 M88,20 L72,26 M88,20 L94,38"
+            fill="none"
+            stroke="var(--orange)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+        <span className="-mt-1 block text-right font-scribble size28 text-orange">and More</span>
+      </div>
+
       <div className="relative ">
         {/* TOP WAVE */}
         <svg className="article-wave absolute -top-[1px] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
@@ -152,7 +184,7 @@ const Article = () => {
           <div className="marquee flex w-max items-center gap-18" aria-hidden="true">
             {marqueeItems.map((item, index) => (
               <React.Fragment key={`${item.name}-${index}`}>
-                <span className={`font-bricolage-semibold tracking-[2px] lg:tracking-[5px] size56 whitespace-nowrap ${item.color}`}>
+                <span className={`font-bricolage-semibold tracking-[2px] lg:tracking-[5px] quote-text whitespace-nowrap ${item.color}`}>
                   {item.name}
                 </span>
 

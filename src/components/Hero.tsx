@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoMailOutline } from "react-icons/io5";
 import hero from "../assets/hero.webp";
@@ -6,7 +6,13 @@ import hero700 from "../assets/hero-700w.webp";
 import clouds from "../assets/clouds.webp";
 import gsap from "gsap";
 import type Lenis from "lenis";
-const Hero = () => {
+
+interface HeroProps {
+  /** Whether the loader has finished and the hero image may reveal. */
+  revealed: boolean;
+}
+
+const Hero = ({ revealed }: HeroProps) => {
   const links = [
     {
       name: "linkedin",
@@ -30,7 +36,47 @@ const Hero = () => {
     },
   ];
   const cloudRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const heroImageWrapRef = useRef<HTMLDivElement>(null);
+  const heroImageRef = useRef<HTMLImageElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Keep the hero image clipped shut (and zoomed in) until `revealed` flips
+  // true below, so it has something to wipe open from instead of sitting
+  // fully visible, already animated, behind the loader the whole time —
+  // mirrors the header's pre-reveal y/opacity set in Header.tsx.
+  useLayoutEffect(() => {
+    const wrap = heroImageWrapRef.current;
+    const img = heroImageRef.current;
+    if (!wrap || !img) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.set(wrap, { clipPath: "inset(0% 100% 0% 0% round 20px)" });
+    gsap.set(img, { scale: 1.2 });
+  }, []);
+
+  // Wipe the clip-path open left-to-right and ease the zoom back down to
+  // 1, once the loader has finished and the hero may animate into view.
+  useLayoutEffect(() => {
+    if (!revealed) return;
+
+    const wrap = heroImageWrapRef.current;
+    const img = heroImageRef.current;
+    if (!wrap || !img) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(wrap, { clipPath: "inset(0% 0% 0% 0% round 20px)" });
+      gsap.set(img, { scale: 1 });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: 0.2 });
+      tl.to(wrap, { clipPath: "inset(0% 0% 0% 0% round 20px)", duration: 1.2, ease: "power4.inOut" });
+      tl.to(img, { scale: 1, duration: 1.4, ease: "power3.out" }, 0.15);
+    });
+
+    return () => ctx.revert();
+  }, [revealed]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,13 +162,17 @@ const Hero = () => {
   return (
     <section className="relative flex min-h-dvh items-center justify-center lg:mx-20 mx-6">
       <div className="flex flex-col items-center gap-10 relative z-30">
-        <div className="hero-image overflow-hidden relative h-80 w-full md:w-170 rounded-[20px] border-6">
+        <div
+          ref={heroImageWrapRef}
+          className="hero-image overflow-hidden relative h-80 w-full md:w-170 rounded-[20px] border-6"
+        >
           <img
+            ref={heroImageRef}
             src={hero}
             srcSet={`${hero700} 700w, ${hero} 1400w`}
             sizes="(min-width: 768px) 680px, calc(100vw - 48px)"
             alt="Akash Kurdekar — software engineer, project lead, and designer"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
             loading="eager"
             fetchPriority="high"
             width={1400}
@@ -132,7 +182,7 @@ const Hero = () => {
 
         {/* HERO CONTENT */}
         <div className="hero-content flex flex-col items-center justify-center transition-all duration-700">
-          <h1 className="size44 font-instrument leading-none capitalize">
+          <h1 className="size56 font-instrument leading-none capitalize">
             akash <span className="text-blue font-italic">kurdekar</span>
           </h1>
 
@@ -147,7 +197,7 @@ const Hero = () => {
               <li>designer</li>
             </ul>
           </div>
-          <p className="w-full lg:max-w-2xl text-center size16 lg:leading-6 font-bricolage text-grey">
+          <p className="w-full lg:max-w-lg text-center size18 lg:leading-6 font-bricolage text-grey">
             Curious about a lot of things, always learning, and never quite interested in doing just one thing.
           </p>
         </div>

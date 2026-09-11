@@ -166,7 +166,7 @@ const Projects = () => {
           </sup>
         </h2>
 
-        <p className="max-w-xs text-center font-bricolage size14 leading-4 text-grey">
+        <p className="max-w-lg text-center font-bricolage size14 leading-4 text-grey">
           Selected work demonstrating my approach to design, development, and building meaningful digital experiences.
         </p>
       </div>

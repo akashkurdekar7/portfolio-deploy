@@ -46,7 +46,7 @@ const App = () => {
         >
           <SmoothScroll />
 
-          <Hero />
+          <Hero revealed={!siteBlurred} />
           <Projects />
           <Article />
           <Work />
