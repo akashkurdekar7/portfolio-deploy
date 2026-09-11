@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoMailOutline } from "react-icons/io5";
 import hero from "../assets/hero.webp";
+import hero700 from "../assets/hero-700w.webp";
 import clouds from "../assets/clouds.webp";
 import gsap from "gsap";
 import type Lenis from "lenis";
@@ -118,10 +119,14 @@ const Hero = () => {
         <div className="hero-image overflow-hidden relative h-80 w-full md:w-170 rounded-[20px] border-6">
           <img
             src={hero}
+            srcSet={`${hero700} 700w, ${hero} 1400w`}
+            sizes="(min-width: 768px) 680px, calc(100vw - 48px)"
             alt="Akash Kurdekar — software engineer, project lead, and designer"
             className="h-full w-full object-cover"
             loading="eager"
             fetchPriority="high"
+            width={1400}
+            height={788}
           />
         </div>
 

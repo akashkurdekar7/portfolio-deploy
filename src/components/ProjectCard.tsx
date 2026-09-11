@@ -25,6 +25,7 @@ type ProjectCardProps = {
   index: number;
   variant?: "default" | "center";
   scrambleTitle?: boolean;
+  revealImage?: boolean;
   className?: string;
   onImageMouseEnter?: () => void;
   onImageMouseLeave?: () => void;
@@ -36,6 +37,7 @@ const ProjectCard = ({
   index,
   variant = "default",
   scrambleTitle = true,
+  revealImage = true,
   className,
   onImageMouseEnter,
   onImageMouseLeave,
@@ -85,11 +87,45 @@ const ProjectCard = ({
     return () => ctx.revert();
   }, [project.title, scrambleTitle]);
 
+  const imageWrapRef = useRef<HTMLDivElement>(null);
+  const imageElRefs = useRef<(HTMLImageElement | null)[]>([]);
+
+  // Curtain-style reveal: the image sits zoomed in and clipped away from the
+  // bottom, then unclips upward while zooming back to 1 as the card scrolls
+  // into view. Runs once — this is an entrance moment, not a scrub effect.
+  useLayoutEffect(() => {
+    if (!revealImage) return;
+    const wrap = imageWrapRef.current;
+    const imgs = imageElRefs.current.filter((el): el is HTMLImageElement => el !== null);
+    if (!wrap || imgs.length === 0) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set(wrap, { clipPath: "inset(100% 0% 0% 0%)" });
+      gsap.set(imgs, { scale: 1.15 });
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: wrap,
+            start: "top 85%",
+            once: true,
+          },
+        })
+        .to(wrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" }, 0)
+        .to(imgs, { scale: 1, duration: 1.4, ease: "power3.out" }, 0);
+    });
+
+    return () => ctx.revert();
+  }, [revealImage]);
+
   return (
     <div
       className={`group cursor-pointer bg-[#fff] border-6 border-white rounded-[24px] ${className ?? "mx-auto h-auto w-full lg:w-[420px]"}`}
     >
       <div
+        ref={imageWrapRef}
         className="relative mx-auto aspect-[450/350] w-full overflow-hidden rounded-2xl [transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
         onMouseEnter={onImageMouseEnter}
         onMouseLeave={onImageMouseLeave}
@@ -98,6 +134,9 @@ const ProjectCard = ({
         {images.map((src, i) => (
           <img
             key={src}
+            ref={(el) => {
+              imageElRefs.current[i] = el;
+            }}
             src={src}
             loading="lazy"
             alt={`${project.title} — ${project.type} project screenshot ${i + 1} of ${images.length}`}

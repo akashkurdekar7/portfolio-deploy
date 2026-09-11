@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Chunko';
-  src: url('/src/assets/fonts/Chunko Bold Demo.ttf') format('truetype');
+  src: url('/fonts/chunko-bold-demo.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: 'BrittanySignature';
-  src: url('/src/assets/fonts/BrittanySignature.ttf') format('truetype');
+  src: url('/fonts/brittany-signature.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;

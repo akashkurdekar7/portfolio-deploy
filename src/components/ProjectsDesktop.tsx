@@ -40,10 +40,31 @@ const ProjectsDesktop = ({ projects }: ProjectsDesktopProps) => {
 
   const renderCard = (project: Project) => {
     const index = projects.indexOf(project);
+    const card = (
+      <ProjectCard
+        project={project}
+        index={index}
+        className="mx-auto h-auto w-full"
+        onImageMouseEnter={project.url ? () => handleEnter(project) : undefined}
+        onImageMouseLeave={project.url ? handleLeave : undefined}
+        onImageMouseMove={project.url ? handleMove : undefined}
+      />
+    );
+
+    // Without a real destination there is nothing to link to — render plain
+    // content instead of an <a> with no href, which search engines flag as
+    // an uncrawlable link and screen readers announce as an inert control.
+    if (!project.url) {
+      return (
+        <div key={project.title} className="mb-12 block lg:mb-16 xl:mb-20">
+          {card}
+        </div>
+      );
+    }
+
     // A real <a> (rather than a div with an onClick) so the card is reachable
     // and operable by keyboard, and announced by screen readers as a link to
-    // its actual destination instead of silent, unlabeled content. An anchor
-    // with no href (project.url unset) is inert — same as the old no-op click.
+    // its actual destination instead of silent, unlabeled content.
     return (
       <a
         key={project.title}
@@ -53,14 +74,7 @@ const ProjectsDesktop = ({ projects }: ProjectsDesktopProps) => {
         aria-label={`${project.title} — view ${project.linkType === "github" ? "GitHub repository" : "live site"} (opens in a new tab)`}
         className="mb-12 block lg:mb-16 xl:mb-20"
       >
-        <ProjectCard
-          project={project}
-          index={index}
-          className="mx-auto h-auto w-full"
-          onImageMouseEnter={() => handleEnter(project)}
-          onImageMouseLeave={handleLeave}
-          onImageMouseMove={handleMove}
-        />
+        {card}
       </a>
     );
   };

@@ -24,21 +24,42 @@ const Resume = () => {
   // A missing public/resume.pdf falls through to the SPA's own index.html on
   // most dev servers/hosts, which an <object type="application/pdf"> happily
   // renders as a nested page instead of failing — so check the real response
-  // before ever pointing the embed at it.
+  // before ever pointing the embed at it. Deferred until the section is
+  // about to scroll into view so this fetch doesn't compete with the
+  // initial page load's critical requests (Resume mounts eagerly with the
+  // rest of the page, well above the fold's worth of scrolling away).
   useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
     let cancelled = false;
 
-    fetch(RESUME_PATH, { method: "HEAD" })
-      .then((res) => {
-        if (cancelled) return;
-        setPdfAvailable(res.ok && (res.headers.get("content-type") || "").includes("pdf"));
-      })
-      .catch(() => {
-        if (!cancelled) setPdfAvailable(false);
-      });
+    const checkPdf = () => {
+      fetch(RESUME_PATH, { method: "HEAD" })
+        .then((res) => {
+          if (cancelled) return;
+          setPdfAvailable(res.ok && (res.headers.get("content-type") || "").includes("pdf"));
+        })
+        .catch(() => {
+          if (!cancelled) setPdfAvailable(false);
+        });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          checkPdf();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" },
+    );
+
+    observer.observe(node);
 
     return () => {
       cancelled = true;
+      observer.disconnect();
     };
   }, []);
 
