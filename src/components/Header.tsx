@@ -2,7 +2,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import gsap from "gsap";
 
-const Header = () => {
+interface HeaderProps {
+  /** Whether the loader has finished and the header may animate into view. */
+  revealed: boolean;
+}
+
+const Header = ({ revealed }: HeaderProps) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -11,6 +16,7 @@ const Header = () => {
   const availabilityRef = useRef<HTMLDivElement>(null);
   const menuTimeline = useRef<gsap.core.Timeline | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,14 +29,19 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent background scrolling when menu is open
+  // Prevent background scrolling when menu is open. Setting overflow:hidden
+  // on the body alone isn't enough — Lenis drives scroll itself via its own
+  // window.scrollTo() on wheel/touch input, which bypasses that lock
+  // entirely (see the matching note in SmoothScroll.tsx for the Loader).
   useEffect(() => {
     if (!menuOpen) return;
 
     document.body.style.overflow = "hidden";
+    window.__lenis?.stop();
 
     return () => {
       document.body.style.overflow = "";
+      window.__lenis?.start();
     };
   }, [menuOpen]);
 
@@ -46,6 +57,26 @@ const Header = () => {
 
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [menuOpen]);
+
+  // Keep the header off-screen while the loader is still up, so it has
+  // somewhere to animate in from once `revealed` flips true below —
+  // otherwise it'd sit fully in place, already animated, hidden behind the
+  // loader the whole time.
+  useLayoutEffect(() => {
+    gsap.set(headerRef.current, { y: -100, autoAlpha: 0 });
+  }, []);
+
+  // GSAP header entrance animation — deferred until the loader finishes so
+  // the slide-down is actually visible instead of completing unseen behind it.
+  useLayoutEffect(() => {
+    if (!revealed) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(headerRef.current, { y: 0, autoAlpha: 1, duration: 1, ease: "power3.out" });
+    });
+
+    return () => ctx.revert();
+  }, [revealed]);
 
   // GSAP mobile menu animation
   useLayoutEffect(() => {
@@ -129,6 +160,13 @@ const Header = () => {
     event.preventDefault();
     closeMenu();
 
+    // closeMenu() only schedules the state update — the effect that calls
+    // window.__lenis.start() again runs as its cleanup, which fires after
+    // this handler returns. Without unstopping it here too, a click from
+    // the open mobile menu asks a still-stopped Lenis to scroll and the
+    // request is silently dropped.
+    window.__lenis?.start();
+
     const target = document.querySelector(hash);
     if (!target) return;
 
@@ -145,7 +183,8 @@ const Header = () => {
     <>
       {/* HEADER */}
       <header
-        className={`fixed inset-x-0 top-0 z-50 px-6 md:px-20 py-3 border-b transition-all duration-700 ease-out
+        ref={headerRef}
+        className={`fixed inset-x-0 top-0 z-[65] px-6 md:px-20 py-3 border-b transition-all duration-700 ease-out
         ${
           scrolled
             ? " border-white/40 bg-white/60 shadow-md backdrop-blur-xl backdrop-saturate-150"
@@ -161,7 +200,7 @@ const Header = () => {
         >
           {/* LOGO */}
           <div className="">
-            <a href="/" className="z-20 font-chunko text-3xl uppercase transition-all duration-500">
+            <a href="/" className="z-20 font-bricolage-semibold text-3xl uppercase transition-all duration-500">
               ak
             </a>
           </div>
@@ -227,7 +266,7 @@ const Header = () => {
               <span className="absolute h-2.5 w-2.5 rounded-full border border-black transition-colors duration-300 group-hover:bg-[#ff5c00]" />
             </span>
 
-            <span className="font-space text-xs uppercase">available for work</span>
+            <span className="font-bricolage size12  uppercase">available for work</span>
           </div>
 
           {/* MOBILE BURGER */}
@@ -249,7 +288,7 @@ const Header = () => {
         id="mobile-menu"
         ref={menuRef}
         className="
-    fixed inset-0 z-40
+    fixed inset-0 z-[64]
     flex items-center justify-center
     bg-white
     md:hidden
@@ -286,11 +325,7 @@ const Header = () => {
                 menuLinksRef.current[2] = el;
               }}
             >
-              <a
-                href="#resume"
-                onClick={(e) => scrollToSection(e, "#resume")}
-                className="transition-colors duration-300 hover:text-orange"
-              >
+              <a href="#resume" onClick={(e) => scrollToSection(e, "#resume")} className="transition-colors duration-300 hover:text-orange">
                 Resume
               </a>
             </li>
@@ -298,7 +333,10 @@ const Header = () => {
         </nav>
 
         {/* Bottom availability */}
-        <div ref={availabilityRef} className="absolute bottom-6 flex size12 items-center gap-2 font-space uppercase">
+        <div
+          ref={availabilityRef}
+          className="availability absolute bottom-6 flex size12 items-center gap-2 font-bricolage-semibold uppercase"
+        >
           Available for work
         </div>
       </div>

@@ -152,7 +152,9 @@ const Article = () => {
           <div className="marquee flex w-max items-center gap-18" aria-hidden="true">
             {marqueeItems.map((item, index) => (
               <React.Fragment key={`${item.name}-${index}`}>
-                <span className={`font-chunko tracking-[2px] lg:tracking-[5px] size56 whitespace-nowrap ${item.color}`}>{item.name}</span>
+                <span className={`font-bricolage-semibold tracking-[2px] lg:tracking-[5px] size56 whitespace-nowrap ${item.color}`}>
+                  {item.name}
+                </span>
 
                 <img src={randomImages[index]} alt="" className="h-5  lg:h-10 w-auto shrink-0 object-cover" loading="lazy" />
               </React.Fragment>

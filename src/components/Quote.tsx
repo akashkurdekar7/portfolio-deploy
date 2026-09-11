@@ -20,7 +20,7 @@ const Quote = () => {
       gsap.fromTo(
         quoteRef.current,
         {
-          scale: 0.1,
+          scale: 0.6,
           opacity: 0,
         },
         {
@@ -28,11 +28,6 @@ const Quote = () => {
           opacity: 1,
           ease: "none",
           scrollTrigger: {
-            // Trigger off the wrapper, not quoteRef itself — quoteRef is the
-            // element being scaled, and gsap.fromTo renders the scale:0.1
-            // "from" state immediately on creation, before ScrollTrigger
-            // measures the trigger position. Using it as its own trigger
-            // means "top 80%" gets measured against the shrunk element.
             trigger: wrapperRef.current,
             start: "top 80%",
             end: "center center",
@@ -51,9 +46,9 @@ const Quote = () => {
     <section ref={sectionRef} className=" min-h-dvh flex items-center justify-center">
       <div ref={wrapperRef} className="mx-auto flex items-center justify-center flex-col">
         <blockquote ref={quoteRef} className="mt-0">
-          <h3 className="size56 font-italic   text-black ">“Fear cuts deeper than swords.”</h3>
+          <h3 className="quote-text font-italic   text-black ">“Fear cuts deeper than swords.”</h3>
 
-          <div className=" size12 font-space  text-black/50 text-end tracking-tight">
+          <div className=" size12 font-bricolage  text-black/50 text-end tracking-tight">
             — George R. R. Martin
             <span className="mx-2 text-neutral-300">/</span>
             <cite className=" not-italic">A Game of Thrones</cite>

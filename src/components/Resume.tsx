@@ -185,10 +185,9 @@ const Resume = () => {
       ref={sectionRef}
       className="relative mx-5 min-h-screen py-16 lg:flex lg:min-h-screen lg:items-center lg:py-24 md:mx-20"
     >
-      <div className="relative w-full grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
-        {/* LEFT — HEADER */}
+      <div className="relative w-full grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-8">
         <div className="resume-reveal lg:col-span-3">
-          <h2 className="mt-4 lg:mt-8 max-w-md font-chunko size64 leading-[0.95]">
+          <h2 className="mt-4 lg:mt-8 max-w-md font-bricolage-semibold size64 leading-[1.2]">
             Grab my
             <br />
             <HighlightCircle color="var(--orange)">
@@ -196,19 +195,7 @@ const Resume = () => {
             </HighlightCircle>
           </h2>
 
-          {/* SCRIBBLE UNDERLINE */}
-          <svg viewBox="0 0 160 20" className="mt-4 h-4 w-32 overflow-visible" aria-hidden="true">
-            <path
-              d="M2,10 C30,2 50,16 78,8 C100,2 120,14 140,7"
-              fill="none"
-              stroke="var(--orange)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-
-          <p className="mt-6 max-w-xs font-space size14 leading-6 text-grey lg:text-justify">
+          <p className="mt-6 max-w-xs font-bricolage size14 leading-6 text-grey lg:text-justify">
             Everything you've just read, on one page — roles, stack, and the shape of the work.
           </p>
         </div>
@@ -216,7 +203,7 @@ const Resume = () => {
         {/* CENTER — PDF PREVIEW CARD */}
         <div className="resume-reveal relative flex justify-center lg:col-span-6">
           {/* SCRIBBLE NOTE */}
-          <div className="pointer-events-none absolute -top-12 left-12 z-20 hidden -rotate-3 lg:block">
+          <div className="pointer-events-none absolute -top-12 left-12 z-20  -rotate-3 block">
             <span className="font-scribble size18 text-blue">have a look!!</span>
             <svg viewBox="0 0 120 70" className="mt-1 h-12 w-24 overflow-visible" aria-hidden="true">
               <path
@@ -246,7 +233,7 @@ const Resume = () => {
                   className="pointer-events-none h-full w-full"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center bg-white p-8 text-center font-space size14 leading-6 text-grey">
+                <div className="flex h-full items-center justify-center bg-white p-8 text-center font-bricolage size14 leading-6 text-grey">
                   <p>
                     {pdfAvailable === null
                       ? "Loading preview…"
@@ -272,8 +259,8 @@ const Resume = () => {
         {/* RIGHT — INFO + DOWNLOAD */}
         <div className="resume-reveal lg:col-span-3">
           <h3 className="font-instrument size44 leading-[1.2]">Akash Kurdekar</h3>
-          <h4 className="mt-1 font-space size14 uppercase text-orange">Computer Science Engineer</h4>
-          <p className="mt-4 max-w-xs font-space size14 leading-6 text-grey">
+          <h4 className="mt-1 font-bricolage size14 uppercase text-orange">Computer Science Engineer</h4>
+          <p className="mt-4 max-w-xs font-bricolage size14 leading-6 text-grey">
             React, TypeScript, and the occasional over-engineered scroll animation — the full breakdown lives in the PDF.
           </p>
 
@@ -291,7 +278,7 @@ const Resume = () => {
               className="group/btn flex items-center gap-3 rounded-md border border-black bg-white px-5 py-3 shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)] transition-all duration-200 ease-out [transform-style:preserve-3d] hover:translate-y-1 hover:[transform:translateY(0.25rem)_translateZ(-4px)] hover:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)] active:[transform:translateY(0.25rem)_translateZ(-6px)] active:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)]"
             >
               <FaDownload className="text-orange" />
-              <span className="font-space size14 uppercase">Download PDF</span>
+              <span className="font-bricolage size14 uppercase">Download PDF</span>
             </a>
 
             <button
@@ -299,7 +286,7 @@ const Resume = () => {
               onClick={handleOpenPreview}
               onMouseEnter={scrambleViewFullscreen}
               onFocus={scrambleViewFullscreen}
-              className="font-space size14 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black cursor-pointer"
+              className="font-bricolage size14 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black cursor-pointer"
             >
               <span ref={viewFullscreenTextRef}>{VIEW_FULLSCREEN_LABEL}</span>
             </button>
@@ -324,14 +311,14 @@ const Resume = () => {
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex items-center justify-between border-b-2 border-black px-4 py-3 md:px-6">
-                <span className="font-space size12 uppercase text-grey">Resume</span>
+                <span className="font-bricolage size12 uppercase text-grey">Resume</span>
 
                 <div className="flex items-center gap-4">
                   <a
                     href={RESUME_PATH}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-2 font-space size12 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
+                    className="flex items-center gap-2 font-bricolage size12 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
                   >
                     <FaExternalLinkAlt size={12} />
                     Open in new tab
@@ -352,7 +339,7 @@ const Resume = () => {
               <div className="relative flex-1 overflow-hidden bg-white">
                 {canShowInlinePreview ? (
                   <object data={RESUME_PATH} type="application/pdf" className="h-full w-full">
-                    <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center font-space size14 leading-6 text-grey">
+                    <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center font-bricolage size14 leading-6 text-grey">
                       <p>Your browser can't preview PDFs inline.</p>
                       <a
                         href={RESUME_PATH}
@@ -365,7 +352,7 @@ const Resume = () => {
                     </div>
                   </object>
                 ) : (
-                  <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center font-space size14 leading-6 text-grey">
+                  <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center font-bricolage size14 leading-6 text-grey">
                     <p>
                       {pdfAvailable === null
                         ? "Loading preview…"

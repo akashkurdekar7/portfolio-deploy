@@ -150,7 +150,7 @@ const ProjectsStack = ({ projects, onSelectProject }: ProjectsStackProps) => {
     return (
       <section className="relative flex flex-col gap-8">
         {projects.map((project, index) => (
-          <div key={project.title} className="rounded-[28px] border-2 border-black bg-[#ffffff] px-3 py-4">
+          <div key={project.title} className="rounded-[28px] border-2 border-black bg-[#ffffff] lg:px-3 lg:py-4 py-2 px-1">
             <ProjectCard
               project={project}
               index={index}
@@ -173,7 +173,7 @@ const ProjectsStack = ({ projects, onSelectProject }: ProjectsStackProps) => {
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
-            className="absolute inset-0 m-auto h-fit w-full origin-bottom rounded-[28px] border-2 border-black bg-[#ffffff] px-3 py-4 will-change-transform"
+            className="absolute inset-0 m-auto h-fit w-full origin-bottom rounded-[28px] border-2 border-black bg-[#ffffff] lg:px-3 lg:py-4 py-2 px-1 will-change-transform"
             style={{
               zIndex: index + 1,
               // Cards are rotated in 3D (rotateX) inside a `perspective`
@@ -205,7 +205,9 @@ const ProjectsStack = ({ projects, onSelectProject }: ProjectsStackProps) => {
         className="pointer-events-none absolute inset-x-0 bottom-6 flex justify-center"
         style={{ zIndex: projects.length + 3 }}
       >
-        <span className="rounded-full border border-black/20 bg-[#ffffff] px-3 py-1 font-space size12 uppercase text-grey">scroll</span>
+        <span className="rounded-full border border-black/20 bg-[#ffffff] px-3 py-1 font-bricolage-semibold size12 uppercase text-grey">
+          scroll
+        </span>
       </div>
 
       <div

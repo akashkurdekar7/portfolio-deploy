@@ -9,6 +9,23 @@ interface AnimeGreeterProps {
   belowRef?: React.RefObject<HTMLElement | null>;
 }
 
+const GREETINGS = [
+  "Yooo! 👋",
+  "Namaskar! 🙏",
+  "Kem Cho? 👀",
+  "Namaste! ✨",
+  "Yo yo! 😏",
+  "Kya scene? 👀",
+  "Aye yooo! 🚀",
+  "Kaise ho? ✨",
+  "Arre hello! 👋",
+  "Chalo, let's go 🚀",
+  "Namaskara! 🙏",
+  "Oho, you're here 👀",
+  "Ayo! What's up? 😏",
+  "Kya bolta? 👀",
+  "Chalo shuru karein 🚀",
+];
 const HEAD_R = 46;
 const TORSO_R = 42;
 const TORSO_LEN = 70;
@@ -91,7 +108,19 @@ const AnimeGreeter = ({ className, style, belowRef }: AnimeGreeterProps) => {
       const anchorEl = belowRef?.current;
       if (anchorEl) resizeObserver.observe(anchorEl);
 
-      return () => resizeObserver.disconnect();
+      // Content-only swap (no added motion), so it stays safe under
+      // prefers-reduced-motion while still feeling alive.
+      let greetingIndex = 0;
+      const rotateGreeting = () => {
+        greetingIndex = (greetingIndex + 1) % GREETINGS.length;
+        if (bubble) bubble.textContent = GREETINGS[greetingIndex];
+      };
+      const greetingInterval = window.setInterval(rotateGreeting, 2600);
+
+      return () => {
+        resizeObserver.disconnect();
+        window.clearInterval(greetingInterval);
+      };
     }
 
     let cancelled = false;
@@ -248,6 +277,7 @@ const AnimeGreeter = ({ className, style, belowRef }: AnimeGreeterProps) => {
       });
 
       let waveTl: gsap.core.Timeline | null = null;
+      let greetingIndex = 0;
 
       const playWave = () => {
         waveTl?.kill();
@@ -259,6 +289,9 @@ const AnimeGreeter = ({ className, style, belowRef }: AnimeGreeterProps) => {
           .to(rightArmPivot.rotation, { z: 0, duration: 0.4, ease: "power2.inOut" }, ">+0.05");
 
         if (bubble) {
+          bubble.textContent = GREETINGS[greetingIndex];
+          greetingIndex = (greetingIndex + 1) % GREETINGS.length;
+
           gsap.killTweensOf(bubble);
           gsap.fromTo(bubble, { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "back.out(2)" });
           gsap.to(bubble, { opacity: 0, y: -6, duration: 0.35, delay: 1.9, ease: "power1.in" });
@@ -356,7 +389,7 @@ const AnimeGreeter = ({ className, style, belowRef }: AnimeGreeterProps) => {
       )}
       <div
         ref={bubbleRef}
-        className="font-space-bold size12 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-black shadow-lg"
+        className="font-bricolage-semibold size18 whitespace-nowrap rounded-full bg-white px-4 py-1.5 text-black shadow-lg"
         style={{
           position: "absolute",
           opacity: 0,
@@ -364,7 +397,7 @@ const AnimeGreeter = ({ className, style, belowRef }: AnimeGreeterProps) => {
           pointerEvents: "none",
         }}
       >
-        Hi! 👋
+        {GREETINGS[0]}
       </div>
     </div>
   );

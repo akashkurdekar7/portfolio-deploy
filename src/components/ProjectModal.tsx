@@ -88,48 +88,65 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-7 sm:py-6" data-lenis-prevent>
-          <div className="flex items-start justify-between gap-3">
-            <h3 className="font-instrument size28 capitalize">{project.title}</h3>
-            <span className="shrink-0 rounded-full border bg-white px-3 py-1 font-space size12 text-grey">{project.year}</span>
+        <div className="flex-1 overflow-y-auto overscroll-contain" data-lenis-prevent>
+          <div className=" px-3 pb-2 pt-4 sm:px-7 sm:pt-6 sm:pb-6">
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="font-instrument size28 capitalize">{project.title}</h3>
+              <span className="shrink-0 rounded-full border bg-white px-3 py-1 font-bricolage-semibold size12 text-blue border-black/20">
+                {project.year}
+              </span>
+            </div>
+            <p className="mt-1 font-bricolage-semibold size16 uppercase text-grey">{project.type}</p>
+
+            <div className="lg:my-4 my-2 flex flex-wrap items-center gap-2">
+              <span className="rounded-full border px-3 py-1 font-bricolage size12 uppercase border-black/20 text-orange">
+                {project.company}
+              </span>
+              <span className="rounded-full px-3 py-1 font-bricolage size12 uppercase bg-black text-white">{project.contribution}</span>
+            </div>
+
+            <div className="flex flex-col items-start">
+              <p className=" font-bricolage-semibold size16 uppercase text-grey">Overview</p>
+              <p className=" font-bricolage size14 leading-6 text-justify text-black">{project.description}</p>
+            </div>
+            <div className="lg:my-4 my-2  flex flex-col items-start">
+              <p className="font-bricolage-semibold size16 uppercase text-grey">What I did</p>
+              <p className=" font-bricolage size14 leading-6 text-justify text-black">{project.role}</p>
+            </div>
+            {project.tools && project.tools.length > 0 && <p className=" font-bricolage-semibold size16 uppercase text-grey">Tools</p>}
           </div>
-          <p className="mt-1 font-space size12 uppercase text-grey">{project.type}</p>
-
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border px-3 py-1 font-space size12 uppercase border-black/20 text-grey">{project.company}</span>
-            <span className="rounded-full px-3 py-1 font-space size12 uppercase bg-black text-white">{project.contribution}</span>
-          </div>
-
-          <p className="mt-5 font-space size12 uppercase text-grey">Overview</p>
-          <p className="mt-2 font-space size14 leading-6 text-justify text-black">{project.description}</p>
-
-          <p className="mt-5 font-space size12 uppercase text-grey">What I did</p>
-          <p className="mt-2 font-space size14 leading-6 text-justify text-black">{project.role}</p>
 
           {project.tools && project.tools.length > 0 && (
             <>
-              <p className="mt-5 font-space size12 uppercase text-grey">Tools</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {project.tools.map((tool) => (
-                  <span key={tool} className="rounded-full border px-3 py-1 font-space size12 border-black/20 text-black">
-                    {tool}
-                  </span>
-                ))}
+              <div className="lg:mb-4 mb-2 overflow-hidden">
+                <div
+                  className="project-modal-marquee flex w-max gap-2"
+                  style={{ animationDuration: `${Math.max(project.tools.length * 2, 8)}s` }}
+                >
+                  {[...project.tools, ...project.tools].map((tool, i) => (
+                    <span
+                      key={`${tool}-${i}`}
+                      className="shrink-0 rounded-full border px-3 py-1 font-bricolage size12 border-black/20 text-black"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
               </div>
             </>
           )}
 
-          {project.url && (
+          {/* {project.url && (
             <a
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 font-space size12 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
+              className="mt-6 inline-flex items-center gap-2 font-bricolage size12 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
             >
               <FaExternalLinkAlt size={12} />
               View {project.linkType === "github" ? "repository" : "live site"}
             </a>
-          )}
+          )} */}
         </div>
       </div>
     </div>,

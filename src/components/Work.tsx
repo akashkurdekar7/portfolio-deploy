@@ -195,13 +195,13 @@ const Work = () => {
   return (
     <section id="work" ref={sectionRef} className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">
       <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <h2 className="font-chunko size90 leading-[0.9]">
+        <h2 className="font-bricolage-semibold size90 leading-[0.9]">
           Where I've
           <br />
           <span className="font-italic text-blue">worked.</span>
         </h2>
 
-        <p className="text-justify font-space size28 leading-10 text-grey">
+        <p className="text-justify font-bricolage size28 leading-6 text-grey">
           A timeline of the places, teams, and products that have shaped the way I approach design and engineering.
         </p>
       </div>
@@ -210,12 +210,12 @@ const Work = () => {
         <article className="work-reveal-featured border-t border-black/15 pt-8">
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-12 lg:gap-8 items-center">
             <div className="lg:col-span-2">
-              <span className="font-space size12 text-grey">{experience[0].number}</span>
+              <span className="font-bricolage-sembold size12 text-grey">{experience[0].number}</span>
             </div>
             <div className="col-6 lg:col-span-3">
               <div className="flex items-center gap-3">
                 <span className="h-2 w-2 rounded-full border border-black" />
-                <span className="font-space size12 uppercase text-grey">{experience[0].type}</span>
+                <span className="font-bricolage size12 uppercase text-grey">{experience[0].type}</span>
               </div>
             </div>
             <div className="lg:col-span-5">
@@ -223,10 +223,10 @@ const Work = () => {
                   here would land before this card's <h3> (the company name,
                   below) in document order — skipping a level and reading out
                   of sequence for screen-reader users navigating by heading. */}
-              <p className="font-space size14 uppercase">{experience[0].role}</p>
+              <p className="font-bricolage-semibold size16 uppercase">{experience[0].role}</p>
             </div>
             <div className="col-6 lg:col-span-2 lg:text-right">
-              <span className="font-space size12 uppercase text-grey">{experience[0].period}</span>
+              <span className="font-bricolage size12 uppercase text-grey">{experience[0].period}</span>
             </div>
           </div>
 
@@ -247,7 +247,7 @@ const Work = () => {
               <h3 className="font-instrument size56 leading-[0.9]">
                 {renderCompanyName(experience[0].company, experience[0].highlightWord, experience[0].highlightColor)}
               </h3>
-              <p className="mt-3 lg:mt-6 max-w-lg font-space size14 leading-6 text-grey">{experience[0].description}</p>
+              <p className="mt-3 lg:mt-6 max-w-lg font-bricolage size14 leading-6 text-grey">{experience[0].description}</p>
             </div>
           </div>
         </article>
@@ -259,9 +259,9 @@ const Work = () => {
             className="work-reveal-card group border-4 rounded-3xl px-4 py-6 lg:px-6 lg:py-6 shadow-[0_4px_10px_0_rgba(0,0,0,.3)] bg-[#fff]"
           >
             <div className="flex items-center justify-between">
-              <span className="font-space size12 text-grey">{item.number}</span>
+              <span className="font-bricolage size12 text-grey">{item.number}</span>
               <div className="group/type flex items-center gap-3 border border-black rounded-md p-1 px-3 bg-white shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)] transition-all duration-200 ease-out [transform-style:preserve-3d] hover:translate-y-1 hover:[transform:translateY(0.25rem)_translateZ(-4px)] hover:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)] active:[transform:translateY(0.25rem)_translateZ(-6px)] active:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)]">
-                <span className="font-space size12 uppercase text-grey">{item.type}</span>
+                <span className="font-bricolage size12 uppercase text-grey">{item.type}</span>
               </div>
             </div>
 
@@ -269,7 +269,7 @@ const Work = () => {
               {renderCompanyName(item.company, item.highlightWord, item.highlightColor)}
             </h3>
 
-            <svg viewBox="0 0 150 32" className="mt-2 h-6 w-28 overflow-visible" aria-hidden="true">
+            {/* <svg viewBox="0 0 150 32" className="mt-2 h-6 w-28 overflow-visible" aria-hidden="true">
               <path
                 ref={(el) => {
                   lineRefs.current[index] = el;
@@ -282,13 +282,13 @@ const Work = () => {
                 strokeLinejoin="round"
                 vectorEffect="non-scaling-stroke"
               />
-            </svg>
+            </svg> */}
 
-            <h4 className={`mt-1 font-space size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
-            <p className="mt-4 max-w-lg font-space size14 leading-6 text-grey">{item.description}</p>
+            <h4 className={`mt-1 font-bricolage size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
+            <p className="mt-4 max-w-lg font-bricolage size14 leading-6 text-grey">{item.description}</p>
 
             <div className="mt-4">
-              <span className="font-space size12 uppercase text-grey">{item.period}</span>
+              <span className="font-bricolage size12 uppercase text-grey">{item.period}</span>
             </div>
           </article>
         ))}

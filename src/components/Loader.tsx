@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 interface LoaderProps {
@@ -10,35 +10,38 @@ interface LoaderProps {
   onDismiss?: () => void;
 }
 
-const HEADING = "portfolio";
-const STUCK_AT = 1;
-const STUCK_HOLD = 0.6;
-const GHOSTS = [-2, -1, 1, 2];
+const WORD = "PORTFOLIO";
+const BALL_SIZE = window.innerWidth <= 991 ? 12 : 24;
+const BOUNCE_HEIGHT = 110;
+const HOP_DURATION = 0.34;
+const HOP_PAUSE = 0.06;
+const SETTLE_HOLD = 0.4;
 
 const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
   const [hidden, setHidden] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const headingWrapRef = useRef<HTMLDivElement>(null);
-  const progressFillRef = useRef<HTMLDivElement>(null);
-  const progressLabelRef = useRef<HTMLSpanElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const ballRef = useRef<HTMLDivElement>(null);
+  const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const onStuckRef = useRef(onStuck);
   const onDismissRef = useRef(onDismiss);
   const onCompleteRef = useRef(onComplete);
-  const progressState = useRef({ val: 0 }).current;
 
-  const setProgress = (val: number) => {
-    const pct = Math.round(val);
-    if (progressFillRef.current) progressFillRef.current.style.width = `${pct}%`;
-    if (progressLabelRef.current) progressLabelRef.current.textContent = `${pct}%`;
-  };
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     onStuckRef.current = onStuck;
     onDismissRef.current = onDismiss;
     onCompleteRef.current = onComplete;
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    const row = rowRef.current;
+    const ball = ballRef.current;
+    if (!container || !row || !ball) return;
+
+    let cancelled = false;
+
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
@@ -55,120 +58,107 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
     };
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const ghosts = rootRef.current ? Array.from(rootRef.current.querySelectorAll<HTMLElement>(".loader-heading-ghost")) : [];
-    const mainHeadingEl = rootRef.current?.querySelector<HTMLElement>(".loader-heading-main");
-    const headingFontSize = mainHeadingEl ? parseFloat(window.getComputedStyle(mainHeadingEl).fontSize) : 100;
-    const ghostOffsetUnit = headingFontSize * 0.27;
 
-    let stuckTween: gsap.core.Tween | undefined;
-    let progressTween: gsap.core.Tween | undefined;
-    let dismissCall: gsap.core.Tween | undefined;
-
-    // Auto-advances the loader out once it has sat "stuck" for a beat — no
-    // user interaction required.
-    const finish = () => {
-      onDismissRef.current?.();
-
-      // Unlock scroll the instant dismissal starts instead of waiting on the
-      // progress-bar/slide-up animation chain below — that chain can take
-      // well over a second, and the site behind the loader visually unblurs
-      // almost immediately (see App.tsx's onDismiss), so leaving scroll
-      // locked until animations finish reads as a stuck page.
-      unlockScroll();
-
-      gsap.to(progressState, {
-        val: 100,
-        duration: 0.45,
-        ease: "power2.out",
-        onUpdate: () => setProgress(progressState.val),
-        onComplete: () => {
-          const reveal = () => {
-            setHidden(true);
-            onCompleteRef.current?.();
-          };
-
-          gsap.to(rootRef.current, {
-            y: "100vh",
-            rotate: 0,
-            duration: reducedMotion ? 0.5 : 0.7,
-            ease: reducedMotion ? "power1.inOut" : "power3.in",
-            onComplete: reveal,
-          });
-        },
-      });
+    const reveal = () => {
+      setHidden(true);
+      onCompleteRef.current?.();
     };
 
-    const ctx = gsap.context(() => {
-      gsap.set([headingWrapRef.current, progressLabelRef.current], { opacity: 0, y: 14 });
+    const dismiss = () => {
+      onDismissRef.current?.();
+      unlockScroll();
+    };
 
-      gsap.to([headingWrapRef.current, progressLabelRef.current], {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        stagger: 0.1,
+    const build = () => {
+      if (cancelled) return;
+      const letters = letterRefs.current.filter(Boolean) as HTMLSpanElement[];
+      if (!letters.length) return;
+
+      if (reducedMotion) {
+        gsap.set(letters, { scale: 1 });
+        gsap.set(ball, { autoAlpha: 0 });
+
+        const tl = gsap.timeline();
+        timelineRef.current = tl;
+        tl.call(() => onStuckRef.current?.());
+        tl.to({}, { duration: SETTLE_HOLD + 0.6 });
+        tl.call(dismiss);
+        tl.to(container, { y: "-100vh", duration: 0.5, ease: "power1.inOut", onComplete: reveal });
+        return;
+      }
+
+      const rowRect = row.getBoundingClientRect();
+      const xs = letters.map((el) => {
+        const r = el.getBoundingClientRect();
+        return r.left - rowRect.left + r.width / 2 - BALL_SIZE / 2;
       });
-
-      progressTween = gsap.to(progressState, {
-        val: 50,
-        duration: STUCK_AT,
-        delay: 0.3,
-        ease: "power1.inOut",
-        onUpdate: () => setProgress(progressState.val),
+      const landYs = letters.map((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top - rowRect.top - BALL_SIZE * 0.65;
       });
+      const entryY = landYs[0] - BOUNCE_HEIGHT * 1.4;
 
-      const stuckCall = gsap.delayedCall(STUCK_AT, () => {
-        let blurTriggered = false;
-
-        if (ghosts.length) {
-          const ghostOpacity = (_i: number, target: HTMLElement) => (Math.abs(Number(target.dataset.dir)) === 1 ? 0.35 : 0.15);
-
-          if (reducedMotion) {
-            gsap.set(ghosts, {
-              y: (_i, target) => Number(target.dataset.dir) * ghostOffsetUnit,
-              opacity: ghostOpacity,
-            });
-          } else {
-            gsap.to(ghosts, {
-              y: (_i, target) => Number(target.dataset.dir) * ghostOffsetUnit,
-              opacity: ghostOpacity,
-              duration: 0.5,
-              ease: "power2.out",
-              stagger: 0.04,
-              force3D: true,
-            });
-          }
-        }
-
-        gsap.set(rootRef.current, { transformOrigin: "50% 50%" });
-
-        stuckTween = gsap.to(rootRef.current, {
-          y: "25vh",
-          rotate: reducedMotion ? 0 : -2.4,
-          duration: reducedMotion ? 0.6 : 1.6,
-          ease: reducedMotion ? "power2.out" : "back.out(1.4)",
-          onUpdate: function () {
-            if (!blurTriggered && this.progress() >= 0.5) {
-              blurTriggered = true;
-              onStuckRef.current?.();
-            }
-          },
-          onComplete: () => {
-            dismissCall = gsap.delayedCall(STUCK_HOLD, finish);
-          },
+      // A landed ball squashes flat and springs back; the letter beneath it
+      // gets stamped down to nothing then pops back up once the ball has
+      // moved on, like a whack-a-mole hit rather than a permanent erase.
+      const impact = (i: number) => {
+        gsap.to(ball, {
+          scaleX: 1.55,
+          scaleY: 0.5,
+          duration: 0.07,
+          ease: "power1.out",
+          onComplete: () => gsap.to(ball, { scaleX: 1, scaleY: 1, duration: 0.22, ease: "elastic.out(1,0.45)" }),
         });
-      });
 
-      return () => {
-        stuckCall.kill();
-        stuckTween?.kill();
-        progressTween?.kill();
-        dismissCall?.kill();
+        gsap.to(letters[i], {
+          scaleY: 0,
+          duration: 0.28,
+          ease: "back.in(1.8)",
+          onComplete: () => gsap.to(letters[i], { scale: 1, duration: 0.45, ease: "elastic.out(1,0.5)" }),
+        });
       };
-    }, rootRef);
+
+      const tl = gsap.timeline();
+      timelineRef.current = tl;
+
+      tl.set(letters, { scale: 1, transformOrigin: "50% 100%" }, 0);
+      tl.set(ball, { x: xs[0], y: entryY, scaleX: 1, scaleY: 1 }, 0);
+      tl.set(container, { y: 0 }, 0);
+
+      tl.to(ball, { y: landYs[0], duration: HOP_DURATION * 0.7, ease: "power2.in", onComplete: () => impact(0) }, 0);
+
+      let cursor = HOP_DURATION * 0.7 + HOP_PAUSE;
+      let lastLandTime = cursor;
+      for (let i = 1; i < letters.length; i++) {
+        const upDur = HOP_DURATION * 0.42;
+        const downDur = HOP_DURATION * 0.58;
+        const peakY = landYs[i] - BOUNCE_HEIGHT;
+
+        tl.to(ball, { x: xs[i], duration: HOP_DURATION, ease: "none" }, cursor);
+        tl.to(ball, { y: peakY, duration: upDur, ease: "power2.out" }, cursor);
+        tl.to(ball, { y: landYs[i], duration: downDur, ease: "power2.in", onComplete: () => impact(i) }, cursor + upDur);
+
+        lastLandTime = cursor + upDur + downDur;
+        cursor += HOP_DURATION + HOP_PAUSE;
+      }
+
+      tl.call(() => onStuckRef.current?.(), [], lastLandTime);
+
+      // Once the last letter is stamped flat, hold for a beat, dismiss, then
+      // slide the whole loader up and away.
+      tl.call(dismiss, [], lastLandTime + SETTLE_HOLD);
+      tl.to(container, { y: "-100vh", duration: 0.7, ease: "power3.in", onComplete: reveal }, lastLandTime + SETTLE_HOLD);
+    };
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(build));
+    } else {
+      requestAnimationFrame(build);
+    }
 
     return () => {
-      ctx.revert();
+      cancelled = true;
+      timelineRef.current?.kill();
       unlockScroll();
     };
   }, []);
@@ -177,30 +167,28 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
 
   return (
     <div
-      ref={rootRef}
+      ref={containerRef}
       className="loader-overlay min-h-dvh fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
     >
-      <div className="loader-progress-track">
-        <div ref={progressFillRef} className="loader-progress-fill" />
+      <div ref={rowRef} className="font-bricolage-semibold relative inline-flex size90 leading-none uppercase">
+        <div
+          ref={ballRef}
+          className="absolute top-0 left-0 rounded-full bg-orange [transform:translateZ(0)] [-webkit-transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
+          style={{ width: BALL_SIZE, height: BALL_SIZE }}
+        />
+        {WORD.split("").map((char, i) => (
+          <span
+            key={i}
+            ref={(el) => {
+              letterRefs.current[i] = el;
+            }}
+            className="inline-block will-change-transform [transform:translateZ(0)] [-webkit-transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
+          >
+            {char}
+          </span>
+        ))}
       </div>
-      <span ref={progressLabelRef} className="loader-progress-label font-space">
-        0%
-      </span>
-
-      <div className="loader-stage flex flex-col items-center gap-7">
-        <div ref={headingWrapRef} className="loader-heading-wrap" aria-hidden="true">
-          {GHOSTS.map((dir) => (
-            <div key={dir} data-dir={dir} className="loader-heading loader-heading-ghost font-chunko">
-              {HEADING}
-            </div>
-          ))}
-          <div className="loader-heading loader-heading-main font-chunko">
-            {HEADING}
-            <span className="loader-subname font-scribble">Kurdekar</span>
-          </div>
-        </div>
-        <span className="sr-only">Loading akash kurdekar portfolio</span>
-      </div>
+      <span className="sr-only">Loading akash kurdekar portfolio</span>
     </div>
   );
 };

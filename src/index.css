@@ -1,17 +1,23 @@
 @import 'tailwindcss';
 
 @font-face {
-  font-family: 'Chunko';
-  src: url('/fonts/chunko-bold-demo.woff2') format('woff2');
-  font-weight: 700;
+  font-family: 'AndreaBellarosa';
+  src: url('/fonts/AndreaBellarosa.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'BrittanySignature';
-  src: url('/fonts/brittany-signature.woff2') format('woff2');
-  font-weight: 400;
+  font-family: 'BricolageGrotesque-regular';
+  src: url('/fonts/BricolageGrotesque-Regular-BF648bd57899c78.ttf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BricolageGrotesque-semibold';
+  src: url('/fonts/BricolageGrotesque48ptCondensed-SemiBold-BF648bd57a024f6.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
 }
@@ -27,10 +33,10 @@
   --yellow: #f5d949;
 
   /* Fonts */
-  --font-chunko: 'Chunko', sans-serif;
   --font-instrument: 'Instrument Serif', serif;
-  --font-space: 'Space Mono', monospace;
-  --font-scribble: 'BrittanySignature', cursive;
+  --font-andrea: 'AndreaBellarosa', cursive;
+  --font-bricolage: 'BricolageGrotesque-regular', sans-serif;
+  --font-bricolage-semibold: 'BricolageGrotesque-semibold', sans-serif;
 }
 
 /* =========================
@@ -74,10 +80,6 @@ button {
    FONTS
 ========================= */
 
-.font-chunko {
-  font-family: var(--font-chunko);
-}
-
 .font-instrument {
   font-family: var(--font-instrument);
   font-style: normal;
@@ -88,21 +90,15 @@ button {
   font-style: italic;
 }
 .font-scribble {
-  font-family: var(--font-scribble);
+  font-family: var(--font-andrea);
 }
 
-.font-space {
-  font-family: var(--font-space);
+.font-bricolage {
+  font-family: var(--font-bricolage);
 }
 
-.font-space-bold {
-  font-weight: 600;
-  font-family: var(--font-space);
-}
-
-.font-space-italic {
-  font-family: var(--font-space);
-  font-style: italic;
+.font-bricolage-semibold {
+  font-family: var(--font-bricolage-semibold);
 }
 
 /* =========================
@@ -266,11 +262,25 @@ button {
   }
 
   @media (max-width: 991px) {
-    font-size: 34px;
+    font-size: 36px;
+  }
+}
+.quote-text {
+  font-size: 56px;
+
+  @media (max-width: 1440px) {
+    font-size: 44px;
   }
 
-  @media (max-width: 480px) {
-    font-size: 20px;
+  @media (max-width: 1199px) {
+    font-size: 38px;
+  }
+
+  @media (max-width: 991px) {
+    font-size: 36px;
+  }
+  @media (max-width: 575px) {
+    font-size: 30px;
   }
 }
 
@@ -697,7 +707,15 @@ button {
 
 .loader-overlay {
   background: var(--white);
-  will-change: transform;
+  /* `will-change: transform` on a `position: fixed` + `overflow: hidden`
+     element is a known WebKit trigger for the whole subtree (ball + letters)
+     silently failing to paint on iOS Safari. Promoting to its own layer up
+     front via translateZ(0) gets the same GPU-accelerated slide-up without
+     that failure mode. */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .loader-heading-wrap {
@@ -957,4 +975,30 @@ button {
   .highlight-circle-stroke {
     stroke-width: 4px;
   }
+}
+.availability {
+  position: absolute;
+  padding: 8px 12px;
+}
+/* Camera/viewfinder corners */
+.availability::before,
+.availability::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+}
+
+.availability::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--orange);
+  border-left: 2px solid var(--orange);
+}
+
+.availability::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--orange);
+  border-right: 2px solid var(--orange);
 }

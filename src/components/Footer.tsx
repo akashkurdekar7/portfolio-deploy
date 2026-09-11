@@ -71,13 +71,13 @@ const Footer = () => {
       </div>
       {/* Heading */}
       <div className="relative z-20 pt-8 md:pt-0">
-        <span className="font-space-bold size12 uppercase tracking-[0.15em] text-white">thoughts • work • life</span>
+        <span className="font-bricolage-semibold size16 uppercase tracking-[0.15em] text-white">thoughts • work • life</span>
 
-        <h2 className="mt-4 font-chunko leading-9 lg:leading-18 size90 capitalize text-white  ">
+        <h2 className=" font-bricolage-semibold leading-9 lg:leading-18 size90 capitalize text-white  ">
           let's get to the
           <br />
           <span className="font-italic text-white/50  tracking-normal">awkward</span>
-          <span className="font-chunko"> part.</span>
+          <span className="font-bricolage-semibold"> part.</span>
         </h2>
         {/* Social Links */}
         <nav ref={navRef} aria-label="Social links" className="mt-8 md:mt-12">
@@ -91,18 +91,18 @@ const Footer = () => {
                   className="group/link relative flex items-center justify-between gap-4 py-4 md:py-6"
                 >
                   <span className="flex items-center gap-4 md:gap-7">
-                    <span className="font-space size12 text-white/40">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-bricolage size12 text-white/40">{String(i + 1).padStart(2, "0")}</span>
                     <span className="text-2xl text-white/50 transition-colors duration-300 group-hover/link:text-orange md:text-4xl">
                       {item.icon}
                     </span>
                     <span className="link-cube-wrap relative inline-block [perspective:300px]">
                       <span className="link-cube-inner relative block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] [transform-style:preserve-3d] group-hover/link:[transform:rotateX(-90deg)]">
-                        <span className="link-cube-face block font-space size28 uppercase tracking-wide text-white [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateX(0deg)_translateZ(0.55em)]">
+                        <span className="link-cube-face block font-bricolage size28 uppercase tracking-wide text-white [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateX(0deg)_translateZ(0.55em)]">
                           {item.name}
                         </span>
                         <span
                           aria-hidden="true"
-                          className="link-cube-face absolute inset-0 block font-space size28 uppercase tracking-wide text-orange [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateX(90deg)_translateZ(0.55em)]"
+                          className="link-cube-face absolute inset-0 block font-bricolage size28 uppercase tracking-wide text-orange [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateX(90deg)_translateZ(0.55em)]"
                         >
                           {item.name}
                         </span>

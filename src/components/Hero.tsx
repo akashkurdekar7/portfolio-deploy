@@ -137,24 +137,25 @@ const Hero = () => {
           </h1>
 
           <div className="lg:my-5 my-2">
-            <ul className="flex flex-wrap gap-x-2 font-space size12 uppercase">
+            <ul className="flex flex-wrap gap-x-2 font-bricolage-semibold size14 uppercase">
               <li>software engineer</li>
               <li>•</li>
-              <li>project lead</li>
+              <li>Full stack developer</li>
+              <li>•</li>
+              <li>Project Delivery</li>
               <li>•</li>
               <li>designer</li>
             </ul>
           </div>
-
-          <p className="w-full lg:max-w-2xl text-center size16 lg:leading-6 font-space text-grey">
-            I build thoughtful digital experiences by combining engineering, design, and a little bit of obsession over the details.
+          <p className="w-full lg:max-w-2xl text-center size16 lg:leading-6 font-bricolage text-grey">
+            Curious about a lot of things, always learning, and never quite interested in doing just one thing.
           </p>
         </div>
       </div>
 
       {/* SOCIALS */}
       <div className={`group absolute bottom-4 z-30 left-0 flex items-start gap-1 flex-col hero-side-content transition-all duration-700 `}>
-        <h3 className="font-space font-space-bold size14 uppercase mb-0">let's connect</h3>
+        <h3 className="font-bricolage-semibold size16 uppercase mb-0">let's connect</h3>
 
         <div className={`h-px ${isScrolled ? "w-full" : "w-[22%]"} group-hover:w-full transition-all duration-1000 bg-orange`} />
 
@@ -269,7 +270,7 @@ const Hero = () => {
         />
 
         <div
-          className={`absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-space-bold size12 uppercase hero-side-content transition-opacity duration-700  w-max`}
+          className={`absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bricolage-semibold size14 uppercase hero-side-content transition-opacity duration-700  w-max`}
         >
           DOWN YOU GO
         </div>

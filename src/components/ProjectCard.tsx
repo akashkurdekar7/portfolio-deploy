@@ -171,25 +171,14 @@ const ProjectCard = ({
             {project.title}
           </h3>
 
-          <span className="rounded-full border bg-white px-3 py-1 font-space size12 text-grey">{project.year}</span>
+          <span className="rounded-full border bg-white px-3 py-1 font-bricolage-semibold size12 text-grey">{project.year}</span>
         </div>
-        <p className="mt-1 mb-2 font-space size12 uppercase text-grey">{project.type}</p>
+        <p className="mt-1  font-bricolage-semibold size16 uppercase text-grey">{project.type}</p>
 
-        {variant !== "center" ? (
-          <div className=" flex flex-wrap items-center gap-2">
-            <p className=" font-space size12 leading-5 text-justify text-grey  lg:w-[80%]">{project.description}</p>
-            <span className="rounded-full border px-3 py-1 font-space size12 uppercase border-black/20 text-grey">{project.company}</span>
-
-            <span className="rounded-full px-3 py-1 font-space size12 uppercase bg-black text-white">{project.contribution}</span>
-          </div>
-        ) : (
-          <div className="mt-0 flex flex-wrap items-center gap-2">
-            <p className=" font-space size12 leading-5 text-justify xl:hidden text-grey">{project.description}</p>
-            <span className="rounded-full border px-3 py-1 font-space size12 uppercase border-black/20 text-grey">{project.company}</span>
-
-            <span className="rounded-full px-3 py-1 font-space size12 uppercase bg-black text-white">{project.contribution}</span>
-          </div>
-        )}
+        <div className="lg:my-3 my-2 flex flex-wrap items-center gap-2">
+          <p className=" font-bricolage size12 leading-5 text-justify text-grey  lg:w-[80%]">{project.description}</p>
+        </div>
+        <span className="rounded-full px-3 py-1 font-bricolage-semibold size16 uppercase bg-black text-white">{project.contribution}</span>
       </div>
     </div>
   );

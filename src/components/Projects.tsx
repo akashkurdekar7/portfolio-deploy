@@ -41,29 +41,30 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
   {
     title: "Wholesale Management System",
-    type: "Web Application",
+    type: "B2B Web Application",
     year: "2025",
     images: [saas, saas2, saas3, saas4],
 
     description:
-      "A wholesale management platform built to streamline product, order, and business operations through a centralized web application.",
+      "A full-stack B2B wholesale platform built to manage products, inventory, customers, orders, payments, and business operations through a centralized system.",
 
-    role: "Designed and developed the application, focusing on intuitive workflows, reusable interfaces, and scalable frontend architecture.",
+    role: "Designed and developed the frontend architecture and user experience, while integrating REST APIs and independently organized backend services.",
 
     company: "Independent Project",
-    contribution: "Frontend · UI/UX · Architecture",
-    tools: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+    contribution: "Full Stack · UI/UX · Architecture",
+    tools: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
   },
 
   {
     title: "Ghost Rental",
-    type: "Website & Dashboard",
+    type: "Website & Management Dashboard",
     year: "2025",
     images: [ghostrentals, ghostrentals2, ghostrentals3, ghostrentals4, ghostrentals5],
 
-    description: "A rental platform combining a customer-facing website with a management dashboard for handling rental operations.",
+    description:
+      "A rental platform combining a customer-facing website with a management dashboard for handling products, rental operations, and day-to-day business workflows.",
 
-    role: "Developed the website and dashboard, building reusable interfaces, responsive layouts, and interactive frontend experiences.",
+    role: "Developed the website and dashboard, building reusable interfaces, connecting application workflows, and creating responsive experiences across customer and administrative views.",
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · Dashboard · UI",
@@ -77,9 +78,9 @@ const projects = [
     images: [greenminds, greenminds2, greenminds3, greenminds4],
 
     description:
-      "A focused single-page website designed to present the brand, its offerings, and key information through a clear visual experience.",
+      "A single-page brand website created to communicate Greenminds' offerings through a focused visual direction, structured content, and an engaging browsing experience.",
 
-    role: "Designed and developed the frontend with an emphasis on responsive layouts, visual hierarchy, and smooth interactions.",
+    role: "Designed and developed the frontend, translating the visual direction into responsive layouts, interactive sections, and motion-driven experiences.",
 
     company: "IngeniousPix Creative Studios",
     contribution: "Design · Frontend · Interaction",
@@ -93,9 +94,9 @@ const projects = [
     images: [pixtar, pixtar2],
 
     description:
-      "A complete transformation of the existing Pixtar website, rebuilding the experience from the ground up with a new visual direction and modern frontend architecture.",
+      "A complete redesign and rebuild of the Pixtar website, replacing the existing experience with a modern visual direction and a more refined frontend architecture.",
 
-    role: "Reworked the existing website into the current experience, contributing across frontend development, UI implementation, interactions, and responsive design.",
+    role: "Reworked the website from the ground up across UI implementation, frontend development, responsive behavior, animations, and interactive experiences.",
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · UI · Redesign",
@@ -109,9 +110,9 @@ const projects = [
     images: [makemycard, makemycard2, makemycard3],
 
     description:
-      "A product web application and management dashboard built to provide users with a streamlined experience for creating and managing digital products.",
+      "A product-focused web application and management dashboard designed to simplify the creation, organization, and management of digital products.",
 
-    role: "Developed the product interface and dashboard, focusing on reusable components, responsive layouts, and a consistent user experience.",
+    role: "Developed the product interface and dashboard, creating reusable components, structured workflows, and consistent experiences across the application.",
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · Dashboard · UI",
@@ -125,23 +126,25 @@ const projects = [
     images: [phdesignme, phdesignme2, phdesignme3, phdesignme4, phdesignme5],
 
     description:
-      "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
+      "A visually driven client website built around a strong creative identity, combining editorial-style layouts with interactive elements and a polished digital experience.",
 
-    role: "Developed the frontend experience with attention to layout, typography, responsive behavior, and interactive details.",
+    role: "Developed the frontend experience, translating the visual direction into responsive layouts, typography systems, animations, and interactive details.",
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · UI · Interaction",
     tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
   },
+
   {
     title: "Arovan",
     type: "Client Website",
     year: "2026",
     images: [Arovan, Arovan2, Arovan3, Arovan4, Arovan5],
-    description:
-      "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
 
-    role: "Developed the frontend experience with attention to layout, typography, responsive behavior, and interactive details.",
+    description:
+      "A modern client website focused on presenting the brand through a clean visual system, structured content, and an engaging interactive experience.",
+
+    role: "Developed the frontend with a focus on visual hierarchy, responsive layouts, reusable components, and polished interactions.",
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · UI · Interaction",
@@ -156,15 +159,15 @@ const Projects = () => {
     <section id="projects" className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
       {/* Heading */}
       <div className="flex flex-col items-center gap-3">
-        <h2 className="size56 font-chunko leading-none capitalize ">
+        <h2 className="size56 font-bricolage-semibold leading-none capitalize ">
           Projects
-          <sup className="size12 align-super  font-space ml-1 text-white bg-blue rounded-full border border-[#fff] px-1 ">
+          <sup className="size12 align-super  font-bricolage ml-1 text-white bg-blue rounded-full border border-[#fff] px-1 ">
             0{projects.length}
           </sup>
         </h2>
 
-        <p className="max-w-xs text-center font-space size14 leading-4 text-grey">
-          A collection of projects where design, code and purpose come together.
+        <p className="max-w-xs text-center font-bricolage size14 leading-4 text-grey">
+          Selected work demonstrating my approach to design, development, and building meaningful digital experiences.
         </p>
       </div>
 
