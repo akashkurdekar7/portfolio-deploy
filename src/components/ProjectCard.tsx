@@ -5,13 +5,9 @@ import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
-// How long each image in a project's gallery stays on screen before
-// crossfading to the next one.
 const IMAGE_INTERVAL_MS = 3500;
 
 export type Project = {
-  // Gallery of screenshots for this project. When there's more than one,
-  // the card automatically crossfades between them.
   images?: string[];
   title: string;
   type: string;
@@ -20,7 +16,6 @@ export type Project = {
   role: string;
   company: string;
   contribution: string;
-  // Drives the desktop cursor-follow label ("Live" vs "GitHub"). Defaults to "live".
   linkType?: "live" | "github";
   url?: string;
 };
@@ -31,8 +26,6 @@ type ProjectCardProps = {
   variant?: "default" | "center";
   scrambleTitle?: boolean;
   className?: string;
-  // Scopes the desktop cursor-follow label (see ProjectsDesktop) to just the
-  // image, rather than the whole card including the text block below it.
   onImageMouseEnter?: () => void;
   onImageMouseLeave?: () => void;
   onImageMouseMove?: (event: React.MouseEvent) => void;
@@ -58,7 +51,7 @@ const ProjectCard = ({
     if (images.length < 2) return;
 
     const id = setInterval(() => {
-      setActiveImage((current) => (current + 1) % images.length);
+      setActiveImage((current) => (current + 1) % images.length);http://localhost:5173/
     }, IMAGE_INTERVAL_MS);
 
     return () => clearInterval(id);
@@ -93,7 +86,9 @@ const ProjectCard = ({
   }, [project.title, scrambleTitle]);
 
   return (
-    <div className={`group cursor-pointer ${className ?? "mx-auto h-auto w-full lg:w-[420px]"}`}>
+    <div
+      className={`group cursor-pointer bg-[#fff] border-6 border-white rounded-[24px] ${className ?? "mx-auto h-auto w-full lg:w-[420px]"}`}
+    >
       <div
         className="relative mx-auto aspect-[450/350] w-full overflow-hidden rounded-2xl [transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
         onMouseEnter={onImageMouseEnter}
@@ -115,7 +110,7 @@ const ProjectCard = ({
       </div>
 
       {/* INFO */}
-      <div className="mt-2 flex flex-col items-start  justify-between lg:mt-4">
+      <div className=" flex flex-col items-start  justify-between  px-3 py-4">
         <div className="flex justify-between items-center w-full">
           <h3 ref={titleRef} className="font-instrument size28 capitalize">
             {project.title}
@@ -127,7 +122,7 @@ const ProjectCard = ({
 
         {variant !== "center" ? (
           <div className=" flex flex-wrap items-center gap-2">
-            <p className=" font-space size12 leading-5 text-justify text-grey">{project.description}</p>
+            <p className=" font-space size12 leading-5 text-justify text-grey  lg:w-[80%]">{project.description}</p>
             <span className="rounded-full border px-3 py-1 font-space size12 uppercase border-black/20 text-grey">{project.company}</span>
 
             <span className="rounded-full px-3 py-1 font-space size12 uppercase bg-black text-white">{project.contribution}</span>
