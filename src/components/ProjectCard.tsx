@@ -5,7 +5,7 @@ import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
-const IMAGE_INTERVAL_MS = 3500;
+const IMAGE_INTERVAL_MS = 1500;
 
 export type Project = {
   images?: string[];
@@ -16,6 +16,7 @@ export type Project = {
   role: string;
   company: string;
   contribution: string;
+  tools?: string[];
   linkType?: "live" | "github";
   url?: string;
 };
@@ -30,6 +31,7 @@ type ProjectCardProps = {
   onImageMouseEnter?: () => void;
   onImageMouseLeave?: () => void;
   onImageMouseMove?: (event: React.MouseEvent) => void;
+  onSelect?: () => void;
 };
 
 const ProjectCard = ({
@@ -42,6 +44,7 @@ const ProjectCard = ({
   onImageMouseEnter,
   onImageMouseLeave,
   onImageMouseMove,
+  onSelect,
 }: ProjectCardProps) => {
   const fallbackImage = `https://picsum.photos/900/700?random=${index + 1}`;
   const images = project.images && project.images.length > 0 ? project.images : [fallbackImage];
@@ -90,39 +93,52 @@ const ProjectCard = ({
   const imageWrapRef = useRef<HTMLDivElement>(null);
   const imageElRefs = useRef<(HTMLImageElement | null)[]>([]);
 
-  // Curtain-style reveal: the image sits zoomed in and clipped away from the
-  // bottom, then unclips upward while zooming back to 1 as the card scrolls
-  // into view. Runs once — this is an entrance moment, not a scrub effect.
+  // Scroll-linked parallax: the image sits zoomed in and scales back down to
+  // 1 as the card travels through the viewport, matching the Work section's
+  // scrubbed image effect instead of a one-off entrance reveal.
   useLayoutEffect(() => {
     if (!revealImage) return;
-    const wrap = imageWrapRef.current;
     const imgs = imageElRefs.current.filter((el): el is HTMLImageElement => el !== null);
-    if (!wrap || imgs.length === 0) return;
+    if (imgs.length === 0) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(wrap, { clipPath: "inset(100% 0% 0% 0%)" });
-      gsap.set(imgs, { scale: 1.15 });
-
-      gsap
-        .timeline({
+      gsap.fromTo(
+        imgs,
+        { scale: 1.15 },
+        {
+          scale: 1,
+          ease: "none",
           scrollTrigger: {
-            trigger: wrap,
-            start: "top 85%",
-            once: true,
+            trigger: imageWrapRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
           },
-        })
-        .to(wrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" }, 0)
-        .to(imgs, { scale: 1, duration: 1.4, ease: "power3.out" }, 0);
+        },
+      );
     });
 
     return () => ctx.revert();
   }, [revealImage]);
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (!onSelect) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onSelect();
+    }
+  };
+
   return (
     <div
-      className={`group cursor-pointer bg-[#fff] border-6 border-white rounded-[24px] ${className ?? "mx-auto h-auto w-full lg:w-[420px]"}`}
+      className={`group cursor-pointer bg-[#fff] border-6 border-white rounded-[24px] transition-transform duration-300 ease-out ${onSelect ? "hover:-translate-y-1" : ""} ${className ?? "mx-auto h-auto w-full lg:w-[420px]"}`}
+      onClick={onSelect}
+      role={onSelect ? "button" : undefined}
+      tabIndex={onSelect ? 0 : undefined}
+      onKeyDown={onSelect ? handleKeyDown : undefined}
+      aria-haspopup={onSelect ? "dialog" : undefined}
     >
       <div
         ref={imageWrapRef}

@@ -1,17 +1,40 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectsStack from "./ProjectsStack";
+import ProjectModal from "./ProjectModal";
+import type { Project } from "./ProjectCard";
 
 const ProjectsDesktop = lazy(() => import("./ProjectsDesktop"));
 
 import saas from "../assets/projects/saas.webp";
+import saas2 from "../assets/projects/saas2.webp";
+import saas3 from "../assets/projects/saas3.webp";
+import saas4 from "../assets/projects/saas4.webp";
 import ghostrentals from "../assets/projects/ghostrental.webp";
+import ghostrentals2 from "../assets/projects/ghostrental2.webp";
+import ghostrentals3 from "../assets/projects/ghostrental3.webp";
+import ghostrentals4 from "../assets/projects/ghostrental4.webp";
+import ghostrentals5 from "../assets/projects/ghostrental5.webp";
 import greenminds from "../assets/projects/greenminds.webp";
+import greenminds2 from "../assets/projects/greenminds2.webp";
+import greenminds3 from "../assets/projects/greenminds3.webp";
+import greenminds4 from "../assets/projects/greenminds4.webp";
 import pixtar from "../assets/projects/pixtar.webp";
+import pixtar2 from "../assets/projects/pixtar2.webp";
 import phdesignme from "../assets/projects/phdesignme.webp";
+import phdesignme2 from "../assets/projects/phdesignme2.webp";
+import phdesignme3 from "../assets/projects/phdesignme3.webp";
+import phdesignme4 from "../assets/projects/phdesignme4.webp";
+import phdesignme5 from "../assets/projects/phdesignme5.webp";
 import makemycard from "../assets/projects/makemycard.webp";
+import makemycard2 from "../assets/projects/makemycard2.webp";
+import makemycard3 from "../assets/projects/makemycard3.webp";
 import Arovan from "../assets/projects/arovan.webp";
+import Arovan2 from "../assets/projects/arovan2.webp";
+import Arovan3 from "../assets/projects/arovan3.webp";
+import Arovan4 from "../assets/projects/arovan4.webp";
+import Arovan5 from "../assets/projects/arovan5.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,7 +43,7 @@ const projects = [
     title: "Wholesale Management System",
     type: "Web Application",
     year: "2025",
-    images: [saas],
+    images: [saas, saas2, saas3, saas4],
 
     description:
       "A wholesale management platform built to streamline product, order, and business operations through a centralized web application.",
@@ -29,13 +52,14 @@ const projects = [
 
     company: "Independent Project",
     contribution: "Frontend · UI/UX · Architecture",
+    tools: ["React", "TypeScript", "Tailwind CSS", "Vite"],
   },
 
   {
     title: "Ghost Rental",
     type: "Website & Dashboard",
     year: "2025",
-    images: [ghostrentals],
+    images: [ghostrentals, ghostrentals2, ghostrentals3, ghostrentals4, ghostrentals5],
 
     description: "A rental platform combining a customer-facing website with a management dashboard for handling rental operations.",
 
@@ -43,13 +67,14 @@ const projects = [
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · Dashboard · UI",
+    tools: ["React", "TypeScript", "Tailwind CSS", "Node.js"],
   },
 
   {
     title: "Greenminds",
     type: "Single Page Website",
     year: "2025",
-    images: [greenminds],
+    images: [greenminds, greenminds2, greenminds3, greenminds4],
 
     description:
       "A focused single-page website designed to present the brand, its offerings, and key information through a clear visual experience.",
@@ -58,13 +83,14 @@ const projects = [
 
     company: "IngeniousPix Creative Studios",
     contribution: "Design · Frontend · Interaction",
+    tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
   },
 
   {
     title: "Pixtar",
     type: "Company Website",
     year: "2026",
-    images: [pixtar],
+    images: [pixtar, pixtar2],
 
     description:
       "A complete transformation of the existing Pixtar website, rebuilding the experience from the ground up with a new visual direction and modern frontend architecture.",
@@ -73,13 +99,14 @@ const projects = [
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · UI · Redesign",
+    tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
   },
 
   {
     title: "Make My Card",
     type: "Web Application & Dashboard",
     year: "2026",
-    images: [makemycard],
+    images: [makemycard, makemycard2, makemycard3],
 
     description:
       "A product web application and management dashboard built to provide users with a streamlined experience for creating and managing digital products.",
@@ -88,13 +115,14 @@ const projects = [
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · Dashboard · UI",
+    tools: ["React", "TypeScript", "Tailwind CSS", "Node.js"],
   },
 
   {
     title: "PhDesignMe",
     type: "Client Website",
     year: "2026",
-    images: [phdesignme],
+    images: [phdesignme, phdesignme2, phdesignme3, phdesignme4, phdesignme5],
 
     description:
       "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
@@ -103,12 +131,13 @@ const projects = [
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · UI · Interaction",
+    tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
   },
   {
     title: "Arovan",
     type: "Client Website",
     year: "2026",
-    images: [Arovan],
+    images: [Arovan, Arovan2, Arovan3, Arovan4, Arovan5],
     description:
       "A client website built around a strong visual identity, combining editorial presentation with a responsive and engaging digital experience.",
 
@@ -116,10 +145,13 @@ const projects = [
 
     company: "IngeniousPix Creative Studios",
     contribution: "Frontend · UI · Interaction",
+    tools: ["React", "TypeScript", "Tailwind CSS", "GSAP"],
   },
 ];
 
 const Projects = () => {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
   return (
     <section id="projects" className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
       {/* Heading */}
@@ -138,15 +170,17 @@ const Projects = () => {
 
       {/* MOBILE: stacked cards, one screen, scroll-driven */}
       <div className="pt-8 md:hidden">
-        <ProjectsStack projects={projects} />
+        <ProjectsStack projects={projects} onSelectProject={setSelectedProject} />
       </div>
 
       {/* TABLET / DESKTOP: static grid layout */}
       <div className="relative hidden md:block">
         <Suspense fallback={null}>
-          <ProjectsDesktop projects={projects} />
+          <ProjectsDesktop projects={projects} onSelectProject={setSelectedProject} />
         </Suspense>
       </div>
+
+      <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </section>
   );
 };

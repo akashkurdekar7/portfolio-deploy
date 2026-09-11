@@ -2,15 +2,17 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { FaArrowRight, FaDownload, FaExternalLinkAlt } from "react-icons/fa";
 import { HiX } from "react-icons/hi";
 import HighlightCircle from "./HighlightCircle";
 import resumePdf from "../assets/resume/Akash_Kurdekar_Full_Stack_Engineer.pdf?url";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
 const RESUME_PATH = resumePdf;
 const RESUME_FILENAME = "Akash_Kurdekar_Full_Stack_Engineer.pdf";
+const VIEW_FULLSCREEN_LABEL = "View full screen";
 
 const Resume = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -87,6 +89,26 @@ const Resume = () => {
     }
   };
 
+  const viewFullscreenTextRef = useRef<HTMLSpanElement>(null);
+
+  const scrambleViewFullscreen = () => {
+    if (!viewFullscreenTextRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.to(viewFullscreenTextRef.current, {
+      duration: 0.6,
+      ease: "none",
+      overwrite: true,
+      scrambleText: {
+        text: VIEW_FULLSCREEN_LABEL,
+        chars: "abcdefghijklmnopqrstuvwxyz0123456789",
+        revealDelay: 0.15,
+        speed: 0.3,
+        tweenLength: false,
+      },
+    });
+  };
+
   // Lock background scroll, move focus into the dialog, allow Escape to
   // close, and return focus to whichever button opened it — without this a
   // keyboard/screen-reader user's focus is left behind on a now-hidden
@@ -95,6 +117,7 @@ const Resume = () => {
     if (!modalOpen) return;
 
     document.body.style.overflow = "hidden";
+    window.__lenis?.stop();
     closeButtonRef.current?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -104,6 +127,7 @@ const Resume = () => {
 
     return () => {
       document.body.style.overflow = "";
+      window.__lenis?.start();
       window.removeEventListener("keydown", handleKeyDown);
       lastFocusedRef.current?.focus();
     };
@@ -273,9 +297,11 @@ const Resume = () => {
             <button
               type="button"
               onClick={handleOpenPreview}
-              className="font-space size14 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
+              onMouseEnter={scrambleViewFullscreen}
+              onFocus={scrambleViewFullscreen}
+              className="font-space size14 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black cursor-pointer"
             >
-              View full screen
+              <span ref={viewFullscreenTextRef}>{VIEW_FULLSCREEN_LABEL}</span>
             </button>
           </div>
         </div>

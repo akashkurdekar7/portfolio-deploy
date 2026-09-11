@@ -95,8 +95,18 @@ const Footer = () => {
                     <span className="text-2xl text-white/50 transition-colors duration-300 group-hover/link:text-orange md:text-4xl">
                       {item.icon}
                     </span>
-                    <span className="font-space size28 uppercase tracking-wide text-white transition-colors duration-300 group-hover/link:text-orange">
-                      {item.name}
+                    <span className="link-cube-wrap relative inline-block [perspective:300px]">
+                      <span className="link-cube-inner relative block transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] [transform-style:preserve-3d] group-hover/link:[transform:rotateX(-90deg)]">
+                        <span className="link-cube-face block font-space size28 uppercase tracking-wide text-white [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateX(0deg)_translateZ(0.55em)]">
+                          {item.name}
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="link-cube-face absolute inset-0 block font-space size28 uppercase tracking-wide text-orange [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateX(90deg)_translateZ(0.55em)]"
+                        >
+                          {item.name}
+                        </span>
+                      </span>
                     </span>
                   </span>
 

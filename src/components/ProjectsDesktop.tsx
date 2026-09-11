@@ -5,6 +5,7 @@ import ProjectCursorLabel from "./ProjectCursorLabel";
 
 interface ProjectsDesktopProps {
   projects: Project[];
+  onSelectProject: (project: Project) => void;
 }
 
 // Pinterest-style masonry: projects alternate into 2 hand-built columns
@@ -12,14 +13,15 @@ interface ProjectsDesktopProps {
 // early and leave a lopsided gap beside the other) and sized to fill each
 // column instead of the old fixed 420px card width. The right column starts
 // lower for the classic staggered brick look.
-const ProjectsDesktop = ({ projects }: ProjectsDesktopProps) => {
+const ProjectsDesktop = ({ projects, onSelectProject }: ProjectsDesktopProps) => {
   const leftColumn = projects.filter((_, index) => index % 2 === 0);
   const rightColumn = projects.filter((_, index) => index % 2 === 1);
 
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false, label: "Live" });
 
   const handleEnter = (project: Project) => {
-    setCursor((c) => ({ ...c, visible: true, label: project.linkType === "github" ? "GitHub" : "Live" }));
+    const label = project.url ? (project.linkType === "github" ? "GitHub" : "Live") : "View Details";
+    setCursor((c) => ({ ...c, visible: true, label }));
   };
 
   const handleLeave = () => {
@@ -45,9 +47,10 @@ const ProjectsDesktop = ({ projects }: ProjectsDesktopProps) => {
         project={project}
         index={index}
         className="mx-auto h-auto w-full"
-        onImageMouseEnter={project.url ? () => handleEnter(project) : undefined}
-        onImageMouseLeave={project.url ? handleLeave : undefined}
-        onImageMouseMove={project.url ? handleMove : undefined}
+        onImageMouseEnter={() => handleEnter(project)}
+        onImageMouseLeave={handleLeave}
+        onImageMouseMove={handleMove}
+        onSelect={project.url ? undefined : () => onSelectProject(project)}
       />
     );
 

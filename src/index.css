@@ -356,6 +356,16 @@ button {
   }
 }
 
+.project-modal-marquee {
+  animation-name: marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.project-modal-marquee:hover {
+  animation-play-state: paused;
+}
+
 .link-circle {
   right: 0;
   bottom: 0;
@@ -772,86 +782,6 @@ button {
   letter-spacing: 0.1em;
   color: var(--black);
   z-index: 2;
-}
-
-.loader-scribble {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  font-size: 22px;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 3;
-}
-
-.loader-scribble span {
-  -webkit-text-stroke: 0.4px currentColor;
-}
-
-.loader-scribble-svg {
-  width: 96px;
-  height: 58px;
-  overflow: visible;
-}
-
-.loader-scribble-left {
-  top: -118px;
-  left: -8%;
-  color: var(--black);
-  transform: rotate(-4deg);
-}
-
-.loader-scribble-hint {
-  top: 4px;
-  left: calc(100% + 14px);
-  color: var(--blue);
-  transform: rotate(-6deg);
-}
-
-
-.loader-retry-btn {
-  padding: 0.7rem 1.4rem;
-  border-radius: 6px;
-  border: 1px solid var(--black);
-  background: var(--white);
-  color: var(--black);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow:
-    0 4px 0 0 #fff,
-    0 4px 0 1px rgba(0, 0, 0, 1);
-  transition: all 0.2s ease-out;
-}
-
-.loader-retry-btn:hover {
-  transform: translateY(2px);
-  box-shadow:
-    0 1px 0 0 #fff,
-    0 1px 0 1px rgba(0, 0, 0, 1);
-}
-
-.loader-dust {
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  pointer-events: none;
-}
-
-.loader-dust-mote {
-  position: absolute;
-  border-radius: 50%;
-  will-change: transform, opacity;
-}
-
-.loader-retry-btn:active {
-  transform: translateY(4px);
-  box-shadow:
-    0 1px 0 0 #fff,
-    0 1px 0 1px rgba(0, 0, 0, 1);
 }
 
 /* =================================

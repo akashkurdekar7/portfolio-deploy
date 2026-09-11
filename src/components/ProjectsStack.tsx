@@ -14,9 +14,10 @@ const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 interface ProjectsStackProps {
   projects: Project[];
+  onSelectProject: (project: Project) => void;
 }
 
-const ProjectsStack = ({ projects }: ProjectsStackProps) => {
+const ProjectsStack = ({ projects, onSelectProject }: ProjectsStackProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const stackContentRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -150,7 +151,13 @@ const ProjectsStack = ({ projects }: ProjectsStackProps) => {
       <section className="relative flex flex-col gap-8">
         {projects.map((project, index) => (
           <div key={project.title} className="rounded-[28px] border-2 border-black bg-[#ffffff] px-3 py-4">
-            <ProjectCard project={project} index={index} scrambleTitle={false} revealImage={false} />
+            <ProjectCard
+              project={project}
+              index={index}
+              scrambleTitle={false}
+              revealImage={false}
+              onSelect={() => onSelectProject(project)}
+            />
           </div>
         ))}
       </section>
@@ -179,7 +186,13 @@ const ProjectsStack = ({ projects }: ProjectsStackProps) => {
               WebkitBackfaceVisibility: "hidden",
             }}
           >
-            <ProjectCard project={project} index={index} scrambleTitle={false} revealImage={false} />
+            <ProjectCard
+              project={project}
+              index={index}
+              scrambleTitle={false}
+              revealImage={false}
+              onSelect={() => onSelectProject(project)}
+            />
 
             {/* Darkens slightly as the card recedes behind the next one, reinforcing the depth read. */}
             <div className="stack-card-shade pointer-events-none absolute inset-0 rounded-[28px] bg-black opacity-0" />

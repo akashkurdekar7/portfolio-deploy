@@ -20,12 +20,6 @@ const App = () => {
     <div className="relative min-h-screen overflow-x-hidden bg-white text-black">
       <Loader onStuck={() => setSiteBlurred(true)} onDismiss={() => setSiteBlurred(false)} />
 
-      {/* Placed after Loader, not before: when its "click me" button (the
-          loader's only focusable content) is clicked and removed from the
-          DOM, Chromium resumes the *next* Tab press from that former DOM
-          position rather than resetting to document start — a skip link
-          positioned earlier gets silently skipped for every user who just
-          dismissed the loader, which is effectively everyone. */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:rounded-md focus:bg-black focus:px-4 focus:py-2 focus:font-space focus:text-sm focus:text-white"
@@ -50,7 +44,7 @@ const App = () => {
           hide its content. */}
       <main id="main-content" tabIndex={-1} className="relative z-10 outline-none">
         <div
-          className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? "scale-[0.96] blur-md" : ""}`}
+          className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? " blur-[5px]" : ""}`}
           aria-hidden={siteBlurred}
           inert={siteBlurred}
         >
