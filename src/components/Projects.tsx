@@ -124,7 +124,7 @@ const Projects = () => {
     <section id="projects" className="relative mx-5 min-h-screen overflow-hidden py-16 lg:py-24 md:mx-20">
       {/* Heading */}
       <div className="flex flex-col items-center gap-3">
-        <h2 className="size56 font-instrument leading-none capitalize mix-blend-difference text-white">
+        <h2 className="size56 font-instrument leading-none capitalize ">
           Projects
           <sup className="size12 align-super  font-space ml-1 text-white bg-blue rounded-full border border-[#fff] px-1 ">
             0{projects.length}

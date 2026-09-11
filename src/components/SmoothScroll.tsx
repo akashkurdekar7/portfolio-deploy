@@ -18,6 +18,16 @@ const SmoothScroll = () => {
       smoothWheel: true,
     });
 
+    // The Loader locks scroll (and calls __lenis?.stop()) on its own mount
+    // effect, which — being the earlier sibling in App.tsx — always fires
+    // before this one. That means this freshly created instance is the one
+    // that actually needs stopping: without this check Lenis stays active
+    // under the Loader and moves the page via its own window.scrollTo() on
+    // wheel input, which bypasses the Loader's overflow:hidden lock entirely.
+    if (document.body.style.overflow === "hidden") {
+      lenis.stop();
+    }
+
     window.__lenis = lenis;
 
     // Drive Lenis from GSAP's own ticker instead of a separate rAF loop —

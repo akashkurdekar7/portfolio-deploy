@@ -270,7 +270,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                   d="M76,50 C58,26 40,10 16,6 M16,6 L28,10 M16,6 L18,18"
                   fill="none"
                   stroke="var(--blue)"
-                  strokeWidth="2.5"
+                  strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -301,7 +301,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
             ))}
             <div className="loader-heading loader-heading-main font-chunko">
               {HEADING}
-              <span className="loader-subname size56  font-scribble">Kurdekar</span>
+              <span className="loader-subname font-scribble">Kurdekar</span>
             </div>
 
             {showRetry && (
@@ -322,7 +322,7 @@ const Loader = ({ onComplete, onStuck, onDismiss }: LoaderProps) => {
                       d="M14,10 C34,14 54,30 68,50 M68,50 L54,44 M68,50 L74,34"
                       fill="none"
                       stroke="var(--black)"
-                      strokeWidth="2.5"
+                      strokeWidth="3"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
