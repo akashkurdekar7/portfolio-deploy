@@ -162,10 +162,7 @@ const Hero = ({ revealed }: HeroProps) => {
   return (
     <section className="relative flex min-h-dvh items-center justify-center lg:mx-20 mx-6">
       <div className="flex flex-col items-center gap-10 relative z-30">
-        <div
-          ref={heroImageWrapRef}
-          className="hero-image overflow-hidden relative h-80 w-full md:w-170 rounded-[20px] border-6"
-        >
+        <div ref={heroImageWrapRef} className="hero-image overflow-hidden relative h-80 w-full md:w-170 rounded-[20px] border-6">
           <img
             ref={heroImageRef}
             src={hero}
@@ -249,7 +246,7 @@ const Hero = ({ revealed }: HeroProps) => {
         ref={(el) => {
           cloudRefs.current[1] = el;
         }}
-        className="absolute top-[88%] lg:top-[60%] left-[10%] z-20 -translate-x-1/2 cloud-parallax -translate-y-1/2 "
+        className="absolute top-[88%] lg:top-[60%] left-[-10%] z-20 -translate-x-1/2 cloud-parallax -translate-y-1/2 "
       >
         <img
           src={clouds}
