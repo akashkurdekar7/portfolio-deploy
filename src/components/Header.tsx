@@ -208,23 +208,6 @@ const Header = ({ revealed }: HeaderProps) => {
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 text-lg md:flex">
             <li className="flex items-center">
               <a
-                href="#work"
-                onClick={(e) => scrollToSection(e, "#work")}
-                className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
-              >
-                <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
-                  <span className="h-[1.4em] whitespace-nowrap font-italic">Work</span>
-
-                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-orange" aria-hidden="true">
-                    Work
-                  </span>
-                </span>
-
-                <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-orange transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
-              </a>
-            </li>
-            <li className="flex items-center">
-              <a
                 href="#projects"
                 onClick={(e) => scrollToSection(e, "#projects")}
                 className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
@@ -232,12 +215,29 @@ const Header = ({ revealed }: HeaderProps) => {
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
                   <span className="h-[1.4em] whitespace-nowrap font-italic">Projects</span>
 
-                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-blue capitalize" aria-hidden="true">
-                    projects
+                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-orange " aria-hidden="true">
+                    Projects
                   </span>
                 </span>
 
                 <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-orange transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
+              </a>
+            </li>{" "}
+            <li className="flex items-center">
+              <a
+                href="#work"
+                onClick={(e) => scrollToSection(e, "#work")}
+                className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
+              >
+                <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
+                  <span className="h-[1.4em] whitespace-nowrap font-italic">Work</span>
+
+                  <span className="h-[1.4em] whitespace-nowrap font-instrument  text-blue" aria-hidden="true">
+                    Work
+                  </span>
+                </span>
+
+                <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-blue transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
               </a>
             </li>
             <li className="flex items-center">
@@ -303,16 +303,6 @@ const Header = ({ revealed }: HeaderProps) => {
           <ul className="flex flex-col items-center gap-6 font-instrument text-6xl">
             <li
               ref={(el) => {
-                menuLinksRef.current[0] = el;
-              }}
-            >
-              <a href="#work" onClick={(e) => scrollToSection(e, "#work")} className="transition-colors duration-300 hover:text-orange">
-                Work
-              </a>
-            </li>
-
-            <li
-              ref={(el) => {
                 menuLinksRef.current[1] = el;
               }}
             >
@@ -322,6 +312,15 @@ const Header = ({ revealed }: HeaderProps) => {
                 className="transition-colors duration-300 hover:text-orange"
               >
                 Projects
+              </a>
+            </li>
+            <li
+              ref={(el) => {
+                menuLinksRef.current[0] = el;
+              }}
+            >
+              <a href="#work" onClick={(e) => scrollToSection(e, "#work")} className="transition-colors duration-300 hover:text-orange">
+                Work
               </a>
             </li>
 

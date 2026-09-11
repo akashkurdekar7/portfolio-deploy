@@ -161,9 +161,7 @@ const Projects = () => {
       <div className="flex flex-col items-center gap-3">
         <h2 className="size56 font-bricolage-semibold leading-none capitalize ">
           Projects
-          <sup className="size12 align-super  font-bricolage ml-1 text-white bg-blue rounded-full border border-[#fff] px-1 ">
-            0{projects.length}
-          </sup>
+          <sup className="size18 align-super  font-bricolage ml-1 text-white bg-blue rounded-full   px-2 ">0{projects.length}</sup>
         </h2>
 
         <p className="max-w-lg text-center font-bricolage size14 leading-4 text-grey">

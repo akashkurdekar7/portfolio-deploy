@@ -181,7 +181,7 @@ const Article = () => {
         <div className="overflow-hidden bg-black py-8 lg:py-10">
           <span className="sr-only">Skills and technologies: {categories.map((item) => item.name).join(", ")}.</span>
 
-          <div className="marquee flex w-max items-center gap-18" aria-hidden="true">
+          <div className="marquee flex w-max items-center lg:gap-18 gap-8" aria-hidden="true">
             {marqueeItems.map((item, index) => (
               <React.Fragment key={`${item.name}-${index}`}>
                 <span className={`font-bricolage-semibold tracking-[2px] lg:tracking-[5px] quote-text whitespace-nowrap ${item.color}`}>
