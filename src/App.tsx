@@ -6,9 +6,7 @@ import SmoothScroll from "./components/SmoothScroll";
 import Projects from "./components/Projects";
 import Article from "./components/Article";
 import ReelsField from "./components/ReelsField";
-// import About from "./components/About";
 import Resume from "./components/Resume";
-import Quote from "./components/Quote";
 import Loader from "./components/Loader";
 import WhatsAppButton from "./components/WhatsAppButton";
 import Work from "./components/Work";
@@ -33,11 +31,6 @@ const App = () => {
         <Header revealed={!siteBlurred} />
       </div>
 
-      {/* The `<main>` landmark itself stays outside the aria-hidden/inert
-          wrapper below — hiding it along with its contents would remove the
-          landmark from the accessibility tree entirely (what Lighthouse's
-          "Document does not have a main landmark" audit flags), not just
-          hide its content. */}
       <main id="main-content" tabIndex={-1} className="relative z-10 outline-none">
         <div
           className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? " blur-[5px]" : ""}`}
@@ -50,10 +43,7 @@ const App = () => {
           <Projects />
           <Article />
           <Work />
-          {/* <About /> */}
           <Resume />
-
-          <Quote />
         </div>
       </main>
 
