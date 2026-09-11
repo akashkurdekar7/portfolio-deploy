@@ -6,6 +6,7 @@ import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
 const IMAGE_INTERVAL_MS = 1500;
+const IMAGE_STAGGER_MS = 200;
 
 export type Project = {
   images?: string[];
@@ -53,13 +54,25 @@ const ProjectCard = ({
     setActiveImage(0);
     if (images.length < 2) return;
 
-    const id = setInterval(() => {
-      setActiveImage((current) => (current + 1) % images.length);
-    }, IMAGE_INTERVAL_MS);
+    // Offset each card's cycle by its index so cards across the grid don't
+    // all flip images on the same tick — they cascade one after another
+    // instead of changing all at once.
+    const offset = (index * IMAGE_STAGGER_MS) % IMAGE_INTERVAL_MS;
+    let intervalId: ReturnType<typeof setInterval>;
 
-    return () => clearInterval(id);
+    const timeoutId = setTimeout(() => {
+      setActiveImage((current) => (current + 1) % images.length);
+      intervalId = setInterval(() => {
+        setActiveImage((current) => (current + 1) % images.length);
+      }, IMAGE_INTERVAL_MS);
+    }, offset);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [images.length, project.title]);
+  }, [images.length, project.title, index]);
 
   const titleRef = useRef<HTMLHeadingElement>(null);
 
