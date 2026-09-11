@@ -24,7 +24,6 @@ export type Project = {
 type ProjectCardProps = {
   project: Project;
   index: number;
-  variant?: "default" | "center";
   scrambleTitle?: boolean;
   revealImage?: boolean;
   className?: string;
@@ -37,7 +36,6 @@ type ProjectCardProps = {
 const ProjectCard = ({
   project,
   index,
-  variant = "default",
   scrambleTitle = true,
   revealImage = true,
   className,

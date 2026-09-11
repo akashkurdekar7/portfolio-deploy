@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { HiX } from "react-icons/hi";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import type { Project } from "./ProjectCard";
 
 type ProjectModalProps = {
