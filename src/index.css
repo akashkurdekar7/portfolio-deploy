@@ -729,7 +729,8 @@ button {
   padding: 0.15em 0.5em 0.22em;
   white-space: nowrap;
   color: var(--white);
-  background: var(--orange);
+  /* Darker than --orange so white text clears WCAG AA contrast (~4.6:1 vs ~2.9:1). */
+  background: #c93f08;
   border-radius: 10px;
   font-size: clamp(30px, 4.4vw, 68px);
   box-shadow: 4px 5px 0 var(--black);

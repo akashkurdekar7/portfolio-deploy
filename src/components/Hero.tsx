@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoMailOutline } from "react-icons/io5";
 import hero from "../assets/hero.webp";
-import clouds from "../assets/clouds.png";
+import clouds from "../assets/clouds.webp";
 import gsap from "gsap";
 import type Lenis from "lenis";
 const Hero = () => {
@@ -176,7 +176,16 @@ const Hero = () => {
         }}
         className="absolute top-0 lg:-top-12 -right-10 lg:-right-8 z-20 cloud-parallax"
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-20 lg:h-auto w-full object-cover" loading="lazy" title="Cloud" />
+        <img
+          src={clouds}
+          alt=""
+          aria-hidden="true"
+          className=" h-20 lg:h-auto w-full object-cover"
+          loading="lazy"
+          title="Cloud"
+          width={276}
+          height={176}
+        />
       </div>
 
       {/* MIDDLE LEFT */}
@@ -186,7 +195,16 @@ const Hero = () => {
         }}
         className="absolute top-[88%] lg:top-[60%] left-[10%] z-20 -translate-x-1/2 cloud-parallax -translate-y-1/2 "
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-10 lg:h-auto w-full object-cover" loading="lazy" title="Cloud" />
+        <img
+          src={clouds}
+          alt=""
+          aria-hidden="true"
+          className=" h-10 lg:h-auto w-full object-cover"
+          loading="lazy"
+          title="Cloud"
+          width={276}
+          height={176}
+        />
       </div>
 
       {/* MIDDLE RIGHT */}
@@ -196,7 +214,16 @@ const Hero = () => {
         }}
         className="absolute top-[65%] lg:top-[60%] right-0 lg:right-[30%] z-20 -translate-y-1/2 cloud-parallax"
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-20 lg:w-30 object-cover" loading="lazy" title="Cloud" />
+        <img
+          src={clouds}
+          alt=""
+          aria-hidden="true"
+          className=" h-auto w-20 lg:w-30 object-cover"
+          loading="lazy"
+          title="Cloud"
+          width={276}
+          height={176}
+        />
       </div>
 
       {/* PROFILE */}
@@ -206,7 +233,16 @@ const Hero = () => {
         }}
         className="absolute top-[15%] lg:top-[15%] -left-15 lg:left-[20%] z-20 -translate-y-1/2 cloud-parallax"
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-20 lg:h-auto w-full object-cover" loading="lazy" title="Cloud" />
+        <img
+          src={clouds}
+          alt=""
+          aria-hidden="true"
+          className=" h-20 lg:h-auto w-full object-cover"
+          loading="lazy"
+          title="Cloud"
+          width={276}
+          height={176}
+        />
       </div>
 
       {/* BOTTOM RIGHT */}
@@ -216,7 +252,16 @@ const Hero = () => {
         }}
         className="absolute -right-5 lg:-right-20 -bottom-10 lg:-bottom-40 z-20 w-[40%] lg:w-[25%] cloud-parallax "
       >
-        <img src={clouds} alt="" aria-hidden="true" className=" h-auto w-full object-cover" loading="lazy" title="Cloud" />
+        <img
+          src={clouds}
+          alt=""
+          aria-hidden="true"
+          className=" h-auto w-full object-cover"
+          loading="lazy"
+          title="Cloud"
+          width={276}
+          height={176}
+        />
 
         <div
           className={`absolute z-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-space-bold size12 uppercase hero-side-content transition-opacity duration-700  w-max`}

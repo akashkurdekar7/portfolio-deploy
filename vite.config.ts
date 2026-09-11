@@ -6,9 +6,8 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    // The main chunk's ~930kB (three.js + react + gsap) is the real baseline:
-    // three.js renders the loader's WebGL background from first paint, so it
-    // can't be code-split away.
-    chunkSizeWarningLimit: 1000,
+    // three.js is loaded via dynamic import() in ReelsField/AnimeGreeter, so
+    // it lands in its own chunk (~520kB) rather than inflating this limit.
+    chunkSizeWarningLimit: 600,
   },
 })

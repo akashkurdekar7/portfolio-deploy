@@ -51,7 +51,7 @@ const ProjectCard = ({
     if (images.length < 2) return;
 
     const id = setInterval(() => {
-      setActiveImage((current) => (current + 1) % images.length);http://localhost:5173/
+      setActiveImage((current) => (current + 1) % images.length);
     }, IMAGE_INTERVAL_MS);
 
     return () => clearInterval(id);

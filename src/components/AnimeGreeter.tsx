@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
+import type * as THREE from "three";
 import gsap from "gsap";
 
 interface AnimeGreeterProps {
@@ -94,231 +94,246 @@ const AnimeGreeter = ({ className, style, belowRef }: AnimeGreeterProps) => {
       return () => resizeObserver.disconnect();
     }
 
-    let renderer: THREE.WebGLRenderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    } catch (error) {
-      // Already passed the canUseWebGL() precheck, so this is an unexpected
-      // late failure (e.g. context lost between precheck and now) — bail
-      // quietly rather than flipping state synchronously inside the effect.
-      console.warn("AnimeGreeter: WebGL renderer creation failed unexpectedly.", error);
-      return;
-    }
+    let cancelled = false;
+    let cleanup: (() => void) | undefined;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.domElement.style.display = "block";
-    renderer.domElement.style.width = "100%";
-    renderer.domElement.style.height = "100%";
-    mount.appendChild(renderer.domElement);
+    // Loaded lazily so three.js (only needed for this WebGL character, and
+    // only on non-desktop where the footer uses this instead of Crowd) stays
+    // out of the main bundle that has to be parsed/evaluated before render.
+    import("three").then((ThreeLib) => {
+      if (cancelled) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(0, 0, 0, 0, 0.1, 2000);
-    camera.position.z = 500;
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.95));
-    const key = new THREE.DirectionalLight(0xffffff, 0.9);
-    key.position.set(120, 220, 260);
-    scene.add(key);
-    const rim = new THREE.DirectionalLight(0xff8a4c, 0.55);
-    rim.position.set(-200, 80, -140);
-    scene.add(rim);
-
-    const skinMat = new THREE.MeshStandardMaterial({ color: 0xffd9b3, roughness: 0.6 });
-    const hairMat = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.4 });
-    const outfitMat = new THREE.MeshStandardMaterial({ color: 0xff5a1f, roughness: 0.55 });
-    const eyeMat = new THREE.MeshBasicMaterial({ color: 0x181818 });
-    const shineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const blushMat = new THREE.MeshBasicMaterial({ color: 0xff9d9d, transparent: true, opacity: 0.55 });
-    const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.35 });
-
-    const character = new THREE.Group();
-
-    const shadow = new THREE.Mesh(new THREE.CircleGeometry(70, 24), shadowMat);
-    shadow.position.y = -6;
-    shadow.position.z = -10;
-    character.add(shadow);
-
-    const torso = new THREE.Mesh(new THREE.CapsuleGeometry(TORSO_R, TORSO_LEN, 6, 14), outfitMat);
-    torso.position.y = TORSO_LEN / 2 + TORSO_R;
-    character.add(torso);
-
-    const headY = TORSO_LEN + TORSO_R * 2 + HEAD_R * 0.5 + 4;
-
-    const head = new THREE.Mesh(new THREE.SphereGeometry(HEAD_R, 28, 28), skinMat);
-    head.position.y = headY;
-    character.add(head);
-
-    const hair = new THREE.Mesh(new THREE.SphereGeometry(HEAD_R + 3, 28, 28, 0, Math.PI * 2, 0, Math.PI * 0.4), hairMat);
-    hair.position.set(0, headY + 12, -4);
-    character.add(hair);
-
-    const eyeGeo = new THREE.SphereGeometry(8, 14, 14);
-    const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
-    leftEye.position.set(-18, headY - 2, HEAD_R * 0.88);
-    const rightEye = leftEye.clone();
-    rightEye.position.x = 18;
-    character.add(leftEye, rightEye);
-
-    const shineGeo = new THREE.SphereGeometry(2.8, 8, 8);
-    const leftShine = new THREE.Mesh(shineGeo, shineMat);
-    leftShine.position.set(-15, headY + 3, HEAD_R * 0.97);
-    const rightShine = leftShine.clone();
-    rightShine.position.x = 21;
-    character.add(leftShine, rightShine);
-
-    const blushGeo = new THREE.CircleGeometry(6, 16);
-    const leftBlush = new THREE.Mesh(blushGeo, blushMat);
-    leftBlush.position.set(-29, headY - 16, HEAD_R * 0.82);
-    const rightBlush = leftBlush.clone();
-    rightBlush.position.x = 29;
-    character.add(leftBlush, rightBlush);
-
-    const armGeo = new THREE.CapsuleGeometry(ARM_R, ARM_LEN, 6, 10);
-    const shoulderY = TORSO_LEN + TORSO_R * 1.1;
-    // Pulled toward the camera so a raised/waving arm renders in front of the
-    // head instead of behind it (both meshes otherwise sit at the same depth).
-    const ARM_FORWARD_Z = HEAD_R;
-
-    const leftArmPivot = new THREE.Group();
-    leftArmPivot.position.set(-(TORSO_R + ARM_R - 4), shoulderY, ARM_FORWARD_Z);
-    const leftArm = new THREE.Mesh(armGeo, outfitMat);
-    leftArm.position.y = -(ARM_LEN / 2 + ARM_R - 6);
-    leftArmPivot.add(leftArm);
-    character.add(leftArmPivot);
-
-    const rightArmPivot = new THREE.Group();
-    rightArmPivot.position.set(TORSO_R + ARM_R - 4, shoulderY, ARM_FORWARD_Z);
-    const rightArm = new THREE.Mesh(armGeo, outfitMat);
-    rightArm.position.y = -(ARM_LEN / 2 + ARM_R - 6);
-    rightArmPivot.add(rightArm);
-    character.add(rightArmPivot);
-
-    scene.add(character);
-
-    const stage = { width: 0, height: 0 };
-    const anchor = { x: 0, y: 0 };
-
-    const layout = () => {
-      const { x, yTop } = anchorScreen();
-
-      anchor.x = x - stage.width / 2;
-      anchor.y = stage.height / 2 - yTop - CHAR_HEIGHT;
-      character.position.set(anchor.x, anchor.y, 0);
-
-      if (bubble) {
-        const screenX = stage.width / 2 + anchor.x;
-        const screenY = stage.height / 2 - (anchor.y + CHAR_HEIGHT);
-        bubble.style.left = `${screenX}px`;
-        bubble.style.top = `${screenY}px`;
+      let renderer: THREE.WebGLRenderer;
+      try {
+        renderer = new ThreeLib.WebGLRenderer({ alpha: true, antialias: true });
+      } catch (error) {
+        // Already passed the canUseWebGL() precheck, so this is an unexpected
+        // late failure (e.g. context lost between precheck and now) — bail
+        // quietly rather than flipping state synchronously inside the effect.
+        console.warn("AnimeGreeter: WebGL renderer creation failed unexpectedly.", error);
+        return;
       }
-    };
 
-    const resize = () => {
-      stage.width = mount.clientWidth;
-      stage.height = mount.clientHeight;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.domElement.style.display = "block";
+      renderer.domElement.style.width = "100%";
+      renderer.domElement.style.height = "100%";
+      mount.appendChild(renderer.domElement);
 
-      if (stage.width === 0 || stage.height === 0) return;
+      const scene = new ThreeLib.Scene();
+      const camera = new ThreeLib.OrthographicCamera(0, 0, 0, 0, 0.1, 2000);
+      camera.position.z = 500;
 
-      renderer.setSize(stage.width, stage.height);
+      scene.add(new ThreeLib.AmbientLight(0xffffff, 0.95));
+      const key = new ThreeLib.DirectionalLight(0xffffff, 0.9);
+      key.position.set(120, 220, 260);
+      scene.add(key);
+      const rim = new ThreeLib.DirectionalLight(0xff8a4c, 0.55);
+      rim.position.set(-200, 80, -140);
+      scene.add(rim);
 
-      camera.left = -stage.width / 2;
-      camera.right = stage.width / 2;
-      camera.top = stage.height / 2;
-      camera.bottom = -stage.height / 2;
-      camera.updateProjectionMatrix();
+      const skinMat = new ThreeLib.MeshStandardMaterial({ color: 0xffd9b3, roughness: 0.6 });
+      const hairMat = new ThreeLib.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.4 });
+      const outfitMat = new ThreeLib.MeshStandardMaterial({ color: 0xff5a1f, roughness: 0.55 });
+      const eyeMat = new ThreeLib.MeshBasicMaterial({ color: 0x181818 });
+      const shineMat = new ThreeLib.MeshBasicMaterial({ color: 0xffffff });
+      const blushMat = new ThreeLib.MeshBasicMaterial({ color: 0xff9d9d, transparent: true, opacity: 0.55 });
+      const shadowMat = new ThreeLib.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.35 });
 
-      layout();
-    };
+      const character = new ThreeLib.Group();
 
-    const idle = gsap.to(character.position, {
-      y: `+=14`,
-      duration: 1.7,
-      ease: "sine.inOut",
-      yoyo: true,
-      repeat: -1,
-    });
+      const shadow = new ThreeLib.Mesh(new ThreeLib.CircleGeometry(70, 24), shadowMat);
+      shadow.position.y = -6;
+      shadow.position.z = -10;
+      character.add(shadow);
 
-    let waveTl: gsap.core.Timeline | null = null;
+      const torso = new ThreeLib.Mesh(new ThreeLib.CapsuleGeometry(TORSO_R, TORSO_LEN, 6, 14), outfitMat);
+      torso.position.y = TORSO_LEN / 2 + TORSO_R;
+      character.add(torso);
 
-    const playWave = () => {
-      waveTl?.kill();
-      waveTl = gsap.timeline();
+      const headY = TORSO_LEN + TORSO_R * 2 + HEAD_R * 0.5 + 4;
 
-      waveTl
-        .to(rightArmPivot.rotation, { z: -2.3, duration: 0.4, ease: "back.out(2)" }, 0)
-        .to(rightArmPivot.rotation, { z: -1.85, duration: 0.22, repeat: 5, yoyo: true, ease: "sine.inOut" }, 0.4)
-        .to(rightArmPivot.rotation, { z: 0, duration: 0.4, ease: "power2.inOut" }, ">+0.05");
+      const head = new ThreeLib.Mesh(new ThreeLib.SphereGeometry(HEAD_R, 28, 28), skinMat);
+      head.position.y = headY;
+      character.add(head);
 
-      if (bubble) {
-        gsap.killTweensOf(bubble);
-        gsap.fromTo(bubble, { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "back.out(2)" });
-        gsap.to(bubble, { opacity: 0, y: -6, duration: 0.35, delay: 1.9, ease: "power1.in" });
-      }
-    };
+      const hair = new ThreeLib.Mesh(new ThreeLib.SphereGeometry(HEAD_R + 3, 28, 28, 0, Math.PI * 2, 0, Math.PI * 0.4), hairMat);
+      hair.position.set(0, headY + 12, -4);
+      character.add(hair);
 
-    let frameId: number;
-    let isVisible = true;
-    let contextLost = false;
+      const eyeGeo = new ThreeLib.SphereGeometry(8, 14, 14);
+      const leftEye = new ThreeLib.Mesh(eyeGeo, eyeMat);
+      leftEye.position.set(-18, headY - 2, HEAD_R * 0.88);
+      const rightEye = leftEye.clone();
+      rightEye.position.x = 18;
+      character.add(leftEye, rightEye);
 
-    const handleContextLost = (event: Event) => {
-      event.preventDefault();
-      contextLost = true;
-      setUseFallback(true);
-    };
+      const shineGeo = new ThreeLib.SphereGeometry(2.8, 8, 8);
+      const leftShine = new ThreeLib.Mesh(shineGeo, shineMat);
+      leftShine.position.set(-15, headY + 3, HEAD_R * 0.97);
+      const rightShine = leftShine.clone();
+      rightShine.position.x = 21;
+      character.add(leftShine, rightShine);
 
-    renderer.domElement.addEventListener("webglcontextlost", handleContextLost);
+      const blushGeo = new ThreeLib.CircleGeometry(6, 16);
+      const leftBlush = new ThreeLib.Mesh(blushGeo, blushMat);
+      leftBlush.position.set(-29, headY - 16, HEAD_R * 0.82);
+      const rightBlush = leftBlush.clone();
+      rightBlush.position.x = 29;
+      character.add(leftBlush, rightBlush);
 
-    const animate = () => {
-      frameId = requestAnimationFrame(animate);
-      if (!isVisible || document.hidden || contextLost) return;
-      renderer.render(scene, camera);
-    };
+      const armGeo = new ThreeLib.CapsuleGeometry(ARM_R, ARM_LEN, 6, 10);
+      const shoulderY = TORSO_LEN + TORSO_R * 1.1;
+      // Pulled toward the camera so a raised/waving arm renders in front of the
+      // head instead of behind it (both meshes otherwise sit at the same depth).
+      const ARM_FORWARD_Z = HEAD_R;
 
-    const intersectionObserver = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
-      { threshold: 0.05 },
-    );
-    intersectionObserver.observe(mount);
+      const leftArmPivot = new ThreeLib.Group();
+      leftArmPivot.position.set(-(TORSO_R + ARM_R - 4), shoulderY, ARM_FORWARD_Z);
+      const leftArm = new ThreeLib.Mesh(armGeo, outfitMat);
+      leftArm.position.y = -(ARM_LEN / 2 + ARM_R - 6);
+      leftArmPivot.add(leftArm);
+      character.add(leftArmPivot);
 
-    const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(mount);
+      const rightArmPivot = new ThreeLib.Group();
+      rightArmPivot.position.set(TORSO_R + ARM_R - 4, shoulderY, ARM_FORWARD_Z);
+      const rightArm = new ThreeLib.Mesh(armGeo, outfitMat);
+      rightArm.position.y = -(ARM_LEN / 2 + ARM_R - 6);
+      rightArmPivot.add(rightArm);
+      character.add(rightArmPivot);
 
-    const anchorEl = belowRef?.current;
-    if (anchorEl) resizeObserver.observe(anchorEl);
+      scene.add(character);
 
-    resize();
-    animate();
+      const stage = { width: 0, height: 0 };
+      const anchor = { x: 0, y: 0 };
 
-    playWave();
-    const waveInterval = setInterval(playWave, 4200);
+      const layout = () => {
+        const { x, yTop } = anchorScreen();
 
-    return () => {
-      cancelAnimationFrame(frameId);
-      clearInterval(waveInterval);
-      idle.kill();
-      waveTl?.kill();
-      if (bubble) gsap.killTweensOf(bubble);
-      intersectionObserver.disconnect();
-      resizeObserver.disconnect();
-      renderer.domElement.removeEventListener("webglcontextlost", handleContextLost);
+        anchor.x = x - stage.width / 2;
+        anchor.y = stage.height / 2 - yTop - CHAR_HEIGHT;
+        character.position.set(anchor.x, anchor.y, 0);
 
-      scene.traverse((obj) => {
-        if (obj instanceof THREE.Mesh) {
-          obj.geometry.dispose();
-          if (Array.isArray(obj.material)) {
-            obj.material.forEach((m) => m.dispose());
-          } else {
-            obj.material.dispose();
-          }
+        if (bubble) {
+          const screenX = stage.width / 2 + anchor.x;
+          const screenY = stage.height / 2 - (anchor.y + CHAR_HEIGHT);
+          bubble.style.left = `${screenX}px`;
+          bubble.style.top = `${screenY}px`;
         }
+      };
+
+      const resize = () => {
+        stage.width = mount.clientWidth;
+        stage.height = mount.clientHeight;
+
+        if (stage.width === 0 || stage.height === 0) return;
+
+        renderer.setSize(stage.width, stage.height);
+
+        camera.left = -stage.width / 2;
+        camera.right = stage.width / 2;
+        camera.top = stage.height / 2;
+        camera.bottom = -stage.height / 2;
+        camera.updateProjectionMatrix();
+
+        layout();
+      };
+
+      const idle = gsap.to(character.position, {
+        y: `+=14`,
+        duration: 1.7,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
       });
 
-      renderer.dispose();
-      if (renderer.domElement.parentElement === mount) {
-        mount.removeChild(renderer.domElement);
-      }
+      let waveTl: gsap.core.Timeline | null = null;
+
+      const playWave = () => {
+        waveTl?.kill();
+        waveTl = gsap.timeline();
+
+        waveTl
+          .to(rightArmPivot.rotation, { z: -2.3, duration: 0.4, ease: "back.out(2)" }, 0)
+          .to(rightArmPivot.rotation, { z: -1.85, duration: 0.22, repeat: 5, yoyo: true, ease: "sine.inOut" }, 0.4)
+          .to(rightArmPivot.rotation, { z: 0, duration: 0.4, ease: "power2.inOut" }, ">+0.05");
+
+        if (bubble) {
+          gsap.killTweensOf(bubble);
+          gsap.fromTo(bubble, { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "back.out(2)" });
+          gsap.to(bubble, { opacity: 0, y: -6, duration: 0.35, delay: 1.9, ease: "power1.in" });
+        }
+      };
+
+      let frameId: number;
+      let isVisible = true;
+      let contextLost = false;
+
+      const handleContextLost = (event: Event) => {
+        event.preventDefault();
+        contextLost = true;
+        setUseFallback(true);
+      };
+
+      renderer.domElement.addEventListener("webglcontextlost", handleContextLost);
+
+      const animate = () => {
+        frameId = requestAnimationFrame(animate);
+        if (!isVisible || document.hidden || contextLost) return;
+        renderer.render(scene, camera);
+      };
+
+      const intersectionObserver = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting;
+        },
+        { threshold: 0.05 },
+      );
+      intersectionObserver.observe(mount);
+
+      const resizeObserver = new ResizeObserver(resize);
+      resizeObserver.observe(mount);
+
+      const anchorEl = belowRef?.current;
+      if (anchorEl) resizeObserver.observe(anchorEl);
+
+      resize();
+      animate();
+
+      playWave();
+      const waveInterval = setInterval(playWave, 4200);
+
+      cleanup = () => {
+        cancelAnimationFrame(frameId);
+        clearInterval(waveInterval);
+        idle.kill();
+        waveTl?.kill();
+        if (bubble) gsap.killTweensOf(bubble);
+        intersectionObserver.disconnect();
+        resizeObserver.disconnect();
+        renderer.domElement.removeEventListener("webglcontextlost", handleContextLost);
+
+        scene.traverse((obj) => {
+          if (obj instanceof ThreeLib.Mesh) {
+            obj.geometry.dispose();
+            if (Array.isArray(obj.material)) {
+              obj.material.forEach((m) => m.dispose());
+            } else {
+              obj.material.dispose();
+            }
+          }
+        });
+
+        renderer.dispose();
+        if (renderer.domElement.parentElement === mount) {
+          mount.removeChild(renderer.domElement);
+        }
+      };
+    });
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
     };
   }, [belowRef, useFallback]);
 

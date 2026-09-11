@@ -43,14 +43,19 @@ const App = () => {
         <Header />
       </div>
 
-      <div
-        className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? "scale-[0.96] blur-md" : ""}`}
-        aria-hidden={siteBlurred}
-        inert={siteBlurred}
-      >
-        <SmoothScroll />
+      {/* The `<main>` landmark itself stays outside the aria-hidden/inert
+          wrapper below — hiding it along with its contents would remove the
+          landmark from the accessibility tree entirely (what Lighthouse's
+          "Document does not have a main landmark" audit flags), not just
+          hide its content. */}
+      <main id="main-content" tabIndex={-1} className="relative z-10 outline-none">
+        <div
+          className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? "scale-[0.96] blur-md" : ""}`}
+          aria-hidden={siteBlurred}
+          inert={siteBlurred}
+        >
+          <SmoothScroll />
 
-        <main id="main-content" tabIndex={-1} className="relative z-10 outline-none">
           <Hero />
           <Projects />
           <Article />
@@ -59,8 +64,14 @@ const App = () => {
           <Resume />
 
           <Quote />
-        </main>
+        </div>
+      </main>
 
+      <div
+        className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? "scale-[0.96] blur-md" : ""}`}
+        aria-hidden={siteBlurred}
+        inert={siteBlurred}
+      >
         <Footer />
       </div>
 
