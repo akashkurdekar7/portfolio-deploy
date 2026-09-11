@@ -14,7 +14,7 @@ const WhatsAppButton = () => {
       aria-label="Chat on WhatsApp"
       className="
         group fixed bottom-6 right-6 z-70
-        flex h-14 w-14 items-center justify-center
+        flex lg:h-14 h-10 lg:w-14 w-10 items-center justify-center
         rounded-full bg-black text-white
         shadow-[0_4px_20px_rgba(0,0,0,0.35)]
         transition-transform duration-300 ease-out
@@ -23,7 +23,7 @@ const WhatsAppButton = () => {
       "
     >
       <span className="pointer-events-none absolute inset-0 rounded-full bg-blue/40 animate-ping group-hover:opacity-0" />
-      <FaWhatsapp size={26} className="relative z-10 text-green-500" />
+      <FaWhatsapp size={window.innerWidth > 991 ? 26 : 20} className="relative z-10 text-green-500" />
     </a>
   );
 };

@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { HiMenuAlt3, HiX } from "react-icons/hi";
 import gsap from "gsap";
 
 interface HeaderProps {
@@ -270,16 +269,22 @@ const Header = ({ revealed }: HeaderProps) => {
           </div>
 
           {/* MOBILE BURGER */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="relative z-[60] flex h-10 w-10 cursor-grab items-center justify-center rounded-full border border-black md:hidden"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
-          >
-            {menuOpen ? <HiX size={21} /> : <HiMenuAlt3 size={21} />}
-          </button>
+          <label className="hamburger relative z-[60] md:hidden">
+            <input
+              type="checkbox"
+              checked={menuOpen}
+              onChange={() => setMenuOpen((prev) => !prev)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-controls="mobile-menu"
+            />
+            <svg viewBox="0 0 32 32">
+              <path
+                className="line line-top-bottom"
+                d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+              />
+              <path className="line" d="M7 16 27 16" />
+            </svg>
+          </label>
         </nav>
       </header>
 

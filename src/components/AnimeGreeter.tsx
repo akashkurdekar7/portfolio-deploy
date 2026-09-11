@@ -10,21 +10,13 @@ interface AnimeGreeterProps {
 }
 
 const GREETINGS = [
-  "Yooo! 👋",
+  "Yooo, hope you found something interesting. 👀",
   "Namaskar! 🙏",
   "Kem Cho? 👀",
+  "Yooo! 👋",
   "Namaste! ✨",
-  "Yo yo! 😏",
-  "Kya scene? 👀",
-  "Aye yooo! 🚀",
-  "Kaise ho? ✨",
   "Arre hello! 👋",
-  "Chalo, let's go 🚀",
-  "Namaskara! 🙏",
-  "Oho, you're here 👀",
   "Ayo! What's up? 😏",
-  "Kya bolta? 👀",
-  "Chalo shuru karein 🚀",
 ];
 const HEAD_R = 46;
 const TORSO_R = 42;
