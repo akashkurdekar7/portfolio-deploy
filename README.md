@@ -1,75 +1,67 @@
-# React + TypeScript + Vite
+# Portfolio — Akash Kurdekar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio site for Akash Kurdekar, Software Engineer, Designer & Creative Developer. Built as a single-page, animation-heavy experience with smooth scrolling, custom cursor interactions, and a project showcase.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **TypeScript**
+- **Vite** — build tooling and dev server
+- **Tailwind CSS 4**
+- **GSAP** — scroll and UI animations
+- **Three.js** — WebGL visuals
+- **Lenis** — smooth scrolling
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Install dependencies:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Run the dev server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run dev
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+Lint the project:
+
+```bash
+npm run lint
+```
+
+## Project Structure
 
 ```
+src/
+├── assets/           # Images, textures, and other static assets
+│   └── projects/     # Screenshots used in the project showcase/modal
+├── components/        # Page sections and UI components
+│   ├── Header.tsx / Hero.tsx / Footer.tsx
+│   ├── Projects.tsx, ProjectsDesktop.tsx, ProjectsStack.tsx,
+│   │   ProjectCard.tsx, ProjectModal.tsx   # Project showcase
+│   ├── Resume.tsx      # Resume/experience section
+│   ├── Work.tsx, Article.tsx, Quote.tsx
+│   ├── SmoothScroll.tsx  # Lenis smooth-scroll setup
+│   ├── Loader.tsx        # Initial page loader
+│   └── WhatsAppButton.tsx
+├── App.tsx
+└── main.tsx
+```
+
+## Deployment
+
+This is a static Vite build — deploy the contents of `dist/` after running `npm run build` to any static host (e.g. Vercel, Netlify, GitHub Pages).
