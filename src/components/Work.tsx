@@ -207,6 +207,33 @@ const Work = () => {
     return () => ctx.revert();
   }, []);
 
+  // NUMBER / DURATION OPACITY REVEAL — same scroll-scrubbed opacity ramp
+  // technique as the description word reveal above, applied to each card's
+  // number and period labels so they fade in as the card scrolls past.
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".work-fade").forEach((el) => {
+        const card = el.closest("article") ?? el;
+        gsap.set(el, { opacity: 0 });
+        gsap.to(el, {
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            end: "top 45%",
+            scrub: true,
+          },
+        });
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   useEffect(() => {
     const listenerCleanups: Array<() => void> = [];
 
@@ -277,7 +304,7 @@ const Work = () => {
         <article className="work-reveal-featured border-t border-black/15 pt-3 lg:pt-8">
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-12 lg:gap-8 items-center">
             <div className="lg:col-span-2">
-              <span className="font-bricolage-sembold size12 text-grey">{experience[0].number}</span>
+              <span className="work-fade font-bricolage-sembold size12 text-grey">{experience[0].number}</span>
             </div>
             <div className="col-6 lg:col-span-3">
               <div className="flex items-center gap-3">
@@ -290,10 +317,10 @@ const Work = () => {
                   here would land before this card's <h3> (the company name,
                   below) in document order — skipping a level and reading out
                   of sequence for screen-reader users navigating by heading. */}
-              <p className="font-bricolage-semibold size16 uppercase">{experience[0].role}</p>
+              <p className="role-cube-lift font-bricolage-semibold size16 uppercase">{experience[0].role}</p>
             </div>
             <div className="col-6 lg:col-span-2 lg:text-right">
-              <span className="font-bricolage size12 uppercase text-grey">{experience[0].period}</span>
+              <span className="work-fade font-bricolage size12 uppercase text-grey">{experience[0].period}</span>
             </div>
           </div>
 
@@ -326,8 +353,8 @@ const Work = () => {
             className="work-reveal-card group border-4 rounded-3xl px-4 py-6 lg:px-6 lg:py-6 shadow-[0_4px_10px_0_rgba(0,0,0,.3)] bg-[#fff]"
           >
             <div className="flex items-center justify-between">
-              <span className="font-bricolage size12 text-grey">{item.number}</span>
-              <div className="group/type flex items-center gap-3 border border-black rounded-md p-1 px-3 bg-white shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)] transition-all duration-200 ease-out [transform-style:preserve-3d] hover:translate-y-1 hover:[transform:translateY(0.25rem)_translateZ(-4px)] hover:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)] active:[transform:translateY(0.25rem)_translateZ(-6px)] active:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)]">
+              <span className="work-fade font-bricolage size12 text-grey">{item.number}</span>
+              <div className="work-type-badge group/type flex items-center gap-3 border border-black rounded-md p-1 px-3 bg-white shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)] transition-all duration-200 ease-out [transform-style:preserve-3d] hover:translate-y-1 hover:[transform:translateY(0.25rem)_translateZ(-4px)] hover:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)] active:[transform:translateY(0.25rem)_translateZ(-6px)] active:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)]">
                 <span className="font-bricolage size12 uppercase text-grey">{item.type}</span>
               </div>
             </div>
@@ -336,11 +363,11 @@ const Work = () => {
               {renderCompanyName(item.company, item.highlightWord, item.highlightColor)}
             </h3>
 
-            <h4 className={`mt-1 font-bricolage size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
+            <h4 className={`role-cube-lift mt-1 font-bricolage size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
             <p className="work-desc mt-4 max-w-lg font-bricolage size14 leading-6">{renderDescription(item.description)}</p>
 
             <div className="mt-4">
-              <span className="font-bricolage size12 uppercase text-grey">{item.period}</span>
+              <span className="work-fade font-bricolage size12 uppercase text-grey">{item.period}</span>
             </div>
           </article>
         ))}

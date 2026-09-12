@@ -1068,3 +1068,46 @@ button {
   stroke-dasharray: 20 300;
   stroke-dashoffset: -32.42;
 }
+
+/* =================================
+   WORK SECTION — role / badge hover effects
+================================= */
+
+.role-cube-lift {
+  display: inline-block;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.3s ease;
+}
+
+.role-cube-lift:hover {
+  transform: translateY(-6px);
+  filter: drop-shadow(0 6px 0 rgba(17, 17, 17, 0.18));
+}
+
+@keyframes workBtnTremble {
+  0%,
+  100% {
+    transform: translateY(0.25rem) translateZ(-4px) rotate(0deg);
+  }
+
+  20% {
+    transform: translateY(0.25rem) translateZ(-4px) rotate(-3deg);
+  }
+
+  40% {
+    transform: translateY(0.25rem) translateZ(-4px) rotate(3deg);
+  }
+
+  60% {
+    transform: translateY(0.25rem) translateZ(-4px) rotate(-2deg);
+  }
+
+  80% {
+    transform: translateY(0.25rem) translateZ(-4px) rotate(2deg);
+  }
+}
+
+.work-type-badge:hover {
+  animation: workBtnTremble 0.4s ease-in-out;
+}
