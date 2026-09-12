@@ -58,7 +58,7 @@ const HighlightCircle = ({ children, className = "", color }: HighlightCirclePro
         ease: "power2.out",
         scrollTrigger: {
           trigger: wrap,
-          start: "center center",
+          start: "top 80%",
           toggleActions: "play none none reverse",
         },
       });

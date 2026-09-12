@@ -7,6 +7,8 @@ import { FaArrowRight, FaDownload, FaExternalLinkAlt } from "react-icons/fa";
 import { HiX } from "react-icons/hi";
 import HighlightCircle from "./HighlightCircle";
 import resumePdf from "../assets/resume/Akash_Kurdekar_Full_Stack_Engineer.pdf?url";
+import { renderEmphasisText } from "../utils/emphasisText";
+import { useScrambleReveal } from "../utils/useScrambleReveal";
 
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
@@ -22,6 +24,31 @@ const Resume = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
+  const headingLine1Ref = useRef<HTMLSpanElement>(null);
+  const headingLine2Ref = useRef<HTMLSpanElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const roleRef = useRef<HTMLHeadingElement>(null);
+
+  // HEADING SCRAMBLE — "Grab my résumé.", the name, and the eyebrow role
+  // title scramble in from random characters once the section scrolls into
+  // view. These headings sit inside the ".resume-reveal" opacity fade-up
+  // below (stagger 0.12 across 3 elements, 0.9s duration each — the last,
+  // the right column, finishes fading at ~1.14s), so the scramble needs a
+  // delay past that point; otherwise it plays out while still invisible/
+  // mid-fade and never reads as a visible effect.
+  useScrambleReveal([
+    {
+      trigger: sectionRef,
+      start: "top 75%",
+      delay: 1.2,
+      targets: [
+        { ref: headingLine1Ref, text: "Grab my" },
+        { ref: headingLine2Ref, text: "résumé." },
+        { ref: nameRef, text: "Akash Kurdekar" },
+        { ref: roleRef, text: "Computer Science Engineer" },
+      ],
+    },
+  ]);
 
   // A missing public/resume.pdf falls through to the SPA's own index.html on
   // most dev servers/hosts, which an <object type="application/pdf"> happily
@@ -174,6 +201,25 @@ const Resume = () => {
           },
         });
       }
+
+      // DESCRIPTION WORD REVEAL — same scroll-scrubbed word fade used in
+      // Work/Projects: words start at opacity 0 and ramp to 1 as each
+      // description scrolls through the viewport.
+      gsap.utils.toArray<HTMLElement>(".resume-desc").forEach((desc) => {
+        const words = desc.querySelectorAll(".resume-desc-word");
+        gsap.set(words, { opacity: 0 });
+        gsap.to(words, {
+          opacity: 1,
+          ease: "none",
+          stagger: 0.03,
+          scrollTrigger: {
+            trigger: desc,
+            start: "top 85%",
+            end: "bottom 60%",
+            scrub: true,
+          },
+        });
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -188,15 +234,20 @@ const Resume = () => {
       <div className="relative w-full grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-8">
         <div className="resume-reveal lg:col-span-3">
           <h2 className="mt-4 lg:mt-8 max-w-md font-bricolage-semibold size64 leading-[1.2]">
-            Grab my
+            <span ref={headingLine1Ref}>Grab my</span>
             <br />
             <HighlightCircle color="var(--orange)">
-              <span className="font-italic text-orange">résumé.</span>
+              <span ref={headingLine2Ref} className="font-italic text-orange">
+                résumé.
+              </span>
             </HighlightCircle>
           </h2>
 
-          <p className="mt-6 max-w-xs font-bricolage size14 leading-6 text-grey lg:text-justify">
-            A quick look at my experience, the products I've worked on, and the skills I've built across software development.
+          <p className="resume-desc mt-6 max-w-xs font-bricolage size14 leading-6 lg:text-justify">
+            {renderEmphasisText(
+              "A quick look at my experience, the **products I've worked on**, and the **skills I've built** across software development.",
+              "resume-desc-word",
+            )}
           </p>
         </div>
 
@@ -257,13 +308,17 @@ const Resume = () => {
         </div>
 
         <div className="resume-reveal lg:col-span-3">
-          <h3 className="font-instrument size44 leading-[1.2]">Akash Kurdekar</h3>
-          <h4 className="mt-1 font-bricolage-semibold size18  tracking-wide lg:tracking-widest uppercase text-orange">
+          <h3 ref={nameRef} className="font-instrument size44 leading-[1.2]">
+            Akash Kurdekar
+          </h3>
+          <h4 ref={roleRef} className="mt-1 font-bricolage-semibold size18  tracking-wide lg:tracking-widest uppercase text-orange">
             Computer Science Engineer
           </h4>
-          <p className="mt-4 max-w-xs font-bricolage size14 leading-6 text-grey">
-            Software engineer working across frontend, backend, APIs, databases, and product experiences, with a focus on building practical
-            solutions and adapting to whatever the project requires.
+          <p className="resume-desc mt-4 max-w-xs font-bricolage size14 leading-6">
+            {renderEmphasisText(
+              "Software engineer working across **frontend, backend, APIs, databases, and product experiences**, with a focus on building **practical solutions** and adapting to whatever the project requires.",
+              "resume-desc-word",
+            )}
           </p>
           <svg viewBox="0 0 60 14" className="mt-4 h-3 w-14 overflow-visible" aria-hidden="true">
             <circle cx="4" cy="7" r="3" fill="var(--blue)" />

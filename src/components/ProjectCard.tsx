@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { renderEmphasisText } from "../utils/emphasisText";
 
 gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
@@ -187,7 +188,7 @@ const ProjectCard = ({
         <p className="mt-1  font-bricolage-semibold size16 uppercase text-grey">{project.type}</p>
 
         <div className="lg:my-3 my-2 flex flex-wrap items-center gap-2">
-          <p className=" font-bricolage size12 leading-5 text-justify text-grey  lg:w-[80%]">{project.description}</p>
+          <p className=" font-bricolage size12 leading-5 text-justify lg:w-[80%]">{renderEmphasisText(project.description, "project-card-word")}</p>
         </div>
         <span className="rounded-full px-3 py-1 font-bricolage-semibold size16 uppercase bg-black text-white">{project.contribution}</span>
       </div>

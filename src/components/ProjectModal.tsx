@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { HiX } from "react-icons/hi";
 import type { Project } from "./ProjectCard";
+import { stripEmphasisMarkup } from "../utils/emphasisText";
 
 type ProjectModalProps = {
   project: Project | null;
@@ -81,7 +82,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
             type="button"
             onClick={onClose}
             aria-label="Close project details"
-            className="absolute top-3 right-3 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-black bg-white/90 transition-colors duration-300 hover:bg-black hover:text-white"
+            className="absolute top-3 right-3 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-black bg-white/40 backdrop-blur-[1px] transition-colors duration-300 hover:bg-black hover:text-white"
           >
             <HiX size={20} />
           </button>
@@ -106,11 +107,11 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
             <div className="flex flex-col items-start">
               <p className=" font-bricolage-semibold size16 uppercase text-grey">Overview</p>
-              <p className=" font-bricolage size14 leading-6 text-justify text-black">{project.description}</p>
+              <p className=" font-bricolage size14 leading-6 text-justify text-black">{stripEmphasisMarkup(project.description)}</p>
             </div>
             <div className="lg:my-4 my-2  flex flex-col items-start">
               <p className="font-bricolage-semibold size16 uppercase text-grey">What I did</p>
-              <p className=" font-bricolage size14 leading-6 text-justify text-black">{project.role}</p>
+              <p className=" font-bricolage size14 leading-6 text-justify text-black">{stripEmphasisMarkup(project.role)}</p>
             </div>
             {project.tools && project.tools.length > 0 && <p className=" font-bricolage-semibold size16 uppercase text-grey">Tools</p>}
           </div>
@@ -134,18 +135,6 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
               </div>
             </>
           )}
-
-          {/* {project.url && (
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 font-bricolage size12 uppercase text-grey underline decoration-dotted underline-offset-4 transition-colors duration-300 hover:text-black"
-            >
-              <FaExternalLinkAlt size={12} />
-              View {project.linkType === "github" ? "repository" : "live site"}
-            </a>
-          )} */}
         </div>
       </div>
     </div>,

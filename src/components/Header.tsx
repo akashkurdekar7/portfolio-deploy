@@ -208,6 +208,23 @@ const Header = ({ revealed }: HeaderProps) => {
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 text-lg md:flex">
             <li className="flex items-center">
               <a
+                href="#about"
+                onClick={(e) => scrollToSection(e, "#about")}
+                className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
+              >
+                <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
+                  <span className="h-[1.4em] whitespace-nowrap font-italic">About</span>
+
+                  <span className="h-[1.4em] whitespace-nowrap font-instrument text-blue" aria-hidden="true">
+                    About
+                  </span>
+                </span>
+
+                <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-blue transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
+              </a>
+            </li>
+            <li className="flex items-center">
+              <a
                 href="#projects"
                 onClick={(e) => scrollToSection(e, "#projects")}
                 className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
@@ -301,6 +318,25 @@ const Header = ({ revealed }: HeaderProps) => {
       >
         <nav aria-label="Mobile">
           <ul className="flex flex-col items-center gap-6 font-instrument text-6xl">
+            <li>
+              <a
+                href="https://www.linkedin.com/in/akashkurdekar/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hire-me-fill font-bricolage-semibold size14 uppercase pb-1"
+              >
+                Hire <i className="text-blue">me</i>
+              </a>
+            </li>
+            <li
+              ref={(el) => {
+                menuLinksRef.current[0] = el;
+              }}
+            >
+              <a href="#about" onClick={(e) => scrollToSection(e, "#about")} className="transition-colors duration-300 hover:text-orange">
+                About
+              </a>
+            </li>
             <li
               ref={(el) => {
                 menuLinksRef.current[1] = el;
@@ -316,7 +352,7 @@ const Header = ({ revealed }: HeaderProps) => {
             </li>
             <li
               ref={(el) => {
-                menuLinksRef.current[0] = el;
+                menuLinksRef.current[2] = el;
               }}
             >
               <a href="#work" onClick={(e) => scrollToSection(e, "#work")} className="transition-colors duration-300 hover:text-orange">
@@ -326,7 +362,7 @@ const Header = ({ revealed }: HeaderProps) => {
 
             <li
               ref={(el) => {
-                menuLinksRef.current[2] = el;
+                menuLinksRef.current[3] = el;
               }}
             >
               <a href="#resume" onClick={(e) => scrollToSection(e, "#resume")} className="transition-colors duration-300 hover:text-orange">
@@ -337,6 +373,7 @@ const Header = ({ revealed }: HeaderProps) => {
         </nav>
 
         {/* Bottom availability */}
+
         <div
           ref={availabilityRef}
           className="availability absolute bottom-6 flex size12 items-center gap-2 font-bricolage-semibold uppercase"

@@ -3,6 +3,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ipcs from "../assets/work/ipcs.webp";
 import HighlightCircle from "./HighlightCircle";
+import { renderEmphasisText } from "../utils/emphasisText";
+import { useScrambleReveal } from "../utils/useScrambleReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,21 +22,33 @@ interface Experience {
   highlightColor?: string;
 }
 
-const renderCompanyName = (company: string, highlightWord?: string, highlightColor?: string): ReactNode => {
-  if (!highlightWord) return company;
+const renderDescription = (description: string): ReactNode => renderEmphasisText(description, "work-desc-word");
+
+// Splits on the highlighted word so HighlightCircle can wrap just that word
+// in its own SVG overlay, with the rest of the company name rendered as
+// plain text around it.
+const splitCompanyName = (company: string, highlightWord?: string) => {
+  if (!highlightWord) return { before: "", match: "", after: company };
 
   const start = company.toLowerCase().indexOf(highlightWord.toLowerCase());
-  if (start === -1) return company;
+  if (start === -1) return { before: "", match: "", after: company };
 
-  const before = company.slice(0, start);
-  const match = company.slice(start, start + highlightWord.length);
-  const after = company.slice(start + highlightWord.length);
+  return {
+    before: company.slice(0, start),
+    match: company.slice(start, start + highlightWord.length),
+    after: company.slice(start + highlightWord.length).replace(/^\s+/, ""),
+  };
+};
+
+const renderCompanyName = (company: string, highlightWord?: string, highlightColor?: string): ReactNode => {
+  const { before, match, after } = splitCompanyName(company, highlightWord);
+  if (!match) return company;
 
   return (
     <>
       {before}
       <HighlightCircle color={highlightColor}>{match}</HighlightCircle>
-      {after}
+      {after && ` ${after}`}
     </>
   );
 };
@@ -43,6 +57,9 @@ const Work = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const parallaxImageRef = useRef<HTMLImageElement>(null);
   const lineRefs = useRef<(SVGPathElement | null)[]>([]);
+  const headingLine1Ref = useRef<HTMLSpanElement>(null);
+  const headingLine2Ref = useRef<HTMLSpanElement>(null);
+
   const experience: Experience[] = [
     {
       number: "01",
@@ -51,7 +68,7 @@ const Work = () => {
       role: "Frontend Engineer",
       period: "Feb 2025 — Present",
       description:
-        "Transitioned from an internship into a full-time Frontend Engineer role, taking on increasing responsibility across production client projects. Adapted to new technologies and project requirements as needed, including learning Angular after joining the team and applying it to live client work. Took ownership of frontend development, UI/UX implementation, integrations, performance, accessibility, SEO, and testing while also working directly with clients, coordinating tasks across teams, and helping drive projects from requirements through production delivery.",
+        "Transitioned from an internship into a **full-time Frontend Engineer role**, taking on increasing responsibility across **production client projects**. Adapted to new technologies and project requirements as needed, including learning **Angular** after joining the team and applying it to live client work. Took ownership of **frontend development, UI/UX implementation, integrations, performance, accessibility, SEO, and testing** while also working directly with clients, **coordinating tasks across teams**, and helping drive projects from requirements through **production delivery**.",
       image: ipcs,
       highlightWord: "IngeniousPix",
     },
@@ -62,7 +79,7 @@ const Work = () => {
       role: "Full Stack Developer Intern",
       period: "Aug 2023 — Oct 2023",
       description:
-        "Worked as a Full Stack Developer Intern on a marketplace platform using React.js, Node.js, Express.js, and MongoDB. Developed reusable frontend components, integrated REST APIs, and contributed to product listing, inventory, and order-management workflows. Worked with local vendors to understand their business processes and translate requirements into practical product features while collaborating with the development team.",
+        "Worked as a **Full Stack Developer Intern** on a **marketplace platform** using **React.js, Node.js, Express.js, and MongoDB**. Developed **reusable frontend components**, integrated **REST APIs**, and contributed to **product listing, inventory, and order-management workflows**. Worked with **local vendors** to understand their business processes and translate requirements into **practical product features** while collaborating with the development team.",
 
       highlightWord: "Deshpande",
       highlightColor: "var(--orange)",
@@ -75,12 +92,26 @@ const Work = () => {
       period: "May 2023 — Jul 2023",
 
       description:
-        "Developed and delivered a wildlife-focused website during the internship, building the frontend experience with responsive layouts, reusable components, structured content, and interactive sections. Worked on the website from implementation through completion and handed over the finished project to the team.",
+        "Developed and delivered a **wildlife-focused website** during the internship, building the **frontend experience** with **responsive layouts, reusable components, structured content, and interactive sections**. Worked on the website from implementation through completion and handed over the **finished project** to the team.",
 
       highlightWord: "Varcons",
       highlightColor: "var(--blue)",
     },
   ];
+
+  // HEADING SCRAMBLE — "Where I've worked." scrambles in from random
+  // characters once the section scrolls into view.
+  useScrambleReveal([
+    {
+      trigger: sectionRef,
+      start: "top 80%",
+      targets: [
+        { ref: headingLine1Ref, text: "Where I've" },
+        { ref: headingLine2Ref, text: "worked." },
+      ],
+    },
+  ]);
+
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       if (!parallaxImageRef.current) return;
@@ -147,6 +178,35 @@ const Work = () => {
 
     return () => ctx.revert();
   }, []);
+
+  // DESCRIPTION WORD REVEAL — each description's words ramp from grey/black
+  // at 0 opacity up to full opacity in sequence, scrubbed to scroll position
+  // as that card's paragraph passes by (same technique as About's tagline).
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".work-desc").forEach((desc) => {
+        const words = desc.querySelectorAll(".work-desc-word");
+        gsap.set(words, { opacity: 0 });
+        gsap.to(words, {
+          opacity: 1,
+          ease: "none",
+          stagger: 0.03,
+          scrollTrigger: {
+            trigger: desc,
+            start: "top 85%",
+            end: "bottom 60%",
+            scrub: true,
+          },
+        });
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   useEffect(() => {
     const listenerCleanups: Array<() => void> = [];
 
@@ -197,20 +257,24 @@ const Work = () => {
   }, []);
   return (
     <section id="work" ref={sectionRef} className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">
-      <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <div className="relative grid grid-cols-1 lg:gap-8 gap-4 lg:grid-cols-2">
         <h2 className="font-bricolage-semibold size90 leading-[0.9]">
-          Where I've
+          <span ref={headingLine1Ref}>Where I've</span>
           <br />
-          <span className="font-italic text-blue">worked.</span>
+          <span ref={headingLine2Ref} className="font-italic text-blue">
+            worked.
+          </span>
         </h2>
 
-        <p className="text-justify font-bricolage size28 leading-6 text-grey">
-          A timeline of the places, teams, and products that have shaped the way I approach design and engineering.
+        <p className="work-desc text-justify font-bricolage size18 leading-6">
+          {renderDescription(
+            "A timeline of the **places, teams, and products** that have shaped the way I approach **design and engineering**.",
+          )}
         </p>
       </div>
 
-      <div className="mt-15 lg:mt-24">
-        <article className="work-reveal-featured border-t border-black/15 pt-8">
+      <div className="mt-4 lg:mt-24">
+        <article className="work-reveal-featured border-t border-black/15 pt-3 lg:pt-8">
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-12 lg:gap-8 items-center">
             <div className="lg:col-span-2">
               <span className="font-bricolage-sembold size12 text-grey">{experience[0].number}</span>
@@ -250,7 +314,7 @@ const Work = () => {
               <h3 className="font-instrument size56 leading-[0.9]">
                 {renderCompanyName(experience[0].company, experience[0].highlightWord, experience[0].highlightColor)}
               </h3>
-              <p className="mt-3 lg:mt-6 max-w-lg font-bricolage size14 leading-6 text-grey">{experience[0].description}</p>
+              <p className="work-desc mt-3 lg:mt-6 max-w-lg font-bricolage size14 leading-6">{renderDescription(experience[0].description)}</p>
             </div>
           </div>
         </article>
@@ -272,23 +336,8 @@ const Work = () => {
               {renderCompanyName(item.company, item.highlightWord, item.highlightColor)}
             </h3>
 
-            {/* <svg viewBox="0 0 150 32" className="mt-2 h-6 w-28 overflow-visible" aria-hidden="true">
-              <path
-                ref={(el) => {
-                  lineRefs.current[index] = el;
-                }}
-                d="M4,26 C34,10 66,32 100,18 C118,10 130,14 142,19 M142,19 L128,12 M142,19 L130,27"
-                fill="none"
-                stroke={item.highlightColor ?? "var(--blue)"}
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg> */}
-
             <h4 className={`mt-1 font-bricolage size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
-            <p className="mt-4 max-w-lg font-bricolage size14 leading-6 text-grey">{item.description}</p>
+            <p className="work-desc mt-4 max-w-lg font-bricolage size14 leading-6">{renderDescription(item.description)}</p>
 
             <div className="mt-4">
               <span className="font-bricolage size12 uppercase text-grey">{item.period}</span>

@@ -6,12 +6,31 @@ import AnimeGreeter from "./AnimeGreeter";
 import Crowd from "./Crowd";
 import RollingText from "./RollingText";
 import sheet from "../assets/open-peeps-sheet.png";
+import { useScrambleReveal } from "../utils/useScrambleReveal";
 
 const DESKTOP_QUERY = "(min-width: 992px)";
 
 const Footer = () => {
   const navRef = useRef<HTMLElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
+  const eyebrowRef = useRef<HTMLSpanElement>(null);
+  const headingLine1Ref = useRef<HTMLSpanElement>(null);
+  const headingLine2Ref = useRef<HTMLSpanElement>(null);
+  const headingLine3Ref = useRef<HTMLSpanElement>(null);
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== "undefined" && window.matchMedia(DESKTOP_QUERY).matches);
+
+  useScrambleReveal([
+    {
+      trigger: footerRef,
+      start: "top 80%",
+      targets: [
+        { ref: eyebrowRef, text: "thoughts • work • life" },
+        { ref: headingLine1Ref, text: "let's get to the" },
+        { ref: headingLine2Ref, text: "awkward" },
+        { ref: headingLine3Ref, text: "part." },
+      ],
+    },
+  ]);
 
   useEffect(() => {
     const mql = window.matchMedia(DESKTOP_QUERY);
@@ -46,7 +65,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-black relative z-60 min-h-dvh lg:min-h-screen px-6 md:px-20  pt-5 lg:pt-25 ">
+    <footer ref={footerRef} className="bg-black relative z-60 min-h-dvh lg:min-h-screen px-6 md:px-20  pt-5 lg:pt-25 ">
       <svg className="absolute -top-[4%] left-0 z-10 h-10 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none">
         <path
           d="
@@ -72,12 +91,19 @@ const Footer = () => {
       {/* Heading */}
       <div className="relative z-20 pt-8 md:pt-0 md:flex  w-full items-start justify-between">
         <div className="">
-          <span className="font-bricolage size16 uppercase tracking-[0.15em] text-white">thoughts • work • life</span>
+          <span ref={eyebrowRef} className="font-bricolage size16 uppercase tracking-[0.15em] text-white">
+            thoughts • work • life
+          </span>
           <h2 className=" font-bricolage-semibold leading-9 lg:leading-18 size90 capitalize text-white  ">
-            let's get to the
+            <span ref={headingLine1Ref}>let's get to the</span>
             <br />
-            <span className="font-italic text-white/50  tracking-normal">awkward</span>
-            <span className="font-bricolage-semibold"> part.</span>
+            <span ref={headingLine2Ref} className="font-italic text-white/50  tracking-normal">
+              awkward
+            </span>
+            {" "}
+            <span ref={headingLine3Ref} className="font-bricolage-semibold">
+              part.
+            </span>
           </h2>
         </div>
         {/* Social Links */}

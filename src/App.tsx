@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import SmoothScroll from "./components/SmoothScroll";
+import About from "./components/About";
 import Projects from "./components/Projects";
 import Article from "./components/Article";
 import ReelsField from "./components/ReelsField";
@@ -40,6 +41,7 @@ const App = () => {
           <SmoothScroll />
 
           <Hero revealed={!siteBlurred} />
+          <About />
           <Projects />
           <Article />
           <Work />

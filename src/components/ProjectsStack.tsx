@@ -103,6 +103,13 @@ const ProjectsStack = ({ projects, onSelectProject }: ProjectsStackProps) => {
           pinType: "transform",
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          // This pin's spacer height is dynamic (depends on cards.length and
+          // viewport height). Without a priority, other ScrollTriggers
+          // further down the document get measured against this one's
+          // *previous* spacer size on refresh, landing them short by
+          // whatever this pin's distance is — see the matching note on
+          // About's reel pin for the full mechanics. Resolve this one first.
+          refreshPriority: 1,
           onUpdate: (self) => {
             if (!hintDismissed && self.progress > 0.001) {
               hintDismissed = true;
