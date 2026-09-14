@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 
 interface HeaderProps {
   /** Whether the loader has finished and the header may animate into view. */
@@ -23,9 +23,9 @@ const Header = ({ revealed }: HeaderProps) => {
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Prevent background scrolling when menu is open. Setting overflow:hidden
@@ -35,11 +35,11 @@ const Header = ({ revealed }: HeaderProps) => {
   useEffect(() => {
     if (!menuOpen) return;
 
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     window.__lenis?.stop();
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
       window.__lenis?.start();
     };
   }, [menuOpen]);
@@ -50,11 +50,11 @@ const Header = ({ revealed }: HeaderProps) => {
     if (!menuOpen) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === 'Escape') setMenuOpen(false);
     };
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [menuOpen]);
 
   // Keep the header off-screen while the loader is still up, so it has
@@ -71,7 +71,7 @@ const Header = ({ revealed }: HeaderProps) => {
     if (!revealed) return;
 
     const ctx = gsap.context(() => {
-      gsap.to(headerRef.current, { y: 0, autoAlpha: 1, duration: 1, ease: "power3.out" });
+      gsap.to(headerRef.current, { y: 0, autoAlpha: 1, duration: 1, ease: 'power3.out' });
     });
 
     return () => ctx.revert();
@@ -99,7 +99,7 @@ const Header = ({ revealed }: HeaderProps) => {
       menuTimeline.current = gsap.timeline({
         paused: true,
         defaults: {
-          ease: "power4.out",
+          ease: 'power4.out',
         },
       });
 
@@ -118,7 +118,7 @@ const Header = ({ revealed }: HeaderProps) => {
             duration: 0.6,
             stagger: 0.08,
           },
-          "-=0.35",
+          '-=0.35',
         )
         .to(
           availabilityRef.current,
@@ -127,7 +127,7 @@ const Header = ({ revealed }: HeaderProps) => {
             autoAlpha: 1,
             duration: 0.5,
           },
-          "-=0.25",
+          '-=0.25',
         );
     }, menuRef);
 
@@ -169,12 +169,12 @@ const Header = ({ revealed }: HeaderProps) => {
     const target = document.querySelector(hash);
     if (!target) return;
 
-    const headerOffset = navRef.current?.closest("header")?.getBoundingClientRect().height ?? 0;
+    const headerOffset = navRef.current?.closest('header')?.getBoundingClientRect().height ?? 0;
 
     if (window.__lenis) {
       window.__lenis.scrollTo(hash, { offset: -(headerOffset + 16) });
     } else {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -186,8 +186,8 @@ const Header = ({ revealed }: HeaderProps) => {
         className={`fixed inset-x-0 top-0 z-[65] px-6 md:px-20 py-3 border-b transition-all duration-700 ease-out
         ${
           scrolled
-            ? " border-white/40 bg-white/60 shadow-md backdrop-blur-xl backdrop-saturate-150"
-            : " border-transparent bg-transparent shadow-none"
+            ? ' border-white/40 bg-white/60 shadow-md backdrop-blur-xl backdrop-saturate-150'
+            : ' border-transparent bg-transparent shadow-none'
         }`}
       >
         <nav
@@ -209,7 +209,7 @@ const Header = ({ revealed }: HeaderProps) => {
             <li className="flex items-center">
               <a
                 href="#about"
-                onClick={(e) => scrollToSection(e, "#about")}
+                onClick={(e) => scrollToSection(e, '#about')}
                 className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
               >
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
@@ -226,7 +226,7 @@ const Header = ({ revealed }: HeaderProps) => {
             <li className="flex items-center">
               <a
                 href="#projects"
-                onClick={(e) => scrollToSection(e, "#projects")}
+                onClick={(e) => scrollToSection(e, '#projects')}
                 className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
               >
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
@@ -239,11 +239,11 @@ const Header = ({ revealed }: HeaderProps) => {
 
                 <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-orange transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
               </a>
-            </li>{" "}
+            </li>{' '}
             <li className="flex items-center">
               <a
                 href="#work"
-                onClick={(e) => scrollToSection(e, "#work")}
+                onClick={(e) => scrollToSection(e, '#work')}
                 className="group relative inline-block h-[1.4em] overflow-hidden leading-[1.4em]"
               >
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-[1.4em]">
@@ -257,7 +257,7 @@ const Header = ({ revealed }: HeaderProps) => {
                 <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-blue transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
               </a>
             </li>
-            <li className="flex items-center">
+            {/* <li className="flex items-center">
               <a
                 href="#resume"
                 onClick={(e) => scrollToSection(e, "#resume")}
@@ -273,7 +273,7 @@ const Header = ({ revealed }: HeaderProps) => {
 
                 <span className="absolute bottom-0 left-0 h-[2px] w-full origin-right scale-x-0 bg-orange transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
               </a>
-            </li>
+            </li> */}
           </ul>
 
           {/* DESKTOP AVAILABILITY */}
@@ -291,7 +291,7 @@ const Header = ({ revealed }: HeaderProps) => {
               type="checkbox"
               checked={menuOpen}
               onChange={() => setMenuOpen((prev) => !prev)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               aria-controls="mobile-menu"
             />
             <svg viewBox="0 0 32 32">
@@ -333,7 +333,11 @@ const Header = ({ revealed }: HeaderProps) => {
                 menuLinksRef.current[0] = el;
               }}
             >
-              <a href="#about" onClick={(e) => scrollToSection(e, "#about")} className="transition-colors duration-300 hover:text-orange">
+              <a
+                href="#about"
+                onClick={(e) => scrollToSection(e, '#about')}
+                className="transition-colors duration-300 hover:text-orange"
+              >
                 About
               </a>
             </li>
@@ -344,7 +348,7 @@ const Header = ({ revealed }: HeaderProps) => {
             >
               <a
                 href="#projects"
-                onClick={(e) => scrollToSection(e, "#projects")}
+                onClick={(e) => scrollToSection(e, '#projects')}
                 className="transition-colors duration-300 hover:text-orange"
               >
                 Projects
@@ -355,20 +359,28 @@ const Header = ({ revealed }: HeaderProps) => {
                 menuLinksRef.current[2] = el;
               }}
             >
-              <a href="#work" onClick={(e) => scrollToSection(e, "#work")} className="transition-colors duration-300 hover:text-orange">
+              <a
+                href="#work"
+                onClick={(e) => scrollToSection(e, '#work')}
+                className="transition-colors duration-300 hover:text-orange"
+              >
                 Work
               </a>
             </li>
 
-            <li
+            {/* <li
               ref={(el) => {
                 menuLinksRef.current[3] = el;
               }}
             >
-              <a href="#resume" onClick={(e) => scrollToSection(e, "#resume")} className="transition-colors duration-300 hover:text-orange">
+              <a
+                href="#resume"
+                onClick={(e) => scrollToSection(e, '#resume')}
+                className="transition-colors duration-300 hover:text-orange"
+              >
                 Resume
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
 

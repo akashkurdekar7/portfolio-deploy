@@ -1,16 +1,16 @@
-import { useState } from "react";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-import SmoothScroll from "./components/SmoothScroll";
-import About from "./components/About";
-import Projects from "./components/Projects";
-import Article from "./components/Article";
-import ReelsField from "./components/ReelsField";
-import Resume from "./components/Resume";
-import Loader from "./components/Loader";
-import WhatsAppButton from "./components/WhatsAppButton";
-import Work from "./components/Work";
+import { useState } from 'react';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import Footer from './components/Footer';
+import SmoothScroll from './components/SmoothScroll';
+import About from './components/About';
+import Projects from './components/Projects';
+import Article from './components/Article';
+import ReelsField from './components/ReelsField';
+// import Resume from './components/Resume';
+import Loader from './components/Loader';
+import WhatsAppButton from './components/WhatsAppButton';
+import Work from './components/Work';
 
 const App = () => {
   const [siteBlurred, setSiteBlurred] = useState(true);
@@ -28,13 +28,13 @@ const App = () => {
 
       <ReelsField />
 
-      <div className={siteBlurred ? "pointer-events-none" : ""} aria-hidden={siteBlurred} inert={siteBlurred}>
+      <div className={siteBlurred ? 'pointer-events-none' : ''} aria-hidden={siteBlurred} inert={siteBlurred}>
         <Header revealed={!siteBlurred} />
       </div>
 
       <main id="main-content" tabIndex={-1} className="relative z-10 outline-none">
         <div
-          className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? " blur-[5px]" : ""}`}
+          className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? ' blur-[5px]' : ''}`}
           aria-hidden={siteBlurred}
           inert={siteBlurred}
         >
@@ -45,12 +45,12 @@ const App = () => {
           <Projects />
           <Article />
           <Work />
-          <Resume />
+          {/* <Resume /> */}
         </div>
       </main>
 
       <div
-        className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? "scale-[0.96] blur-md" : ""}`}
+        className={`transition-[filter,scale] duration-700 ease-out ${siteBlurred ? 'scale-[0.96] blur-md' : ''}`}
         aria-hidden={siteBlurred}
         inert={siteBlurred}
       >
