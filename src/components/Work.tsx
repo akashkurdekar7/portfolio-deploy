@@ -207,9 +207,9 @@ const Work = () => {
     return () => ctx.revert();
   }, []);
 
-  // NUMBER / DURATION OPACITY REVEAL — same scroll-scrubbed opacity ramp
-  // technique as the description word reveal above, applied to each card's
-  // number and period labels so they fade in as the card scrolls past.
+  // NUMBER / DURATION REVEAL — same scroll-scrubbed opacity ramp technique
+  // as the description word reveal above, plus a small upward slide so the
+  // motion actually reads on screen for these short, small-type labels.
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -217,14 +217,15 @@ const Work = () => {
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>(".work-fade").forEach((el) => {
         const card = el.closest("article") ?? el;
-        gsap.set(el, { opacity: 0 });
+        gsap.set(el, { opacity: 0, y: 14 });
         gsap.to(el, {
           opacity: 1,
+          y: 0,
           ease: "none",
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",
-            end: "top 45%",
+            start: "top 95%",
+            end: "top 55%",
             scrub: true,
           },
         });
@@ -283,7 +284,7 @@ const Work = () => {
     };
   }, []);
   return (
-    <section id="work" ref={sectionRef} className="relative mx-5 min-h-screen py-5 lg:py-24 md:mx-20">
+    <section id="work" ref={sectionRef} className="relative mx-5 min-h-screen py-12 lg:py-24 md:mx-20">
       <div className="relative grid grid-cols-1 lg:gap-8 gap-4 lg:grid-cols-2">
         <h2 className="font-bricolage-semibold size90 leading-[0.9]">
           <span ref={headingLine1Ref}>Where I've</span>
@@ -341,7 +342,9 @@ const Work = () => {
               <h3 className="font-instrument size56 leading-[0.9]">
                 {renderCompanyName(experience[0].company, experience[0].highlightWord, experience[0].highlightColor)}
               </h3>
-              <p className="work-desc mt-3 lg:mt-6 max-w-lg font-bricolage size14 leading-6">{renderDescription(experience[0].description)}</p>
+              <p className="work-desc mt-3 lg:mt-6 max-w-lg font-bricolage size14 leading-6">
+                {renderDescription(experience[0].description)}
+              </p>
             </div>
           </div>
         </article>
@@ -363,7 +366,9 @@ const Work = () => {
               {renderCompanyName(item.company, item.highlightWord, item.highlightColor)}
             </h3>
 
-            <h4 className={`role-cube-lift mt-1 font-bricolage size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>{item.role}</h4>
+            <h4 className={`role-cube-lift mt-1 font-bricolage size14 uppercase ${index === 0 ? "text-orange" : "text-blue"}`}>
+              {item.role}
+            </h4>
             <p className="work-desc mt-4 max-w-lg font-bricolage size14 leading-6">{renderDescription(item.description)}</p>
 
             <div className="mt-4">
