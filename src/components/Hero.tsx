@@ -8,7 +8,6 @@ import gsap from "gsap";
 import type Lenis from "lenis";
 
 interface HeroProps {
-  /** Whether the loader has finished and the hero image may reveal. */
   revealed: boolean;
 }
 
@@ -42,19 +41,9 @@ const Hero = ({ revealed }: HeroProps) => {
   const connectInnerRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Which side each cloud (in cloudRefs order: top-right, middle-left,
-  // middle-right, profile/top-left, bottom-right) flies in from — 1 = from
-  // the right, -1 = from the left — so it matches which edge it already
-  // sits nearest to.
   const cloudEntryDirections = [1, -1, 1, -1, 1];
   const CLOUD_OFFSCREEN_OFFSET = 260;
 
-  // Keep the hero image clipped shut (and zoomed in), the clouds pushed
-  // off-screen, and the text/socials slid down out of their overflow-hidden
-  // masks until `revealed` flips true below, so each has something to
-  // animate in from instead of sitting fully visible, already animated,
-  // behind the loader the whole time — mirrors the header's pre-reveal
-  // y/opacity set in Header.tsx.
   useLayoutEffect(() => {
     const wrap = heroImageWrapRef.current;
     const img = heroImageRef.current;
@@ -72,9 +61,6 @@ const Hero = ({ revealed }: HeroProps) => {
     gsap.set([...heroLineRefs.current, connectInnerRef.current], { yPercent: 100 });
   }, []);
 
-  // Wipe the hero image open, fly the clouds in from their nearest edge,
-  // and slide the text/socials up out of their overflow-hidden masks, once
-  // the loader has finished and the hero may animate into view.
   useLayoutEffect(() => {
     if (!revealed) return;
 
@@ -131,8 +117,6 @@ const Hero = ({ revealed }: HeroProps) => {
 
   useEffect(() => {
     const mouseStrengths = [40, 25, 30, 20, 50];
-    // How far (px, max ~10) each cloud drifts once the user has scrolled one
-    // full viewport height. Sign controls direction (left/right, up/down).
     const scrollStrengthsX = [-10, 8, -9, 7, -10];
     const scrollStrengthsY = [6, -7, 5, -6, 8];
 
@@ -153,8 +137,6 @@ const Hero = ({ revealed }: HeroProps) => {
       });
     };
 
-    // Only enable mouse parallax on devices that actually have a mouse
-    // (touch devices don't send meaningful mousemove events).
     const hasMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     const handleMouseMove = (event: MouseEvent) => {
@@ -204,9 +186,6 @@ const Hero = ({ revealed }: HeroProps) => {
       />
     </svg>
   );
-
-  // Pyramid of sparkles stacked in the image's bottom-left corner — one row
-  // of 1 star at top, growing to a row of 5 at the bottom.
   const sparkleRows = [1, 2, 3, 4, 5];
   return (
     <section className="relative flex min-h-dvh items-center justify-center lg:mx-20 mx-6">

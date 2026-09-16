@@ -13,24 +13,35 @@ const RollingText = ({ primary, secondary, primaryClassName = "", secondaryClass
   const [vars, setVars] = useState<Record<string, string>>({});
 
   useLayoutEffect(() => {
-    let cancelled = false;
+    const primaryEl = primaryRef.current;
+    const secondaryEl = secondaryRef.current;
+    if (!primaryEl || !secondaryEl) return;
 
-    const measure = () => {
-      if (cancelled) return;
-      const primaryWidth = primaryRef.current?.scrollWidth ?? 0;
-      const secondaryWidth = secondaryRef.current?.scrollWidth ?? 0;
-      setVars({
-        "--w-primary": `${primaryWidth}px`,
-        "--w-secondary": `${secondaryWidth}px`,
+    // .link-rollover-inner is a flex column with align-items: flex-start, so
+    // each span always renders at its own natural content width regardless
+    // of the fixed pixel width this component sets on the ancestor below —
+    // a one-off scrollWidth read (keyed only to the primary/secondary text)
+    // goes stale the moment that natural width changes for any other reason
+    // (the custom font swapping in after load, the .size16 991px breakpoint,
+    // browser zoom), and the stale, too-narrow width then clips the text via
+    // the ancestor's overflow: hidden. Observing each span directly keeps
+    // the measurement correct through all of that.
+    const observer = new ResizeObserver((entries) => {
+      setVars((prev) => {
+        const next = { ...prev };
+        for (const entry of entries) {
+          const width = Math.ceil(entry.contentRect.width);
+          if (entry.target === primaryEl) next["--w-primary"] = `${width}px`;
+          if (entry.target === secondaryEl) next["--w-secondary"] = `${width}px`;
+        }
+        return next;
       });
-    };
+    });
 
-    measure();
-    document.fonts?.ready.then(measure);
+    observer.observe(primaryEl);
+    observer.observe(secondaryEl);
 
-    return () => {
-      cancelled = true;
-    };
+    return () => observer.disconnect();
   }, [primary, secondary]);
 
   return (

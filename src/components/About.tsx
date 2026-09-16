@@ -112,19 +112,10 @@ const About = () => {
     pin.style.overflow = "hidden";
 
     const ctx = gsap.context(() => {
-      // Extra half-viewport of travel on both ends so the first and last
-      // thumbnails' centers can actually pass through the viewport's
-      // center too (otherwise they start/stop already past it and their
-      // reveal never triggers).
       const getHorizontalDistance = () => {
         const base = Math.max(track.scrollWidth - pin.offsetWidth, 0);
         return base > 0 ? base + pin.offsetWidth / 2 : 0;
       };
-      // Scroll distance tracks the actual horizontal travel 1:1 — capping
-      // it at a fixed viewport multiple (as this used to) starts truncating
-      // the scroll budget once the track is wider than that cap, which
-      // makes the pan cover more horizontal ground per pixel scrolled and
-      // rushes the photos past instead of scrubbing at a steady pace.
       const getScrollDistance = () => getHorizontalDistance();
 
       const tl = gsap.timeline({
@@ -136,17 +127,6 @@ const About = () => {
           pin: true,
           invalidateOnRefresh: true,
           anticipatePin: 1,
-          // This pin's spacer height is dynamic (getScrollDistance depends on
-          // measured widths), and everything below it in the document — the
-          // headline, "Human"'s HighlightCircle, the tagline — needs that
-          // final spacer size to already be resolved before ITS OWN position
-          // is calculated on refresh. Without a priority, ScrollTrigger
-          // processes triggers in creation order, so those get measured
-          // against this pin's *previous* spacer size, landing them short by
-          // however much this pin's distance is — refreshing again doesn't
-          // fix it since each pass reproduces the same stale-then-fresh
-          // ordering. A positive refreshPriority makes this one resolve
-          // first on every refresh.
           refreshPriority: 1,
         },
       });
@@ -168,9 +148,6 @@ const About = () => {
     };
   }, []);
 
-  // PHOTO REVEAL — each reel thumbnail's photo, number, and name wipe/slide
-  // in together as it crosses the horizontal center of the viewport while
-  // the track scrolls past it.
   useLayoutEffect(() => {
     const pin = pinRef.current;
     if (!pin) return;
@@ -190,7 +167,7 @@ const About = () => {
             trigger: item,
             containerAnimation: trackTweenRef.current ?? undefined,
             start: "center center",
-            toggleActions: "play none none reverse",
+            toggleActions: "play none none none",
           },
         });
 
@@ -266,30 +243,11 @@ const About = () => {
 
     const mm = gsap.matchMedia();
 
-    // Desktop: timed to the reel's own scroll, not its own position — slide
-    // up once the reel is two-thirds through, lock in place on screen while
-    // the rest of the reel (and its unpin) go by, then fade out as the
-    // headline arrives. "Lock in place" is done with a plain CSS class
-    // (position: fixed, see .traits-pinned) rather than GSAP's `pin`
-    // mechanic: this element's resting spot is `top: 50%` of the *section*,
-    // and the section's height is still being resolved across several
-    // ScrollTrigger refresh passes while the reel above it settles — a GSAP
-    // pin captures that "natural" position at refresh time and re-captures
-    // it (inconsistently) on every subsequent refresh, so it visibly jumps
-    // around. Toggling straight to `position: fixed` is anchored to the
-    // viewport instead, so it's stable no matter how the section's own
-    // height is still shifting underneath it.
     mm.add("(min-width: 1024px)", () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: pin,
-          // Derived only from the reel's own already-resolved trigger
-          // numbers, never a live DOM measurement of something further
-          // down (like the headline) — during ScrollTrigger.refresh(),
-          // every pin-spacer is temporarily reverted to measure natural
-          // layout before being reapplied, so a start/end callback that
-          // measures the headline directly would see the reel's spacer-
-          // less, pre-refresh height and compute a collapsed, wrong range.
+
           start: () => {
             const reelTrigger = trackTweenRef.current?.scrollTrigger;
             return reelTrigger ? reelTrigger.start + (reelTrigger.end - reelTrigger.start) * (2 / 3) : "top 80%";
@@ -297,10 +255,7 @@ const About = () => {
           end: () => {
             const reelTrigger = trackTweenRef.current?.scrollTrigger;
             const reelEnd = reelTrigger ? reelTrigger.end : window.innerHeight * 2;
-            // The headline sits a small, fairly fixed padding/margin gap
-            // past where the reel unpins — scaling that gap off the
-            // viewport height (rather than a hardcoded px offset) keeps it
-            // roughly in proportion across breakpoints.
+
             return reelEnd + window.innerHeight * 0.4;
           },
           scrub: true,
@@ -318,10 +273,6 @@ const About = () => {
       };
     });
 
-    // Mobile: no pin — it's in normal document flow here, and locking it to
-    // the viewport would either jump the headline below it (no reserved
-    // space once fixed) or need a hand-built placeholder spacer to avoid
-    // that. Simpler to just slide it up once and let it scroll normally.
     mm.add("(max-width: 1023px)", () => {
       const tween = gsap.fromTo(
         el,
@@ -344,8 +295,6 @@ const About = () => {
     return () => mm.revert();
   }, []);
 
-  // PROFILE STARS — the two sparkles flanking the profile photo spin once
-  // when that row first scrolls into view.
   useLayoutEffect(() => {
     if (window.matchMedia(REDUCED_MOTION_QUERY).matches) return;
 
@@ -366,8 +315,6 @@ const About = () => {
     return () => ctx.revert();
   }, []);
 
-  // TAGLINE WORD REVEAL — each word's opacity ramps up to 1 in sequence,
-  // scrubbed directly to scroll position as the paragraph passes by.
   useLayoutEffect(() => {
     if (window.matchMedia(REDUCED_MOTION_QUERY).matches) return;
 
@@ -382,6 +329,7 @@ const About = () => {
           start: "top 85%",
           end: "bottom 60%",
           scrub: true,
+          once: true,
         },
       });
     }, sectionRef);

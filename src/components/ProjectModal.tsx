@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { HiX } from "react-icons/hi";
+import { HiExternalLink, HiX } from "react-icons/hi";
 import type { Project } from "./ProjectCard";
 import { stripEmphasisMarkup } from "../utils/emphasisText";
 
@@ -41,8 +41,22 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
   if (!project) return null;
 
   const images = project.images && project.images.length > 0 ? project.images : [`https://picsum.photos/900/700?random=1`];
-  const marqueeImages = images.length > 1 ? [...images, ...images] : images;
 
+
+  const media = project.video
+    ? [
+        { type: "video" as const, src: project.video },
+        ...images.map((src) => ({
+          type: "image" as const,
+          src,
+        })),
+      ]
+    : images.map((src) => ({
+        type: "image" as const,
+        src,
+      }));
+
+  const marqueeMedia = media.length > 1 ? [...media, ...media] : media;
   return createPortal(
     <div
       role="dialog"
@@ -55,44 +69,68 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
         className="relative flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-[20px] border-4 border-black bg-white shadow-md sm:max-h-[88vh] sm:rounded-[24px]"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="relative h-40 w-full overflow-hidden bg-black/5 sm:h-52 md:h-64">
-          {project.video ? (
-            <video
-              src={project.video}
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls
-              className="h-full w-full object-cover"
-              aria-label={`${project.title} project preview`}
-            />
-          ) : images.length > 1 ? (
+        <div className="relative h-40 w-full overflow-hidden bg-black sm:h-52 md:h-64">
+          {media.length > 1 ? (
             <div
               className="project-modal-marquee flex h-full"
               style={{
-                width: `${marqueeImages.length * 100}%`,
-                animationDuration: `${images.length * 5}s`,
+                width: `${marqueeMedia.length * 100}%`,
+                animationDuration: `${media.length * 5}s`,
               }}
             >
-              {marqueeImages.map((src, i) => (
-                <img
-                  key={`${src}-${i}`}
-                  src={src}
-                  alt={i < images.length ? `${project.title} — ${project.type} project screenshot ${i + 1} of ${images.length}` : ""}
-                  aria-hidden={i >= images.length}
-                  loading="lazy"
+              {marqueeMedia.map((item, i) => (
+                <div
+                  key={`${item.src}-${i}`}
+                  className="h-full shrink-0"
                   style={{
-                    width: `${100 / marqueeImages.length}%`,
+                    width: `${100 / marqueeMedia.length}%`,
                   }}
-                  className="h-full shrink-0 object-cover"
-                />
+                >
+                  {item.type === "video" ? (
+                    <video
+                      src={item.src}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      controls={false}
+                      className="h-full w-full object-contain bg-black"
+                      aria-label={`${project.title} project video preview`}
+                    />
+                  ) : (
+                    <img
+                      src={item.src}
+                      alt={i < media.length ? `${project.title} — ${project.type} project screenshot` : ""}
+                      aria-hidden={i >= media.length}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                  )}
+                </div>
               ))}
             </div>
           ) : (
-            <img src={images[0]} alt={`${project.title} — ${project.type} project screenshot`} className="h-full w-full object-cover" />
+            <div className="h-full w-full">
+              {media[0].type === "video" ? (
+                <video
+                  src={media[0].src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  controls
+                  className="h-full w-full object-contain bg-black"
+                  aria-label={`${project.title} project video preview`}
+                />
+              ) : (
+                <img
+                  src={media[0].src}
+                  alt={`${project.title} — ${project.type} project screenshot`}
+                  className="h-full w-full object-cover"
+                />
+              )}
+            </div>
           )}
-
           <button
             ref={closeButtonRef}
             type="button"
@@ -120,6 +158,19 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
               </span>
               <span className="rounded-full px-3 py-1 font-bricolage size12 uppercase bg-black text-white">{project.contribution}</span>
             </div>
+
+            {project.url && (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${project.title} — view ${project.linkType === "github" ? "GitHub repository" : "live site"} (opens in a new tab)`}
+                className="lg:mb-4 mb-2 inline-flex items-center gap-1.5 rounded-full border border-black bg-white px-3 py-1.5 font-bricolage-semibold size12 uppercase text-black transition-colors duration-300 hover:bg-black hover:text-white"
+              >
+                {project.linkType === "github" ? "View GitHub" : "Visit Live Site"}
+                <HiExternalLink size={14} />
+              </a>
+            )}
 
             <div className="flex flex-col items-start">
               <p className=" font-bricolage-semibold size16 uppercase text-grey">Overview</p>
