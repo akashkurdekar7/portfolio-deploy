@@ -11,6 +11,7 @@ const IMAGE_STAGGER_MS = 200;
 
 export type Project = {
   images?: string[];
+  video?: string;
   title: string;
   type: string;
   year: string | number;
@@ -159,21 +160,34 @@ const ProjectCard = ({
         onMouseLeave={onImageMouseLeave}
         onMouseMove={onImageMouseMove}
       >
-        {images.map((src, i) => (
-          <img
-            key={src}
-            ref={(el) => {
-              imageElRefs.current[i] = el;
-            }}
-            src={src}
-            loading="lazy"
-            alt={`${project.title} — ${project.type} project screenshot ${i + 1} of ${images.length}`}
-            aria-hidden={i !== activeImage}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out ${
-              i === activeImage ? "opacity-100" : "opacity-0"
-            }`}
+        {project.video ? (
+          <video
+            src={project.video}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 h-full w-full object-contain bg-black"
+            aria-label={`${project.title} project preview`}
           />
-        ))}
+        ) : (
+          images.map((src, i) => (
+            <img
+              key={src}
+              ref={(el) => {
+                imageElRefs.current[i] = el;
+              }}
+              src={src}
+              loading="lazy"
+              alt={`${project.title} — ${project.type} project screenshot ${i + 1} of ${images.length}`}
+              aria-hidden={i !== activeImage}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out ${
+                i === activeImage ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))
+        )}
       </div>
 
       {/* INFO */}
@@ -188,7 +202,9 @@ const ProjectCard = ({
         <p className="mt-1  font-bricolage-semibold size16 uppercase text-grey">{project.type}</p>
 
         <div className="lg:my-3 my-2 flex flex-wrap items-center gap-2">
-          <p className=" font-bricolage size12 leading-5 text-justify lg:w-[80%]">{renderEmphasisText(project.description, "project-card-word")}</p>
+          <p className=" font-bricolage size12 leading-5 text-justify lg:w-[80%]">
+            {renderEmphasisText(project.description, "project-card-word")}
+          </p>
         </div>
         <span className="rounded-full px-3 py-1 font-bricolage-semibold size16 uppercase bg-black text-white">{project.contribution}</span>
       </div>

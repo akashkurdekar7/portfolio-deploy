@@ -56,10 +56,24 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
         onClick={(event) => event.stopPropagation()}
       >
         <div className="relative h-40 w-full overflow-hidden bg-black/5 sm:h-52 md:h-64">
-          {images.length > 1 ? (
+          {project.video ? (
+            <video
+              src={project.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+              className="h-full w-full object-cover"
+              aria-label={`${project.title} project preview`}
+            />
+          ) : images.length > 1 ? (
             <div
               className="project-modal-marquee flex h-full"
-              style={{ width: `${marqueeImages.length * 100}%`, animationDuration: `${images.length * 5}s` }}
+              style={{
+                width: `${marqueeImages.length * 100}%`,
+                animationDuration: `${images.length * 5}s`,
+              }}
             >
               {marqueeImages.map((src, i) => (
                 <img
@@ -68,7 +82,9 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   alt={i < images.length ? `${project.title} — ${project.type} project screenshot ${i + 1} of ${images.length}` : ""}
                   aria-hidden={i >= images.length}
                   loading="lazy"
-                  style={{ width: `${100 / marqueeImages.length}%` }}
+                  style={{
+                    width: `${100 / marqueeImages.length}%`,
+                  }}
                   className="h-full shrink-0 object-cover"
                 />
               ))}

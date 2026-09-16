@@ -13,6 +13,7 @@ import saas from "../assets/projects/saas.webp";
 import saas2 from "../assets/projects/saas2.webp";
 import saas3 from "../assets/projects/saas3.webp";
 import saas4 from "../assets/projects/saas4.webp";
+import ghostrentalsVideo from "../assets/projects/ghostrental.mp4";
 import ghostrentals from "../assets/projects/ghostrental.webp";
 import ghostrentals2 from "../assets/projects/ghostrental2.webp";
 import ghostrentals3 from "../assets/projects/ghostrental3.webp";
@@ -22,6 +23,7 @@ import greenminds from "../assets/projects/greenminds.webp";
 import greenminds2 from "../assets/projects/greenminds2.webp";
 import greenminds3 from "../assets/projects/greenminds3.webp";
 import greenminds4 from "../assets/projects/greenminds4.webp";
+import pixtarVideo from "../assets/projects/pixtar.mp4";
 import pixtar from "../assets/projects/pixtar.webp";
 import pixtar2 from "../assets/projects/pixtar2.webp";
 import phdesignme from "../assets/projects/phdesignme.webp";
@@ -38,9 +40,32 @@ import Arovan3 from "../assets/projects/arovan3.webp";
 import Arovan4 from "../assets/projects/arovan4.webp";
 import Arovan5 from "../assets/projects/arovan5.webp";
 
+import responsiveViewerVideo from "../assets/projects/responsive-viewer.mp4";
+import responsiveViewer from "../assets/projects/responsive-viewer.webp";
+import responsiveViewer2 from "../assets/projects/responsive-viewer2.webp";
+import responsiveViewer3 from "../assets/projects/responsive-viewer3.webp";
 gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
+  {
+    title: "Responsive Viewer",
+    type: "Developer Tool · Responsive Testing Platform",
+    year: "2026",
+    url: "https://responsive-viewer-web-extension-web.vercel.app/",
+    video: responsiveViewerVideo,
+    images: [responsiveViewer, responsiveViewer2, responsiveViewer3],
+
+    description:
+      "A **responsive testing tool** built to help developers preview websites across **custom viewport sizes**, device presets, and local development environments from a single interface.",
+
+    role: "Designed and developed the tool end to end, building the **React interface**, viewport controls, device presets, iframe-based website preview, automatic viewport scaling, local development port detection, and a **Chrome extension workflow** that opens the current website directly in the viewer.",
+
+    company: "Independent Project",
+
+    contribution: "Product Design · React · Developer Tool · Chrome Extension",
+
+    tools: ["React", "Vite", "JavaScript", "Chrome Extension", "Manifest V3", "Responsive Design", "Vercel"],
+  },
   {
     title: "Wholesale Management System",
     type: "B2B Full-Stack Web Application",
@@ -57,6 +82,7 @@ const projects = [
     title: "Ghost Rental",
     type: "Client Project · Rental Platform & Management Dashboard",
     year: "2025",
+    video: ghostrentalsVideo,
     images: [ghostrentals, ghostrentals2, ghostrentals3, ghostrentals4, ghostrentals5],
     description:
       "A **client rental platform** combining a **customer-facing website** with a **management dashboard** for managing products, **rental operations**, **customer activity**, and day-to-day business workflows.",
@@ -85,6 +111,7 @@ const projects = [
     title: "Pixtar",
     type: "Company Website · Full Redesign & Rebuild",
     year: "2026",
+    video: pixtarVideo,
     images: [pixtar, pixtar2],
 
     description:
