@@ -351,8 +351,6 @@ button {
 }
 
 .hire-me-fill {
-  /* First layer paints on top, so the growing orange line must come first
-     or the always-100%-wide black line behind it would fully hide it. */
   background-image:
     linear-gradient(var(--orange), var(--orange)),
     linear-gradient(var(--black), var(--black));
@@ -361,10 +359,18 @@ button {
   background-size:
     0% 2px,
     100% 2px;
-  animation: hireMeFill 2s ease-in-out infinite;
+}
+
+/* Header.tsx adds this once the mobile menu's open timeline finishes (and
+   removes it once the close reverse finishes), so the fill plays a single
+   time per open — right after the slide-up settles — and `forwards` holds
+   it filled instead of the animation's own end state reverting to 0%. */
+.hire-me-fill.hire-me-fill-play {
+  animation: hireMeFill 2s ease-in-out 1 forwards;
 }
 
 @keyframes hireMeFill {
+
   0%,
   10% {
     background-size:

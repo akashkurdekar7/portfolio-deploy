@@ -208,6 +208,7 @@ const Projects = () => {
           start: "top 85%",
           end: "bottom 60%",
           scrub: true,
+          once: true,
         },
       });
     });

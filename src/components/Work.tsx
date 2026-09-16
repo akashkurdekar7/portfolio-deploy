@@ -179,9 +179,6 @@ const Work = () => {
     return () => ctx.revert();
   }, []);
 
-  // DESCRIPTION WORD REVEAL — each description's words ramp from grey/black
-  // at 0 opacity up to full opacity in sequence, scrubbed to scroll position
-  // as that card's paragraph passes by (same technique as About's tagline).
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -199,6 +196,7 @@ const Work = () => {
             start: "top 85%",
             end: "bottom 60%",
             scrub: true,
+            once: true,
           },
         });
       });
@@ -207,9 +205,6 @@ const Work = () => {
     return () => ctx.revert();
   }, []);
 
-  // NUMBER / DURATION REVEAL — same scroll-scrubbed opacity ramp technique
-  // as the description word reveal above, plus a small upward slide so the
-  // motion actually reads on screen for these short, small-type labels.
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -227,6 +222,7 @@ const Work = () => {
             start: "top 95%",
             end: "top 55%",
             scrub: true,
+            once: true,
           },
         });
       });
