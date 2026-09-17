@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectsStack from "./ProjectsStack";
@@ -6,8 +6,6 @@ import ProjectModal from "./ProjectModal";
 import type { Project } from "./ProjectCard";
 import { renderEmphasisText } from "../utils/emphasisText";
 import { useScrambleReveal } from "../utils/useScrambleReveal";
-
-const ProjectsDesktop = lazy(() => import("./ProjectsDesktop"));
 
 import saas from "../assets/projects/saas.webp";
 import saas2 from "../assets/projects/saas2.webp";
@@ -232,16 +230,9 @@ const Projects = () => {
         </p>
       </div>
 
-      {/* MOBILE: stacked cards, one screen, scroll-driven */}
-      <div className="pt-8 md:hidden">
+      {/* Full-width stacked cards, scroll-driven, at every breakpoint */}
+      <div className="pt-8">
         <ProjectsStack projects={projects} onSelectProject={setSelectedProject} />
-      </div>
-
-      {/* TABLET / DESKTOP: static grid layout */}
-      <div className="relative hidden md:block">
-        <Suspense fallback={null}>
-          <ProjectsDesktop projects={projects} onSelectProject={setSelectedProject} />
-        </Suspense>
       </div>
 
       <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />

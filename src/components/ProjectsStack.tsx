@@ -39,7 +39,10 @@ const ProjectsStack = ({ projects, onSelectProject }: ProjectsStackProps) => {
 
     const mm = gsap.matchMedia();
 
-    mm.add("(max-width: 767px)", () => {
+    // No breakpoint restriction — the pinned stacking effect now runs at
+    // every viewport width, not just mobile, so desktop gets the same
+    // full-width sticky-card experience instead of a separate grid.
+    mm.add("(min-width: 0px)", () => {
       const cards = cardRefs.current.filter((el): el is HTMLDivElement => el !== null);
       const dots = dotRefs.current.filter((el): el is HTMLSpanElement => el !== null);
       if (cards.length < 2 || !sectionRef.current) return;

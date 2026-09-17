@@ -146,7 +146,7 @@ const ProjectCard = ({
 
   return (
     <div
-      className={`group cursor-pointer bg-[#fff] border-6 border-white rounded-[24px] transition-transform duration-300 ease-out ${onSelect ? "hover:-translate-y-1" : ""} ${className ?? "mx-auto h-auto w-full lg:w-[420px]"}`}
+      className={`group flex cursor-pointer flex-col bg-[#fff] border-6 border-white rounded-[24px] transition-transform duration-300 ease-out ${onSelect ? "hover:-translate-y-1" : ""} ${className ?? "mx-auto max-h-[85dvh] w-4/5"}`}
       onClick={onSelect}
       role={onSelect ? "button" : undefined}
       tabIndex={onSelect ? 0 : undefined}
@@ -155,7 +155,7 @@ const ProjectCard = ({
     >
       <div
         ref={imageWrapRef}
-        className="relative mx-auto aspect-[450/350] w-full overflow-hidden rounded-2xl [transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
+        className="relative mx-auto aspect-[450/350] w-full min-h-0 shrink overflow-hidden rounded-2xl [transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
         onMouseEnter={onImageMouseEnter}
         onMouseLeave={onImageMouseLeave}
         onMouseMove={onImageMouseMove}
@@ -191,7 +191,7 @@ const ProjectCard = ({
       </div>
 
       {/* INFO */}
-      <div className=" flex flex-col items-start  justify-between  px-3 py-4">
+      <div className="flex shrink-0 flex-col items-start justify-between px-3 py-4">
         <div className="flex justify-between items-center w-full">
           <h3 ref={titleRef} className="font-instrument size28 capitalize">
             {project.title}
