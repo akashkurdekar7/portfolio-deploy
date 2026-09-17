@@ -303,17 +303,7 @@ const Work = () => {
             <div className="lg:col-span-2">
               <span className="work-fade font-bricolage-sembold size12 text-grey">{experience[0].number}</span>
             </div>
-            <div className="col-6 lg:col-span-3">
-              <div className="flex items-center gap-3">
-                <span className="h-2 w-2 rounded-full border border-black" />
-                <span className="font-bricolage size12 uppercase text-grey">{experience[0].type}</span>
-              </div>
-            </div>
             <div className="lg:col-span-5">
-              {/* Not a heading: it visually reads like a label, but a real <h4>
-                  here would land before this card's <h3> (the company name,
-                  below) in document order — skipping a level and reading out
-                  of sequence for screen-reader users navigating by heading. */}
               <p className="role-cube-lift font-bricolage-semibold size16 uppercase">{experience[0].role}</p>
             </div>
             <div className="col-6 lg:col-span-2 lg:text-right">
@@ -351,13 +341,6 @@ const Work = () => {
             key={item.number}
             className="work-reveal-card group border-4 rounded-3xl px-4 py-6 lg:px-6 lg:py-6 shadow-[0_4px_10px_0_rgba(0,0,0,.3)] bg-[#fff]"
           >
-            <div className="flex items-center justify-between">
-              <span className="work-fade font-bricolage size12 text-grey">{item.number}</span>
-              <div className="work-type-badge group/type flex items-center gap-3 border border-black rounded-md p-1 px-3 bg-white shadow-[0_4px_0_0_#fff,0_4px_0_1px_rgba(0,0,0,1)] transition-all duration-200 ease-out [transform-style:preserve-3d] hover:translate-y-1 hover:[transform:translateY(0.25rem)_translateZ(-4px)] hover:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)] active:[transform:translateY(0.25rem)_translateZ(-6px)] active:shadow-[0_1px_0_0_#fff,0_1px_0_1px_rgba(0,0,0,1)]">
-                <span className="font-bricolage size12 uppercase text-grey">{item.type}</span>
-              </div>
-            </div>
-
             <h3 className="mt-4 lg:mt-8 max-w-md font-instrument size44 leading-[1.2] h-[2.5em] transition-transform duration-500 group-hover:translate-x-2">
               {renderCompanyName(item.company, item.highlightWord, item.highlightColor)}
             </h3>
