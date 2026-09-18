@@ -146,7 +146,7 @@ const ProjectCard = ({
 
   return (
     <div
-      className={`group flex cursor-pointer flex-col bg-[#fff] border-6 border-white rounded-[24px] transition-transform duration-300 ease-out ${onSelect ? "hover:-translate-y-1" : ""} ${className ?? "mx-auto max-h-[85dvh] w-4/5"}`}
+      className={`group flex cursor-pointer flex-col bg-[#fff] border-6 border-white rounded-[24px] transition-transform duration-300 ease-out ${onSelect ? "hover:-translate-y-1" : ""} ${className ?? "mx-auto max-h-[85dvh]  "}`}
       onClick={onSelect}
       role={onSelect ? "button" : undefined}
       tabIndex={onSelect ? 0 : undefined}

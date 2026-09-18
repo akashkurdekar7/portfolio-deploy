@@ -342,15 +342,13 @@ const About = () => {
       {/* PINNED REEL SCROLLER */}
       <div ref={pinRef} className="relative overflow-x-auto  py-10 lg:py-14">
         <div ref={trackRef} className="relative flex w-max items-end px-6 lg:px-16">
-          {/* leading buffer so photo 01 also has to scroll into the
-              viewport's center instead of already sitting past it */}
           <div aria-hidden="true" className="w-[50vw] shrink-0" />
 
           <div className="relative flex items-end gap-16 lg:gap-28">
             {reelItems.map((item, index) => (
               <div key={index} className="reel-item relative flex w-35 flex-col items-start lg:w-50">
                 <span className="block overflow-hidden font-bricolage size12">
-                  <span className="reel-text-line inline-block">0{index + 1}</span>
+                  <span className="reel-text-line inline-block">{String(index + 1).padStart(2, "0")}</span>
                 </span>
                 <div className="reel-photo-clip mt-2 aspect-square w-full overflow-hidden rounded-md border border-black/10 bg-black/5">
                   <img src={item.src} alt={item.name} className="h-full w-full object-cover" width={240} height={240} />
